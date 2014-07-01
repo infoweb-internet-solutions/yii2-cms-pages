@@ -30,3 +30,20 @@ Once the extension is installed run this migration
 ```
 yii migrate/up --migrationPath=@infoweb/pages/migrations
 ```
+
+and add this to your config
+
+````
+'pages' => [
+    'class' => 'infoweb\pages\Module',
+],
+````
+
+
+TBD
+---
+
+Update readme
+Add I18N, translations and translations with tabs
+
+
