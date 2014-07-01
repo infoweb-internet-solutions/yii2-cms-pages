@@ -1,0 +1,33 @@
+{
+    "name": "infoweb/yii2-pages",
+    "description": "Yii2 pages",
+    "keywords": ["yii2", "yii2-pages", "infoweb"],
+    "type": "yii2-extension",
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/hashie5/yii2-pages/issues?state=open",
+        "source": "https://github.com/hashie5/yii2-pages"
+    },
+    "authors": [
+        {
+            "name": "Ruben Heymans",
+            "email": "ruben@infoweb.be",
+            "homepage": "http://www.infoweb.be/"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "yiisoft/yii2": "*",
+        "2amigos/yii2-ckeditor-widget": "*",
+        "kartik-v/yii2-widgets": "*",
+        "kartik-v/yii2-grid": "*"
+    },
+    "suggest": {
+        "mdmsoft/yii2-admin": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "infoweb\\pages\\": ""
+        }
+    }
+}
