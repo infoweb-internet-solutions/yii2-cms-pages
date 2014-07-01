@@ -25,7 +25,7 @@ to the require section of your `composer.json` file.
 Usage
 -----
 
-Once the extension is installed, migrate
+Once the extension is installed run this migration
 
 ```
 yii migrate/up --migrationPath=@infoweb/pages/migrations
