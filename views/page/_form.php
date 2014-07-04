@@ -35,7 +35,17 @@ use kartik\widgets\SwitchInput;
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create and close') : Yii::t('app', 'Update and close'), ['class' => 'btn btn-default']) ?>
+        <?php if ($model->isNewRecord): ?>
+        <?= Html::a(Yii::t('app', 'Create & new'), ['update', 'id' => $model->id, 'new' => true], ['class' => 'btn btn-info']) ?>
+        <?php endif; ?>
+        <?= Html::a(Yii::t('app', 'Close'), ['index'], ['class' => 'btn btn-danger']) ?>
     </div>
+
+    <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-danger']) ?>
+
+
 
     <?php ActiveForm::end(); ?>
 
