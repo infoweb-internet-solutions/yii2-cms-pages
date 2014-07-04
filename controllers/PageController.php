@@ -60,12 +60,21 @@ class PageController extends Controller
      */
     public function actionCreate()
     {
+        $post = \Yii::$app->request->post();
+
         $model = new Page();
         // Load database default values
         $model->loadDefaultValues();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['update', 'id' => $model->id]);
+            if (isset($post['close'])) {
+                return $this->redirect(['index']);
+            } elseif (isset($post['new'])) {
+                return $this->redirect(['create']);
+            } else {
+                return $this->redirect(['update', 'id' => $model->id]);
+            }
+
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -81,10 +90,17 @@ class PageController extends Controller
      */
     public function actionUpdate($id)
     {
+        $post = \Yii::$app->request->post();
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['update', 'id' => $model->id]);
+            if (isset($post['close'])) {
+                return $this->redirect(['index']);
+            } elseif (isset($post['new'])) {
+                return $this->redirect(['create']);
+            } else {
+                return $this->redirect(['update', 'id' => $model->id]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
