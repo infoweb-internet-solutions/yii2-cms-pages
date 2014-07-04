@@ -61,8 +61,8 @@ class PageController extends Controller
     public function actionCreate()
     {
         $model = new Page();
-        // Set default active true
-        $model->active = true;
+        // Load database default values
+        $model->loadDefaultValues();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);

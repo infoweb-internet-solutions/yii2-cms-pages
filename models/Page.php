@@ -16,6 +16,12 @@ use Yii;
  */
 class Page extends \yii\db\ActiveRecord
 {
+
+    /**
+     * Active status
+     */
+    const STATUS_ACTIVE = true;
+
     /**
      * @inheritdoc
      */
