@@ -13,7 +13,15 @@ use kartik\widgets\SwitchInput;
 
 <div class="page-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php /*
+    <?= \c006\spinner\SubmitSpinner::widget(); ?>
+    */ ?>
+    <?php $form = ActiveForm::begin([
+        'attributes' => $model->attributes,
+        //'beforeSubmit' => 'c006_show_spinner',
+    ]); ?>
+
+
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => 255]) ?>
 
