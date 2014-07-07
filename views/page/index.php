@@ -35,6 +35,22 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => 'kartik\grid\ActionColumn',
+                'template' => '{update} {delete} {active}',
+                'buttons' => [
+                    'active' => function ($url, $model) {
+                        if ($model->active == true)
+                        {
+                            $icon = 'glyphicon-eye-open';
+                        } else {
+                            $icon = 'glyphicon-eye-close';
+                        }
+
+                        return Html::a('<span id="active-' . $model->id . '" class="glyphicon ' . $icon . '"></span>', $url, [
+                            'title' => Yii::t('app', 'Info'),
+                            'data-pjax' => '1',
+                        ]);
+                    }
+                ],
                 //'viewOptions'=>['title'=> 'View', 'data-toggle'=>'tooltip'],
                 //'updateOptions'=>['title'=> 'Update', 'data-toggle'=>'tooltip'],
                 //'deleteOptions'=>['title'=> 'Delete', 'data-toggle'=>'tooltip'],

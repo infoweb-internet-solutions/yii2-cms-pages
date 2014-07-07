@@ -122,6 +122,18 @@ class PageController extends Controller
     }
 
     /**
+     * Set active state
+     * @param string $id
+     * @return mixed
+     */
+    public function actionActive($id)
+    {
+        $model = $this->findModel($id);
+        $model->active = ($model->active == 1) ? 0 : 1;
+        return $model->save();
+    }
+
+    /**
      * Finds the Page model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
