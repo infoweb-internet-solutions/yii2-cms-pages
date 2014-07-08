@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 //use yii\grid\GridView;
 use kartik\grid\GridView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\search\PostSearch */
@@ -22,7 +23,9 @@ $this->params['breadcrumbs'][] = $this->title;
         ]), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php \yii\widgets\Pjax::begin(); ?>
+    <?php Pjax::begin([
+        'id'=>'grid-pajax'
+    ]); ?>
     <?php echo GridView::widget([
         'dataProvider'=> $dataProvider,
         'filterModel' => $searchModel,
@@ -45,11 +48,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             $icon = 'glyphicon-eye-close';
                         }
 
-                        return Html::a('<span id="active-' . $model->id . '" class="glyphicon ' . $icon . '"></span>', $url, [
-                            'title' => Yii::t('app', 'Info'),
-                            'data-pjax' => '1',
+                        return Html::a('<span class="glyphicon ' . $icon . '"></span>', $url, [
+                            'title' => Yii::t('app', 'Update'),
+                            'data-pjax' => '0',
                         ]);
-                    }
+                    },                    
                 ],
                 //'viewOptions'=>['title'=> 'View', 'data-toggle'=>'tooltip'],
                 //'updateOptions'=>['title'=> 'Update', 'data-toggle'=>'tooltip'],
@@ -61,6 +64,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'hover' => true
     ]);
     ?>
-    <?php \yii\widgets\Pjax::end(); ?>
+    <?php Pjax::end(); ?>
 
 </div>

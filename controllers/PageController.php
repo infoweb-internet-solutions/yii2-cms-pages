@@ -21,6 +21,7 @@ class PageController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+                    //'active' => ['post'],
                 ],
             ],
         ];
@@ -130,6 +131,7 @@ class PageController extends Controller
     {
         $model = $this->findModel($id);
         $model->active = ($model->active == 1) ? 0 : 1;
+        
         return $model->save();
     }
 
