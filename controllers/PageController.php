@@ -123,15 +123,15 @@ class PageController extends Controller
     }
 
     /**
-     * Set active state
-     * @param string $id
-     * @return mixed
-     */
+ * Set active state
+ * @param string $id
+ * @return mixed
+ */
     public function actionActive($id)
     {
         $model = $this->findModel($id);
         $model->active = ($model->active == 1) ? 0 : 1;
-        
+
         return $model->save();
     }
 

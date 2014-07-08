@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?php Pjax::begin([
-        'id'=>'grid-pajax'
+        'id'=>'grid-pjax'
     ]); ?>
     <?php echo GridView::widget([
         'dataProvider'=> $dataProvider,
@@ -51,6 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Html::a('<span class="glyphicon ' . $icon . '"></span>', $url, [
                             'title' => Yii::t('app', 'Update'),
                             'data-pjax' => '0',
+                            'data-toggle-active' => $model->id,
                         ]);
                     },                    
                 ],
