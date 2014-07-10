@@ -1,34 +1,29 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-use dosamigos\ckeditor\CKEditor;
 use kartik\widgets\SwitchInput;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Page */
 /* @var $form yii\widgets\ActiveForm */
 
 ?>
-
 <div class="page-form">
 
-    <?php /*
-    <?= \c006\spinner\SubmitSpinner::widget(); ?>
-    */ ?>
-    <?php $form = ActiveForm::begin([
-        'attributes' => $model->attributes,
-        //'beforeSubmit' => 'c006_show_spinner',
-    ]); ?>
+    <div class="form-group">&nbsp;</div>
 
+    <div class="form-group field-page-template">
+        <label class="control-label" for="template">Template</label>
+        <?php //= Html::dropDownList('template', $model->template, $templates, ['class' => 'form-control', 'style' => 'height: 150px;']) ?>
+        <select name="Page[template]" class="form-control">
+            <option value="0">-- Kies een template --</option>
+            <option value="1" <?php echo ($model->template == 1) ? 'selected="selected"' : ''; ?>>Home</option>
+            <option value="2" <?php echo ($model->template == 2) ? 'selected="selected"' : ''; ?>>Nieuws</option>
+            <option value="3" <?php echo ($model->template == 3) ? 'selected="selected"' : ''; ?>>Contact</option>
+        </select>
+        <div class="help-block"></div>
+    </div>
 
-
-    <?= $form->field($model, 'title')->textInput(['maxlength' => 255]) ?>
-
-    <?= $form->field($model, 'content')->widget(CKEditor::className(), [
-        'options' => ['rows' => 6],
-        'preset' => 'basic'
-    ]) ?>
 
 
     <?php echo $form->field($model, 'active')->widget(SwitchInput::classname(), [
@@ -40,14 +35,5 @@ use kartik\widgets\SwitchInput;
             'offText' => Yii::t('app', 'No'),
         ]
     ]); ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create & close') : Yii::t('app', 'Update & close'), ['class' => 'btn btn-default', 'name' => 'close']) ?>
-        <?= Html::submitButton(Yii::t('app', $model->isNewRecord ? 'Create & new' : 'Update & new'), ['class' => 'btn btn-default', 'name' => 'new']) ?>
-        <?= Html::a(Yii::t('app', 'Close'), ['index'], ['class' => 'btn btn-danger']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
 
 </div>

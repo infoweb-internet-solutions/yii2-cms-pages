@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-pjax' => '0',
                             'data-toggle-active' => $model->id,
                         ]);
-                    },                    
+                    },
                 ],
                 //'viewOptions'=>['title'=> 'View', 'data-toggle'=>'tooltip'],
                 //'updateOptions'=>['title'=> 'Update', 'data-toggle'=>'tooltip'],

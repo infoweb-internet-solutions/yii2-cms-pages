@@ -3,25 +3,21 @@
 namespace infoweb\pages\models;
 
 use Yii;
+use dosamigos\translateable\TranslateableBehavior;
 
 /**
  * This is the model class for table "pages".
  *
- * @property string $id
- * @property string $title
- * @property string $content
+ * @property integer $id
+ * @property string $template
  * @property integer $active
  * @property string $time_created
  * @property string $time_updated
+ *
+ * @property PagesLang[] $pagesLangs
  */
 class Page extends \yii\db\ActiveRecord
 {
-
-    /**
-     * Active status
-     */
-    const STATUS_ACTIVE = true;
-
     /**
      * @inheritdoc
      */
@@ -30,17 +26,32 @@ class Page extends \yii\db\ActiveRecord
         return 'pages';
     }
 
+    public function behaviors()
+    {
+        return [
+            'trans' => [ // name it the way you want
+                'class' => TranslateableBehavior::className(),
+                // in case you named your relation differently, you can setup its relation name attribute
+                // 'relation' => 'translations',
+                // in case you named the language column differently on your translation schema
+                // 'languageField' => 'language',
+                'translationAttributes' => [
+                    'title', 'content'
+                ]
+            ],
+        ];
+    }
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['title'], 'required'],
-            [['content'], 'string'],
+            [['template'], 'required'],
             [['active'], 'integer'],
             [['time_created', 'time_updated'], 'safe'],
-            [['title'], 'string', 'max' => 255]
+            [['template'], 'string', 'max' => 255]
         ];
     }
 
@@ -51,11 +62,18 @@ class Page extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'title' => Yii::t('app', 'Title'),
-            'content' => Yii::t('app', 'Content'),
+            'template' => Yii::t('app', 'Template'),
             'active' => Yii::t('app', 'Active'),
             'time_created' => Yii::t('app', 'Time Created'),
             'time_updated' => Yii::t('app', 'Time Updated'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTranslations()
+    {
+        return $this->hasMany(PageLang::className(), ['page_id' => 'id']);
     }
 }

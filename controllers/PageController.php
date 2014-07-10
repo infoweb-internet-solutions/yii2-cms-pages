@@ -4,6 +4,7 @@ namespace infoweb\pages\controllers;
 
 use Yii;
 use infoweb\pages\models\Page;
+use infoweb\pages\models\PageLang;
 use infoweb\pages\models\search\PageSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -61,13 +62,26 @@ class PageController extends Controller
      */
     public function actionCreate()
     {
-        $post = \Yii::$app->request->post();
-
         $model = new Page();
         // Load database default values
         $model->loadDefaultValues();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if (Yii::$app->request->getIsPost()) {
+            if (!$model->load(Yii::$app->request->post()) || !$model->save()) {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
+
+            $post = Yii::$app->request->post();
+
+            foreach (Yii::$app->params['languages'] as $k => $v) {
+                $modelLang = new PageLang;
+                $modelLang->page_id = $model->id;
+                $modelLang->load($post[$k]);
+                $modelLang->save();
+            }
+
             if (isset($post['close'])) {
                 return $this->redirect(['index']);
             } elseif (isset($post['new'])) {
@@ -91,10 +105,24 @@ class PageController extends Controller
      */
     public function actionUpdate($id)
     {
-        $post = \Yii::$app->request->post();
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if (Yii::$app->request->getIsPost()) {
+            if (!$model->load(Yii::$app->request->post()) || !$model->save()) {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
+
+            $post = Yii::$app->request->post();
+
+            foreach (Yii::$app->params['languages'] as $k => $v) {
+                $modelLang = $model->getTranslation($k);
+                $modelLang->page_id = $model->id;
+                $modelLang->load($post[$k]);
+                $modelLang->save();
+            }
+
             if (isset($post['close'])) {
                 return $this->redirect(['index']);
             } elseif (isset($post['new'])) {
@@ -102,6 +130,7 @@ class PageController extends Controller
             } else {
                 return $this->redirect(['update', 'id' => $model->id]);
             }
+
         } else {
             return $this->render('update', [
                 'model' => $model,
