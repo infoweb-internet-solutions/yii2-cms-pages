@@ -29,12 +29,8 @@ class Page extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
-            'trans' => [ // name it the way you want
+            'trans' => [
                 'class' => TranslateableBehavior::className(),
-                // in case you named your relation differently, you can setup its relation name attribute
-                // 'relation' => 'translations',
-                // in case you named the language column differently on your translation schema
-                // 'languageField' => 'language',
                 'translationAttributes' => [
                     'title', 'content'
                 ]
@@ -49,9 +45,7 @@ class Page extends \yii\db\ActiveRecord
     {
         return [
             [['template'], 'required'],
-            [['active'], 'integer'],
-            [['time_created', 'time_updated'], 'safe'],
-            [['template'], 'string', 'max' => 255]
+            [['active', 'template'], 'integer'],
         ];
     }
 

@@ -49,15 +49,16 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
 
                         return Html::a('<span class="glyphicon ' . $icon . '"></span>', $url, [
-                            'title' => Yii::t('app', 'Update'),
+                            'title' => Yii::t('app', 'Toggle active'),
                             'data-pjax' => '0',
                             'data-toggle-active' => $model->id,
+                            'data-toggle' => 'tooltip',
+                            'data-placement' => 'left',
                         ]);
                     },
                 ],
-                //'viewOptions'=>['title'=> 'View', 'data-toggle'=>'tooltip'],
-                //'updateOptions'=>['title'=> 'Update', 'data-toggle'=>'tooltip'],
-                //'deleteOptions'=>['title'=> 'Delete', 'data-toggle'=>'tooltip'],
+                'updateOptions'=>['title'=> 'Update', 'data-toggle'=>'tooltip'],
+                'deleteOptions'=>['title'=> 'Delete', 'data-toggle'=>'tooltip'],
             ],
         ],
         'responsive' => true,

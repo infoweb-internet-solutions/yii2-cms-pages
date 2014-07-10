@@ -24,14 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php $form = ActiveForm::begin(); ?>
 
     <?php
-    // @todo move to controller  nieuw contact
-    $templates = [
-        [0 => '-- Kies een template --'],
-        [1 => 'Home'],
-    ];
-    ?>
-
-    <?php
     $items = [
         [
             'label' => 'General',

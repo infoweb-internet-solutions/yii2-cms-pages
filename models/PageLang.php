@@ -31,9 +31,7 @@ class PageLang extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['page_id', 'language', 'title', 'content'], 'required'],
-            [['page_id'], 'integer'],
-            [['language', 'content'], 'string'],
+            [['title'], 'required'],
             [['title'], 'string', 'max' => 255]
         ];
     }
