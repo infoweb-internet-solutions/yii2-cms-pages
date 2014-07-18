@@ -20,7 +20,8 @@
         "yiisoft/yii2": "*",
         "2amigos/yii2-ckeditor-widget": "*",
         "kartik-v/yii2-widgets": "*",
-        "kartik-v/yii2-grid": "*"
+        "kartik-v/yii2-grid": "*",
+        "2amigos/yii2-translateable-behavior" : "*"
     },
     "suggest": {
         "mdmsoft/yii2-admin": "*"
