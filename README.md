@@ -52,5 +52,4 @@ add this to config:
     'gridview' => [
     'class' => '\kartik\grid\Module'
     ]
-    ];
-
+    ],
