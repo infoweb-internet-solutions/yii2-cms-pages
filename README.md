@@ -47,4 +47,9 @@ Update readme
 
 Add I18N, translations and translations with tabs
 
-
+add this to config:
+    'modules' => [
+    'gridview' => [
+    'class' => '\kartik\grid\Module'
+    ]
+    ],
