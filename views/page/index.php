@@ -52,17 +52,18 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-pjax' => '0',
                             'data-toggle-active' => $model->id,
                             'data-toggle' => 'tooltip',
-                            'data-placement' => 'left',
+                            //'data-placement' => 'left',
                         ]);
                     },
                 ],
-                'updateOptions'=>['title'=> 'Update', 'data-toggle'=>'tooltip'],
-                'deleteOptions'=>['title'=> 'Delete', 'data-toggle'=>'tooltip'],
+                'updateOptions'=>['title' => 'Update', 'data-toggle' => 'tooltip'],
+                'deleteOptions'=>['title' => 'Delete', 'data-toggle' => 'tooltip'],
+                'width' => '100px',
             ],
         ],
         'responsive' => true,
         'floatHeader' => true,
-        'hover' => true
+        'hover' => true,
     ]);
     ?>
     <?php Pjax::end(); ?>
