@@ -14,7 +14,10 @@ use dosamigos\ckeditor\CKEditor;
 ]); ?>
 
 <?= $form->field($model, 'content')->widget(CKEditor::className(), [
-    'options' => ['rows' => 20,
-    'name' => "{$language}[PageLang][content]"],
-    'preset' => 'standard'
+    'options' => [
+        'rows' => 20,
+        'name' => "{$language}[PageLang][content]",
+        'id' => "{$language}[PageLang][content]",
+    ],
+    'preset' => 'standard',
 ]); ?>
