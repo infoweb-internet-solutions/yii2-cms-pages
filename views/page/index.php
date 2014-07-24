@@ -59,6 +59,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'updateOptions'=>['title'=> 'Update', 'data-toggle'=>'tooltip'],
                 'deleteOptions'=>['title'=> 'Delete', 'data-toggle'=>'tooltip'],
+                'width' => '110px',
+                
             ],
         ],
         'responsive' => true,
