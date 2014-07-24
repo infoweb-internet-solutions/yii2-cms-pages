@@ -11,8 +11,8 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
     'modelClass' => 'Page',
 ]) . ' ' . $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pages'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['update', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+$this->params['breadcrumbs'][] = ['label' => $this->title, 'url' => ['update', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Update')];
 ?>
 <div class="page-update">
 
@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
     $items = [
         [
             'label' => 'General',
-            'content' => $this->render('_form', ['model' => $model, 'form' => $form]),
+            'content' => $this->render('_form', ['model' => $model, 'form' => $form, 'templates' => $templates]),
             'active' => true,
         ],
     ];

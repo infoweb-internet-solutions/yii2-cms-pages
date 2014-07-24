@@ -70,6 +70,7 @@ class PageController extends Controller
             if (!$model->load(Yii::$app->request->post()) || !$model->save()) {
                 return $this->render('create', [
                     'model' => $model,
+                    'templates' => [1 => 'Home', 2 => 'Nieuws', 3 => 'Contact'],
                 ]);
             }
 
@@ -93,6 +94,7 @@ class PageController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'templates' => [1 => 'Home', 2 => 'Nieuws', 3 => 'Contact'],
             ]);
         }
     }
@@ -111,6 +113,7 @@ class PageController extends Controller
             if (!$model->load(Yii::$app->request->post()) || !$model->save()) {
                 return $this->render('create', [
                     'model' => $model,
+                    'templates' => [1 => 'Home', 2 => 'Nieuws', 3 => 'Contact'],
                 ]);
             }
 
@@ -134,6 +137,7 @@ class PageController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'templates' => [1 => 'Home', 2 => 'Nieuws', 3 => 'Contact'],
             ]);
         }
     }
@@ -152,10 +156,10 @@ class PageController extends Controller
     }
 
     /**
- * Set active state
- * @param string $id
- * @return mixed
- */
+     * Set active state
+     * @param string $id
+     * @return mixed
+     */
     public function actionActive($id)
     {
         $model = $this->findModel($id);
