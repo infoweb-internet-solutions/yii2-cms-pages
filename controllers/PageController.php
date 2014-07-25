@@ -22,7 +22,7 @@ class PageController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
-                    //'active' => ['post'],
+                    'active' => ['post'],
                 ],
             ],
         ];
@@ -160,9 +160,9 @@ class PageController extends Controller
      * @param string $id
      * @return mixed
      */
-    public function actionActive($id)
+    public function actionActive()
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel(Yii::$app->request->post('id'));
         $model->active = ($model->active == 1) ? 0 : 1;
 
         return $model->save();
