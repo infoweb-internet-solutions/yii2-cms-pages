@@ -9,8 +9,9 @@ use dosamigos\ckeditor\CKEditor;
 <input type="hidden" name="<?php echo $language; ?>[PageLang][language]" value="<?php echo $language; ?>">
 
 <?= $form->field($model, 'title')->textInput([
-    'maxlength' => 25,
-    'name' => "{$language}[PageLang][content]",
+    'maxlength' => 255,
+    'name' => "{$language}[PageLang][title]",
+    'id' => "title-{$language}",
 ]); ?>
 
 <?= $form->field($model, 'content')->widget(CKEditor::className(), [

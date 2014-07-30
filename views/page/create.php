@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     // loop through languages to edit
     foreach (Yii::$app->params['languages'] as $k => $language) {
+        $model->language = $k;
         $items[] = [
             'label' => $language,
             'content' => $this->render('_translation_item', ['model' => $model, 'language' => $k, 'form' => $form]),

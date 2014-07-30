@@ -4,6 +4,9 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
 
+use infoweb\pages\AppAsset;
+AppAsset::register($this);
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\search\PostSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */

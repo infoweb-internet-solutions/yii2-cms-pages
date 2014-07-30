@@ -39,9 +39,12 @@ class PageSearch extends Page
     public function search($params)
     {
         $query = Page::find();
-
+        
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 5,
+            ],
         ]);
 
         if (!($this->load($params) && $this->validate())) {

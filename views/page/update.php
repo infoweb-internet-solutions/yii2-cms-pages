@@ -11,7 +11,7 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
     'modelClass' => 'Page',
 ]) . ' ' . $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pages'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $this->title, 'url' => ['update', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['update', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Update')];
 ?>
 <div class="page-update">
@@ -35,6 +35,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Update')];
 
     // loop through languages to edit
     foreach (Yii::$app->params['languages'] as $k => $language) {
+        $model->language = $k;
         $items[] = [
             'label' => $language,
             'content' => $this->render('_translation_item', ['model' => $model, 'language' => $k, 'form' => $form]),

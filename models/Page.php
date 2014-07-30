@@ -58,8 +58,6 @@ class Page extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'template' => Yii::t('app', 'Template'),
             'active' => Yii::t('app', 'Active'),
-            'time_created' => Yii::t('app', 'Time Created'),
-            'time_updated' => Yii::t('app', 'Time Updated'),
         ];
     }
 

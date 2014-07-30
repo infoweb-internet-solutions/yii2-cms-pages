@@ -9,7 +9,7 @@ use infoweb\pages\models\search\PageSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\helpers\Html;
 /**
  * PageController implements the CRUD actions for Page model.
  */
@@ -44,18 +44,6 @@ class PageController extends Controller
     }
 
     /**
-     * Displays a single Page model.
-     * @param string $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
      * Creates a new Page model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -67,20 +55,40 @@ class PageController extends Controller
         $model->loadDefaultValues();
 
         if (Yii::$app->request->getIsPost()) {
-            if (!$model->load(Yii::$app->request->post()) || !$model->save()) {
+            
+            $post = Yii::$app->request->post();
+                        
+            if (!$model->load($post)) {
                 return $this->render('create', [
                     'model' => $model,
                     'templates' => [1 => 'Home', 2 => 'Nieuws', 3 => 'Contact'],
                 ]);
             }
 
-            $post = Yii::$app->request->post();
+            if (!$model->save()) {
+                echo 'Model not saved';
+                exit();
+            }
 
             foreach (Yii::$app->params['languages'] as $k => $v) {
-                $modelLang = new PageLang;
+                
+                $modelLang = $model->getTranslation($k);
+
+                // nl-BE already exists after saving the model
+                if (!isset($modelLang)) {
+                    $modelLang = new PageLang;
+                }
+                
                 $modelLang->page_id = $model->id;
                 $modelLang->load($post[$k]);
-                $modelLang->save();
+                // @todo Remove this
+                $modelLang->content = $post[$k]['PageLang']['content'];
+                $modelLang->language = $post[$k]['PageLang']['language'];
+                
+                if (!$modelLang->save()) {
+                    echo 'Model lang not saved';
+                    exit();
+                }
             }
 
             if (isset($post['close'])) {
@@ -110,20 +118,27 @@ class PageController extends Controller
         $model = $this->findModel($id);
 
         if (Yii::$app->request->getIsPost()) {
-            if (!$model->load(Yii::$app->request->post()) || !$model->save()) {
-                return $this->render('create', [
+            
+            $post = Yii::$app->request->post();
+                    
+            if (!$model->load($post) || !$model->save()) {
+                return $this->render('update', [
                     'model' => $model,
                     'templates' => [1 => 'Home', 2 => 'Nieuws', 3 => 'Contact'],
                 ]);
             }
-
-            $post = Yii::$app->request->post();
-
+            
             foreach (Yii::$app->params['languages'] as $k => $v) {
                 $modelLang = $model->getTranslation($k);
                 $modelLang->page_id = $model->id;
                 $modelLang->load($post[$k]);
-                $modelLang->save();
+                // @todo Remove this
+                $modelLang->content = $post[$k]['PageLang']['content'];
+                
+                if (!$modelLang->save()) {
+                    echo 'Model lang not saved';
+                    exit();
+                }
             }
 
             if (isset($post['close'])) {
