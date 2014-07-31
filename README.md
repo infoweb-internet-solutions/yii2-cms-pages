@@ -1,3 +1,5 @@
+Do not use this module! It's far from ready and it\'s not yet usefull
+
 Simple pages extension for Yii 2
 ================================
 This extension provides pages that can be added to a menu
