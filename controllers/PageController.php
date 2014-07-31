@@ -102,7 +102,7 @@ class PageController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
-                'templates' => [1 => 'Home', 2 => 'Nieuws', 3 => 'Contact'],
+                'templates' => [1 => 'Home', 2 => 'Pagina', 3 => 'Nieuws', 4 => 'Contact'],
             ]);
         }
     }
@@ -152,7 +152,7 @@ class PageController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
-                'templates' => [1 => 'Home', 2 => 'Nieuws', 3 => 'Contact'],
+                'templates' => [1 => 'Home', 2 => 'Pagina', 3 => 'Nieuws', 4 => 'Contact'],
             ]);
         }
     }

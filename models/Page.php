@@ -4,6 +4,8 @@ namespace infoweb\pages\models;
 
 use Yii;
 use dosamigos\translateable\TranslateableBehavior;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "pages".
@@ -34,6 +36,14 @@ class Page extends \yii\db\ActiveRecord
                 'translationAttributes' => [
                     'title', 'content'
                 ]
+            ],
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'updated_at',
+                ],
+                'value' => function() { return time(); },
             ],
         ];
     }

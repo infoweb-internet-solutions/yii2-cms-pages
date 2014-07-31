@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use infoweb\pages\models\Page;
+use infoweb\pages\models\PageLang;
 
 /**
  * PageSearch represents the model behind the search form about `app\models\Page`.
@@ -43,7 +44,7 @@ class PageSearch extends Page
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 5,
+                'pageSize' => 50,
             ],
         ]);
 
@@ -58,8 +59,8 @@ class PageSearch extends Page
             'time_updated' => $this->time_updated,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'content', $this->content]);
+        //$query->innerJoin(PageLang::tableName(), 'page_id = id');
+        $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
     }
