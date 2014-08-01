@@ -20,7 +20,7 @@ class PageSearch extends Page
     {
         return [
             [['id', 'active'], 'integer'],
-            [['title', 'content', 'time_created', 'time_updated'], 'safe'],
+            [['title', 'content', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -55,8 +55,8 @@ class PageSearch extends Page
         $query->andFilterWhere([
             'id' => $this->id,
             'active' => $this->active,
-            'time_created' => $this->time_created,
-            'time_updated' => $this->time_updated,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ]);
 
         //$query->innerJoin(PageLang::tableName(), 'page_id = id');

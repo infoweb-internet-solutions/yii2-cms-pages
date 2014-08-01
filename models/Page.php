@@ -13,7 +13,7 @@ use yii\db\ActiveRecord;
  * @property integer $id
  * @property string $template
  * @property integer $active
- * @property string $time_created
+ * @property string $created_at
  * @property string $time_updated
  *
  * @property PagesLang[] $pagesLangs

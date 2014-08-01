@@ -22,8 +22,8 @@ class m140701_090001_create_pages_table extends \yii\db\Migration
             'title'         => Schema::TYPE_STRING . '(255) NOT NULL',
             'content'       => Schema::TYPE_TEXT . ' NOT NULL',
             'active'        => Schema::TYPE_SMALLINT . "(3) UNSIGNED NOT NULL DEFAULT '1'",
-            'time_created'  => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT CURRENT_TIMESTAMP',
-            'time_updated'  => Schema::TYPE_TIMESTAMP . ' NOT NULL'
+            'created_at'    => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT CURRENT_TIMESTAMP',
+            'updated_at'  => Schema::TYPE_TIMESTAMP . ' NOT NULL'
         ], $tableOptions);
     }
 
