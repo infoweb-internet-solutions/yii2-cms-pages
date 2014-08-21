@@ -3,6 +3,8 @@
 namespace infoweb\pages\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "pages_lang".
@@ -24,6 +26,20 @@ class PageLang extends \yii\db\ActiveRecord
     {
         return 'pages_lang';
     }
+    
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'updated_at',
+                ],
+                'value' => function() { return time(); },
+            ],
+        ];
+    }
 
     /**
      * @inheritdoc
@@ -41,7 +57,6 @@ class PageLang extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
             'page_id' => Yii::t('app', 'Page ID'),
             'language' => Yii::t('app', 'Language'),
             'title' => Yii::t('app', 'Title'),
