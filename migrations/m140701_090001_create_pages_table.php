@@ -17,18 +17,34 @@ class m140701_090001_create_pages_table extends \yii\db\Migration
                 throw new RuntimeException('Your database is not supported!');
         }
 
-        $this->createTable('pages', [
-            'id'            => Schema::TYPE_PK,
-            'title'         => Schema::TYPE_STRING . '(255) NOT NULL',
-            'content'       => Schema::TYPE_TEXT . ' NOT NULL',
-            'active'        => Schema::TYPE_SMALLINT . "(3) UNSIGNED NOT NULL DEFAULT '1'",
-            'created_at'    => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT CURRENT_TIMESTAMP',
-            'updated_at'  => Schema::TYPE_TIMESTAMP . ' NOT NULL'
+        // Create 'pages' table
+        $this->createTable('{{%pages}}', [
+            'id' => 'INT(10) UNSIGNED NOT NULL AUTO_INCREMENT',
+            'template' => 'INT(10) UNSIGNED NOT NULL',
+            'active' => 'TINYINT(3) UNSIGNED NOT NULL DEFAULT \'1\'',
+            'created_at' => 'INT(10) UNSIGNED NOT NULL',
+            'updated_at' => 'INT(10) UNSIGNED NOT NULL',
+            0 => 'PRIMARY KEY (`id`)'
         ], $tableOptions);
+        
+        // Create 'pages_lang' table
+        $this->createTable('{{%pages_lang}}', [
+            'page_id' => 'INT(10) UNSIGNED NOT NULL',
+            'language' => 'VARCHAR(2) NOT NULL',
+            'slug' => 'VARCHAR(255) NOT NULL',
+            'title' => 'VARCHAR(255) NOT NULL',
+            'content' => 'TEXT NOT NULL',
+            'created_at' => 'INT(10) UNSIGNED NOT NULL',
+            'updated_at' => 'INT(10) UNSIGNED NOT NULL',
+            0 => 'PRIMARY KEY (`page_id`)'  0 => 'PRIMARY KEY (`language`)'
+        ], $tableOptions);
+        $this->addForeignKey('fk_pages_pages_lang', '{{%pages_lang}}', 'page_id', '{{%pages}}', 'id', 'CASCADE', 'DELETE');
+        
     }
 
     public function down()
     {
         $this->dropTable('pages');
+        $this->dropTable('pages_lang');
     }
 }
