@@ -13,7 +13,6 @@ AppAsset::register($this);
 
 $this->title = Yii::t('app', 'Pages');
 $this->params['breadcrumbs'][] = $this->title;
-
 ?>
 <div class="page-index">
 
