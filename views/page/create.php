@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\Tabs;
 use yii\widgets\ActiveForm;
+use app\models\Seo;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Page */
@@ -32,12 +33,18 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ];
 
+    $seo = new Seo;
+    $seo->loadTranslations('nl-BE', 'fr-FR', 'en-US');
+
     // loop through languages to edit
     foreach (Yii::$app->params['languages'] as $k => $language) {
+
+        $seo->language = $k;
         $model->language = $k;
+
         $items[] = [
             'label' => $language,
-            'content' => $this->render('_translation_item', ['model' => $model, 'language' => $k, 'form' => $form]),
+            'content' => $this->render('_translation_item', ['model' => $model, 'language' => $k, 'form' => $form, 'seo' => $seo]),
         ];
     }
     ?>

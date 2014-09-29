@@ -36,7 +36,8 @@ class m140701_090001_create_pages_table extends \yii\db\Migration
             'content' => 'TEXT NOT NULL',
             'created_at' => 'INT(10) UNSIGNED NOT NULL',
             'updated_at' => 'INT(10) UNSIGNED NOT NULL',
-            0 => 'PRIMARY KEY (`page_id`)'  0 => 'PRIMARY KEY (`language`)'
+            0 => 'PRIMARY KEY (`page_id`)',
+            0 => 'PRIMARY KEY (`language`)'
         ], $tableOptions);
         $this->addForeignKey('fk_pages_pages_lang', '{{%pages_lang}}', 'page_id', '{{%pages}}', 'id', 'CASCADE', 'DELETE');
         

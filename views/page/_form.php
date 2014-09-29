@@ -10,8 +10,6 @@ use yii\helpers\Html;
 ?>
 <div class="page-form">
 
-    <div class="form-group">&nbsp;</div>
-
     <div class="form-group field-page-template">
         <label class="control-label" for="template">Template</label>
         <?= Html::dropDownList('Page[template]', $model->template, $templates, ['class' => 'form-control', 'prompt' => 'Kies een template']) ?>

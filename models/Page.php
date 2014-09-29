@@ -45,6 +45,15 @@ class Page extends \yii\db\ActiveRecord
                 ],
                 'value' => function() { return time(); },
             ],
+            /*
+            'seo' => [
+                'class' => SeoBehavior::className(),
+                'title' => 'title',
+                'description' => 'description',
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['title', 'description'],
+                ],
+            ]*/
         ];
     }
 

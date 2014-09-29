@@ -9,7 +9,8 @@ use infoweb\pages\models\search\PageSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\Html;
+use app\models\Seo;
+
 /**
  * PageController implements the CRUD actions for Page model.
  */
@@ -57,16 +58,24 @@ class PageController extends Controller
         if (Yii::$app->request->getIsPost()) {
             
             $post = Yii::$app->request->post();
-                        
+
             if (!$model->load($post)) {
-                return $this->render('create', [
-                    'model' => $model,
-                    'templates' => [1 => 'Home', 2 => 'Nieuws', 3 => 'Contact'],
-                ]);
+                echo 'Model not loaded';
+                exit();
             }
 
             if (!$model->save()) {
                 echo 'Model not saved';
+                exit();
+            }
+
+            // Create seo
+            $seo = new Seo;
+            $seo->entity = 'page';
+            $seo->entity_id = $model->id;
+
+            if (!$seo->save()) {
+                echo 'Seo not saved';
                 exit();
             }
 
@@ -78,7 +87,7 @@ class PageController extends Controller
                 if (!isset($modelLang)) {
                     $modelLang = new PageLang;
                 }
-                
+
                 $modelLang->page_id = $model->id;
                 $modelLang->load($post[$k]);
                 // @todo Remove this
@@ -87,6 +96,26 @@ class PageController extends Controller
                 
                 if (!$modelLang->save()) {
                     echo 'Model lang not saved';
+                    exit();
+                }
+
+                // Seo
+                $seoLang = $seo->getTranslation($k);
+
+                // nl-BE already exists after saving the model
+                if (!isset($seoLang)) {
+                    $seoLang = new SeoLang;
+                }
+
+                $seoLang->seo_id = $seo->id;
+                $seoLang->language = $k;
+                //$seoLang->load($post[$k]);
+                $seoLang->title = $post[$k]['SeoLang']['title'];
+                $seoLang->description = $post[$k]['SeoLang']['description'];
+                //echo '<pre>'; print_r($seoLang); echo '</pre>'; exit();
+
+                if (!$seoLang->save()) {
+                    echo 'Seo lang not saved';
                     exit();
                 }
             }
@@ -121,22 +150,53 @@ class PageController extends Controller
             
             $post = Yii::$app->request->post();
                     
-            if (!$model->load($post) || !$model->save()) {
-                return $this->render('update', [
-                    'model' => $model,
-                    'templates' => [1 => 'Home', 2 => 'Nieuws', 3 => 'Contact'],
-                ]);
+            if (!$model->load($post)) {
+                echo 'Model not loaded';
+                exit();
             }
-            
+
+            if (!$model->save()) {
+                echo 'Model not saved';
+                exit();
+            }
+
+            // Update seo
+            $seo = Seo::findOne(['entity' => 'page', 'entity_id' => $model->id]);
+
+            if (!$seo)
+            {
+                $seo = new Seo;
+                $seo->entity = 'page';
+                $seo->entity_id = $model->id;
+            }
+
+            if (!$seo->save()) {
+                echo 'Seo not saved';
+                exit();
+            }
+
             foreach (Yii::$app->params['languages'] as $k => $v) {
                 $modelLang = $model->getTranslation($k);
                 $modelLang->page_id = $model->id;
                 $modelLang->load($post[$k]);
                 // @todo Remove this
                 $modelLang->content = $post[$k]['PageLang']['content'];
-                
+
                 if (!$modelLang->save()) {
                     echo 'Model lang not saved';
+                    exit();
+                }
+
+                // Seo
+                $seoLang = $seo->getTranslation($k);
+                $seoLang->seo_id = $seo->id;
+                $seoLang->language = $k;
+                //$seoLang->load($post[$k]);
+                $seoLang->title = $post[$k]['SeoLang']['title'];
+                $seoLang->description = $post[$k]['SeoLang']['description'];
+
+                if (!$seoLang->save()) {
+                    echo 'Seo lang not saved';
                     exit();
                 }
             }
