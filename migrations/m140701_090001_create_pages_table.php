@@ -6,15 +6,10 @@ class m140701_090001_create_pages_table extends \yii\db\Migration
 {
     public function up()
     {
-        switch (Yii::$app->db->driverName) {
-            case 'mysql':
-                $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
-                break;
-            case 'pgsql':
-                $tableOptions = null;
-                break;
-            default:
-                throw new RuntimeException('Your database is not supported!');
+        $tableOptions = null;
+        
+        if ($this->db->driverName === 'mysql') {
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
         // Create 'pages' table
@@ -39,13 +34,13 @@ class m140701_090001_create_pages_table extends \yii\db\Migration
             0 => 'PRIMARY KEY (`page_id`)',
             0 => 'PRIMARY KEY (`language`)'
         ], $tableOptions);
-        $this->addForeignKey('fk_pages_pages_lang', '{{%pages_lang}}', 'page_id', '{{%pages}}', 'id', 'CASCADE', 'DELETE');
+        $this->addForeignKey('FK_PAGES_LANG_PAGE_ID', '{{%pages_lang}}', 'page_id', '{{%pages}}', 'id', 'CASCADE', 'RESTRICT');
         
     }
 
     public function down()
     {
-        $this->dropTable('pages');
         $this->dropTable('pages_lang');
+        $this->dropTable('pages');        
     }
 }
