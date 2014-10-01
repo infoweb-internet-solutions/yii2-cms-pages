@@ -12,13 +12,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist infoweb/yii2-pages "*"
+php composer.phar require --prefer-dist infoweb-internet-solutions/yii2-pages "*"
 ```
 
 or add
 
 ```
-"infoweb/yii2-pages": "*"
+"infoweb-internet-solutions/yii2-pages": "*"
 ```
 
 to the require section of your `composer.json` file.
@@ -33,25 +33,17 @@ Once the extension is installed run this migration
 yii migrate/up --migrationPath=@infoweb/pages/migrations
 ```
 
-and add this to your config
+And modify your backend configuration as follows:
 
-````
-'pages' => [
-    'class' => 'infoweb\pages\Module',
-],
-````
-
-
-TBD
----
-
-Update readme
-
-Add I18N, translations and translations with tabs
-
-add this to config:
+```php
+return [
+    ...
     'modules' => [
-    'gridview' => [
-    'class' => '\kartik\grid\Module'
-    ]
+        'pages' => [
+            'class' => 'infoweb\pages\Module',
+        ],
     ],
+    ...
+];
+```
+
