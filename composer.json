@@ -1,12 +1,12 @@
 {
-    "name": "infoweb/yii2-pages",
+    "name": "infoweb-internet-solutions/yii2-pages",
     "description": "Yii2 pages",
-    "keywords": ["yii2", "yii2-pages", "infoweb"],
+    "keywords": ["yii2", "yii2-cms-pages", "infoweb"],
     "type": "yii2-extension",
     "license": "MIT",
     "support": {
-        "issues": "https://github.com/hashie5/yii2-pages/issues?state=open",
-        "source": "https://github.com/hashie5/yii2-pages"
+        "issues": "https://github.com/infoweb-internet-solutions/yii2-cms-pages/issues?state=open",
+        "source": "https://github.com/infoweb-internet-solutions/yii2-cms-pages"
     },
     "authors": [
         {
@@ -18,13 +18,10 @@
     "minimum-stability": "dev",
     "require": {
         "yiisoft/yii2": "*",
-        "2amigos/yii2-ckeditor-widget": "*",
+        "mihaildev/yii2-ckeditor": "*",
         "kartik-v/yii2-widgets": "*",
         "kartik-v/yii2-grid": "*",
         "2amigos/yii2-translateable-behavior" : "*"
-    },
-    "suggest": {
-        "mdmsoft/yii2-admin": "*"
     },
     "autoload": {
         "psr-4": {
