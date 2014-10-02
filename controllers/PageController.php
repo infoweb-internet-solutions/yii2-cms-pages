@@ -331,7 +331,14 @@ class PageController extends Controller
                 // Set flash message
                 Yii::$app->getSession()->setFlash('partial', Yii::t('app', '{item} has been updated', ['item' => $model->name]));
               
-                return $this->redirect(['index']);    
+                // Take appropriate action based on the pushed button
+                if (isset($post['close'])) {
+                    return $this->redirect(['index']);
+                } elseif (isset($post['new'])) {
+                    return $this->redirect(['create']);
+                } else {
+                    return $this->redirect(['update', 'id' => $model->id]);
+                }    
             }    
         }
 
