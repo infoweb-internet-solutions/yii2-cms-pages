@@ -1,11 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use kartik\grid\GridView;
 use yii\widgets\Pjax;
-
-use infoweb\pages\AppAsset;
-AppAsset::register($this);
+use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\search\PostSearch */
@@ -17,6 +14,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="page-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    
+    <?php // Flash message ?>
+    <?php if (Yii::$app->getSession()->hasFlash('partial')): ?>
+    <div class="alert alert-success">
+        <p><?= Yii::$app->getSession()->getFlash('partial') ?></p>
+    </div>
+    <?php endif; ?>
 
     <p>
         <?= Html::a(Yii::t('app', 'Create {modelClass}', [
@@ -31,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider'=> $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            'title',
+            'name',
             [
                 'class'=>'kartik\grid\BooleanColumn',
                 'attribute'=>'active',

@@ -1,6 +1,6 @@
 <?php
 
-namespace infoweb\pages\models\search;
+namespace infoweb\pages\models;
 
 use Yii;
 use yii\base\Model;
@@ -20,7 +20,7 @@ class PageSearch extends Page
     {
         return [
             [['id', 'active'], 'integer'],
-            [['title', 'content', 'created_at', 'updated_at'], 'safe'],
+            [['name', 'content', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -60,7 +60,7 @@ class PageSearch extends Page
         ]);
 
         //$query->innerJoin(PageLang::tableName(), 'page_id = id');
-        $query->andFilterWhere(['like', 'title', $this->title]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

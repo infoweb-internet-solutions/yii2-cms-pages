@@ -3,7 +3,6 @@
 namespace infoweb\pages\models;
 
 use Yii;
-use dosamigos\translateable\TranslateableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -16,30 +15,20 @@ use yii\helpers\ArrayHelper;
  * @property integer $active
  * @property string $created_at
  * @property string $time_updated
- *
- * @property PagesLang[] $pagesLangs
  */
-class Page extends \yii\db\ActiveRecord
+class PageTemplate extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'pages';
+        return 'page_templates';
     }
 
     public function behaviors()
     {
         return ArrayHelper::merge(parent::behaviors(), [
-            'trans' => [
-                'class' => TranslateableBehavior::className(),
-                'translationAttributes' => [
-                    'name',
-                    'title',
-                    'content'
-                ]
-            ],
             'timestamp' => [
                 'class' => TimestampBehavior::className(),
                 'attributes' => [
@@ -57,13 +46,10 @@ class Page extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['template_id'], 'required'],
-            [['active', 'template_id', 'created_at', 'updated_at'], 'integer'],
+            [['name', 'file'], 'required'],
+            [['active', 'created_at', 'updated_at'], 'integer'],
             // Types
-            [['type'], 'string'],
-            ['type', 'in', 'range' => ['system', 'user-defined']],
-            // Default type to 'user-defined'
-            ['type', 'default', 'value' => 'user-defined']
+            [['name', 'view'], 'string', 'max' => 255]
         ];
     }
 
@@ -74,17 +60,9 @@ class Page extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'type' => Yii::t('app', 'Type'),
-            'template_id' => Yii::t('app', 'Template'),
+            'name' => Yii::t('app', 'Name'),
+            'view' => Yii::t('app', 'File'),
             'active' => Yii::t('app', 'Active'),
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTranslations()
-    {
-        return $this->hasMany(PageLang::className(), ['page_id' => 'id']);
     }
 }

@@ -5,11 +5,15 @@ namespace infoweb\pages\controllers;
 use Yii;
 use infoweb\pages\models\Page;
 use infoweb\pages\models\PageLang;
-use infoweb\pages\models\search\PageSearch;
+use infoweb\pages\models\PageTemplate;
+use infoweb\pages\models\PageSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\Seo;
+use yii\widgets\ActiveForm;
+use yii\base\Model;
 
 /**
  * PageController implements the CRUD actions for Page model.
@@ -51,7 +55,115 @@ class PageController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Page();
+        $languages = Yii::$app->params['languages'];
+
+        // Load the model with default values
+        $model = new Page([
+            'type' => 'user-defined',
+            'active' => 1
+        ]);
+        
+        // Load all the translations
+        $model->loadTranslations(array_keys($languages));
+        
+        // Get all the templates
+        $templates = PageTemplate::find()->all();
+        
+        if (Yii::$app->request->getIsPost()) {
+            
+            $post = Yii::$app->request->post();
+            
+            // Ajax request, validate the models
+            if (Yii::$app->request->isAjax) {
+                               
+                // Populate the model with the POST data
+                $model->load($post);
+                
+                // Create an array of translation models
+                $translationModels = [];
+                
+                foreach ($languages as $languageId => $languageName) {
+                    $translationModels[$languageId] = new PageLang(['language' => $languageId]);
+                }
+                
+                // Populate the translation models
+                Model::loadMultiple($translationModels, $post);
+
+                // Validate the model and translation models
+                $response = array_merge(ActiveForm::validate($model), ActiveForm::validateMultiple($translationModels));
+                
+                // Return validation in JSON format
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return $response;
+            
+            // Normal request, save models
+            } else {
+                // Wrap the everything in a database transaction
+                $transaction = Yii::$app->db->beginTransaction();                
+                
+                // Save the main model
+                if (!$model->load($post) || !$model->save()) {
+                    return $this->render('create', [
+                        'model' => $model,
+                        'templates' => $templates
+                    ]);
+                } 
+                
+                // Save the translations
+                foreach ($languages as $languageId => $languageName) {
+                    
+                    $data = $post['PageLang'][$languageId];
+                    
+                    // Set the translation language and attributes                    
+                    $model->language    = $languageId;
+                    $model->name        = $data['name'];
+                    $model->title       = $data['title'];
+                    $model->content     = $data['content'];
+                    
+                    if (!$model->saveTranslation()) {
+                        return $this->render('create', [
+                            'model' => $model,
+                            'templates' => $templates
+                        ]);    
+                    }                      
+                }
+                
+                $transaction->commit();
+                
+                // Switch back to the main language
+                $model->language = Yii::$app->language;
+                
+                // Set flash message
+                Yii::$app->getSession()->setFlash('page', Yii::t('app', '{item} has been created', ['item' => $model->name]));
+                
+                // Take appropriate action based on the pushed button
+                if (isset($post['close'])) {
+                    return $this->redirect(['index']);
+                } elseif (isset($post['new'])) {
+                    return $this->redirect(['create']);
+                } else {
+                    return $this->redirect(['update', 'id' => $model->id]);
+                }   
+            }    
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+            'templates' => $templates
+        ]);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        /*$model = new Page();
         // Load database default values
         $model->loadDefaultValues();
 
@@ -133,7 +245,7 @@ class PageController extends Controller
                 'model' => $model,
                 'templates' => [1 => 'Home', 2 => 'Pagina', 3 => 'Nieuws', 4 => 'Contact'],
             ]);
-        }
+        }*/
     }
 
     /**
@@ -144,77 +256,89 @@ class PageController extends Controller
      */
     public function actionUpdate($id)
     {
+        $languages = Yii::$app->params['languages'];
         $model = $this->findModel($id);
-
+        
+        // Load all the translations
+        $model->loadTranslations(array_keys($languages));
+        
+        // Get all the templates
+        $templates = PageTemplate::find()->all();
+        
         if (Yii::$app->request->getIsPost()) {
             
             $post = Yii::$app->request->post();
-                    
-            if (!$model->load($post)) {
-                echo 'Model not loaded';
-                exit();
-            }
-
-            if (!$model->save()) {
-                echo 'Model not saved';
-                exit();
-            }
-
-            // Update seo
-            $seo = Seo::findOne(['entity' => 'page', 'entity_id' => $model->id]);
-
-            if (!$seo)
-            {
-                $seo = new Seo;
-                $seo->entity = 'page';
-                $seo->entity_id = $model->id;
-            }
-
-            if (!$seo->save()) {
-                echo 'Seo not saved';
-                exit();
-            }
-
-            foreach (Yii::$app->params['languages'] as $k => $v) {
-                $modelLang = $model->getTranslation($k);
-                $modelLang->page_id = $model->id;
-                $modelLang->load($post[$k]);
-                // @todo Remove this
-                $modelLang->content = $post[$k]['PageLang']['content'];
-
-                if (!$modelLang->save()) {
-                    echo 'Model lang not saved';
-                    exit();
+            
+            // Ajax request, validate the models
+            if (Yii::$app->request->isAjax) {
+                               
+                // Populate the model with the POST data
+                $model->load($post);
+                
+                // Create an array of translation models
+                $translationModels = [];
+                
+                foreach ($languages as $languageId => $languageName) {
+                    $translationModels[$languageId] = $model->getTranslation($languageId);
                 }
+                
+                // Populate the translation models
+                Model::loadMultiple($translationModels, $post);
 
-                // Seo
-                $seoLang = $seo->getTranslation($k);
-                $seoLang->seo_id = $seo->id;
-                $seoLang->language = $k;
-                //$seoLang->load($post[$k]);
-                $seoLang->title = $post[$k]['SeoLang']['title'];
-                $seoLang->description = $post[$k]['SeoLang']['description'];
-
-                if (!$seoLang->save()) {
-                    echo 'Seo lang not saved';
-                    exit();
-                }
-            }
-
-            if (isset($post['close'])) {
-                return $this->redirect(['index']);
-            } elseif (isset($post['new'])) {
-                return $this->redirect(['create']);
+                // Validate the model and translation models
+                $response = array_merge(ActiveForm::validate($model), ActiveForm::validateMultiple($translationModels));
+                
+                // Return validation in JSON format
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return $response;
+            
+            // Normal request, save models
             } else {
-                return $this->redirect(['update', 'id' => $model->id]);
-            }
-
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                'templates' => [1 => 'Home', 2 => 'Pagina', 3 => 'Nieuws', 4 => 'Contact'],
-            ]);
+                // Wrap the everything in a database transaction
+                $transaction = Yii::$app->db->beginTransaction();                
+                
+                // Save the main model
+                if (!$model->load($post) || !$model->save()) {
+                    return $this->render('update', [
+                        'model' => $model,
+                        'templates' => $templates
+                    ]);
+                } 
+                
+                // Save the translation models
+                foreach ($languages as $languageId => $languageName) {
+                    
+                    $data = $post['PageLang'][$languageId];
+                    
+                    $model->language    = $languageId;
+                    $model->name        = $data['name'];
+                    $model->title       = $data['title'];
+                    $model->content     = $data['content'];
+                    
+                    if (!$model->saveTranslation()) {
+                        return $this->render('update', [
+                            'model' => $model,
+                            'templates' => $templates
+                        ]);    
+                    }                      
+                }
+                
+                $transaction->commit();
+                
+                // Switch back to the main language
+                $model->language = Yii::$app->language;
+                
+                // Set flash message
+                Yii::$app->getSession()->setFlash('partial', Yii::t('app', '{item} has been updated', ['item' => $model->name]));
+              
+                return $this->redirect(['index']);    
+            }    
         }
+
+        return $this->render('update', [
+            'model' => $model,
+            'templates' => $templates
+        ]);
     }
 
     /**

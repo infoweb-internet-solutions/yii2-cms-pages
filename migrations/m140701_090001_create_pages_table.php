@@ -14,26 +14,28 @@ class m140701_090001_create_pages_table extends \yii\db\Migration
 
         // Create 'pages' table
         $this->createTable('{{%pages}}', [
-            'id' => 'INT(10) UNSIGNED NOT NULL AUTO_INCREMENT',
-            'template' => 'INT(10) UNSIGNED NOT NULL',
-            'active' => 'TINYINT(3) UNSIGNED NOT NULL DEFAULT \'1\'',
-            'created_at' => 'INT(10) UNSIGNED NOT NULL',
-            'updated_at' => 'INT(10) UNSIGNED NOT NULL',
-            0 => 'PRIMARY KEY (`id`)'
+            'id'            => Schema::TYPE_PK,
+            'type'          => "ENUM('system','user-defined') NOT NULL DEFAULT 'user-defined'",
+            'template_id'   => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL',
+            'active'        => 'TINYINT(3) UNSIGNED NOT NULL DEFAULT \'1\'',
+            'created_at'    => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL',
+            'updated_at'    => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL',
         ], $tableOptions);
         
         // Create 'pages_lang' table
         $this->createTable('{{%pages_lang}}', [
-            'page_id' => 'INT(10) UNSIGNED NOT NULL',
-            'language' => 'VARCHAR(2) NOT NULL',
-            'slug' => 'VARCHAR(255) NOT NULL',
-            'title' => 'VARCHAR(255) NOT NULL',
-            'content' => 'TEXT NOT NULL',
-            'created_at' => 'INT(10) UNSIGNED NOT NULL',
-            'updated_at' => 'INT(10) UNSIGNED NOT NULL',
-            0 => 'PRIMARY KEY (`page_id`)',
-            0 => 'PRIMARY KEY (`language`)'
+            'page_id'       => Schema::TYPE_INTEGER . ' NOT NULL',
+            'language'      => Schema::TYPE_STRING . '(2) NOT NULL',
+            'slug'          => Schema::TYPE_STRING . '(255) NOT NULL',
+            'name'          => Schema::TYPE_STRING . '(255) NOT NULL',
+            'title'         => Schema::TYPE_STRING . '(255) NOT NULL',
+            'content'       => Schema::TYPE_TEXT . ' NOT NULL',
+            'created_at'    => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL',
+            'updated_at'    => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL',
         ], $tableOptions);
+        
+        $this->addPrimaryKey('page_id_language', '{{%pages_lang}}', ['page_id', 'language']);
+        $this->createIndex('language', '{{%pages_lang}}', 'language');
         $this->addForeignKey('FK_PAGES_LANG_PAGE_ID', '{{%pages_lang}}', 'page_id', '{{%pages}}', 'id', 'CASCADE', 'RESTRICT');
         
     }
