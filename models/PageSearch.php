@@ -20,7 +20,7 @@ class PageSearch extends Page
     {
         return [
             [['id', 'active'], 'integer'],
-            [['name', 'content', 'created_at', 'updated_at'], 'safe'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -41,12 +41,23 @@ class PageSearch extends Page
     {
         $query = Page::find();
         
+        $query->andFilterWhere(['language' => Yii::$app->language]);
+        
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
                 'pageSize' => 50,
             ],
         ]);
+        
+        // Join the entity model as a relation
+        $query->joinWith(['translations']);
+        
+        // enable sorting for the related column
+        $dataProvider->sort->attributes['name'] = [
+            'asc' => ['name' => SORT_ASC],
+            'desc' => ['name' => SORT_DESC],
+        ];
 
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
@@ -59,7 +70,6 @@ class PageSearch extends Page
             'updated_at' => $this->updated_at,
         ]);
 
-        //$query->innerJoin(PageLang::tableName(), 'page_id = id');
         $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;

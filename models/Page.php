@@ -3,10 +3,10 @@
 namespace infoweb\pages\models;
 
 use Yii;
-use dosamigos\translateable\TranslateableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
+use dosamigos\translateable\TranslateableBehavior;
 
 /**
  * This is the model class for table "pages".

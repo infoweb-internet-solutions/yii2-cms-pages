@@ -23,7 +23,7 @@
     "minimum-stability": "dev",
     "require": {
         "yiisoft/yii2": "*",
-        "infoweb-internet-solutions/yii2-cms": "*"
+        "infoweb-internet-solutions/yii2-cms": "*",
         "mihaildev/yii2-ckeditor": "*",
         "kartik-v/yii2-widgets": "*",
         "kartik-v/yii2-grid": "*",
