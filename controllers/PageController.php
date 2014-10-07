@@ -3,17 +3,17 @@
 namespace infoweb\pages\controllers;
 
 use Yii;
-use infoweb\pages\models\Page;
-use infoweb\pages\models\PageLang;
-use infoweb\pages\models\PageTemplate;
-use infoweb\pages\models\PageSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\filters\VerbFilter;
-use app\models\Seo;
 use yii\widgets\ActiveForm;
 use yii\base\Model;
+use infoweb\pages\models\Page;
+use infoweb\pages\models\PageLang;
+use infoweb\pages\models\PageTemplate;
+use infoweb\pages\models\PageSearch;
+use infoweb\seo\models\Seo;
 
 /**
  * PageController implements the CRUD actions for Page model.
@@ -63,9 +63,6 @@ class PageController extends Controller
             'active' => 1
         ]);
         
-        // Load all the translations
-        $model->loadTranslations(array_keys($languages));
-        
         // Get all the templates
         $templates = PageTemplate::find()->all();
         
@@ -107,6 +104,19 @@ class PageController extends Controller
                         'model' => $model,
                         'templates' => $templates
                     ]);
+                }
+                
+                // Create the seo tag
+                $seo = new Seo([
+                    'entity'    => Seo::TYPE_PAGE,
+                    'entity_id' => $model->id
+                ]);
+                
+                if (!$seo->save()) {
+                    return $this->render('create', [
+                        'model' => $model,
+                        'templates' => $templates
+                    ]);    
                 } 
                 
                 // Save the translations
@@ -125,7 +135,23 @@ class PageController extends Controller
                             'model' => $model,
                             'templates' => $templates
                         ]);    
-                    }                      
+                    }
+
+                    // Save the seo tag translations
+                    $data = $post['SeoLang'][$languageId];
+                    
+                    $seo                = $model->seo;
+                    $seo->language      = $languageId;
+                    $seo->title         = $data['title'];
+                    $seo->description   = $data['description'];
+                    $seo->keywords      = $data['keywords'];
+                    
+                    if (!$seo->saveTranslation()) {
+                        return $this->render('update', [
+                            'model' => $model,
+                            'templates' => $templates
+                        ]);    
+                    }                        
                 }
                 
                 $transaction->commit();
@@ -163,9 +189,6 @@ class PageController extends Controller
     {
         $languages = Yii::$app->params['languages'];
         $model = $this->findModel($id);
-        
-        // Load all the translations
-        $model->loadTranslations(array_keys($languages));
         
         // Get all the templates
         $templates = PageTemplate::find()->all();
@@ -210,9 +233,10 @@ class PageController extends Controller
                     ]);
                 } 
                 
-                // Save the translation models
+                // Save the translation models and seo tags
                 foreach ($languages as $languageId => $languageName) {
                     
+                    // Save the translation
                     $data = $post['PageLang'][$languageId];
                     
                     $model->language    = $languageId;
@@ -225,7 +249,23 @@ class PageController extends Controller
                             'model' => $model,
                             'templates' => $templates
                         ]);    
-                    }                      
+                    }
+                    
+                    // Save the seo tag translations
+                    $data = $post['SeoLang'][$languageId];
+                    
+                    $seo                = $model->seo;
+                    $seo->language      = $languageId;
+                    $seo->title         = $data['title'];
+                    $seo->description   = $data['description'];
+                    $seo->keywords      = $data['keywords'];
+                    
+                    if (!$seo->saveTranslation()) {
+                        return $this->render('update', [
+                            'model' => $model,
+                            'templates' => $templates
+                        ]);    
+                    }                     
                 }
                 
                 $transaction->commit();

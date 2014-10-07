@@ -7,6 +7,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use dosamigos\translateable\TranslateableBehavior;
+use infoweb\seo\models\Seo;
 
 /**
  * This is the model class for table "pages".
@@ -86,5 +87,13 @@ class Page extends \yii\db\ActiveRecord
     public function getTranslations()
     {
         return $this->hasMany(PageLang::className(), ['page_id' => 'id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSeo()
+    {
+        return $this->hasOne(Seo::className(), ['entity_id' => 'id'])->where(['entity' => Seo::TYPE_PAGE]);
     }
 }

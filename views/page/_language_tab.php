@@ -2,6 +2,9 @@
 use mihaildev\ckeditor\CKEditor;
 ?>
 <div class="tab-content language-tab">
+    
+    <h3 class="page-header"><?php echo Yii::t('app', 'Page'); ?></h3>
+    
     <?= $form->field($model, "[{$model->language}]name")->textInput([
         'maxlength' => 255,
         'name' => "PageLang[{$model->language}][name]"
@@ -33,17 +36,18 @@ use mihaildev\ckeditor\CKEditor;
         
     ]); ?>
     
-    <?php /*
     <h3 class="page-header">SEO</h3>
 
-    <?= $form->field($seo, 'title')->textInput([
+    <?= $form->field($seo, "[{$seo->language}]title")->textInput([
         'maxlength' => 255,
-        'name' => "{$language}[SeoLang][title]",
+        'name' => "SeoLang[{$seo->language}][title]",
     ]); ?>
     
-    <?= $form->field($seo, 'description')->textArea([
-        'maxlength' => 255,
-        'name' => "{$language}[SeoLang][description]",
+    <?= $form->field($seo, "[{$seo->language}]description")->textArea([
+        'name' => "SeoLang[{$seo->language}][description]",
+    ]); ?>
+    
+    <?= $form->field($seo, "[{$seo->language}]keywords")->textArea([
+        'name' => "SeoLang[{$seo->language}][keywords]",
     ]); ?> 
-    */ ?>
 </div>

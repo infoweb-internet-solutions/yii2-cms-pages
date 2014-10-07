@@ -32,7 +32,11 @@ use yii\bootstrap\Tabs;
     foreach (Yii::$app->params['languages'] as $languageId => $languageName) {
         $tabs[] = [
             'label' => $languageName,
-            'content' => $this->render('_language_tab', ['model' => $model->getTranslation($languageId), 'form' => $form]),
+            'content' => $this->render('_language_tab', [
+                'model' => $model->getTranslation($languageId),
+                'form'  => $form,
+                'seo'   => ($model->isNewRecord) ? (new \infoweb\seo\models\Seo)->getTranslation($languageId) : $model->seo->getTranslation($languageId)
+            ]),
             'active' => ($languageId == Yii::$app->language) ? true : false
         ];
     } 
