@@ -278,7 +278,13 @@ class PageController extends Controller
               
                 // Take appropriate action based on the pushed button
                 if (isset($post['close'])) {
-                    return $this->redirect(['index']);
+                    
+                    // No referrer
+                    if (Yii::$app->request->get('referrer') != 'menu-items')
+                        return $this->redirect(['index']);
+                    else
+                        return $this->redirect(['/menu/menu-item/index']);
+                    
                 } elseif (isset($post['new'])) {
                     return $this->redirect(['create']);
                 } else {
@@ -301,7 +307,11 @@ class PageController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->delete();
+        
+        // Set flash message
+        Yii::$app->getSession()->setFlash('page', Yii::t('app', '{item} has been deleted', ['item' => $model->name]));
 
         return $this->redirect(['index']);
     }

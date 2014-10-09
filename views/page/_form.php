@@ -17,7 +17,7 @@ use yii\bootstrap\Tabs;
         'id'                        => 'page-form',
         'options'                   => ['class' => 'tabbed-form'],
         'enableAjaxValidation'      => true,
-        'enableClientValidation'    => false        
+        'enableClientValidation'    => false,       
     ]);
 
     // Initialize the tabs
@@ -46,10 +46,22 @@ use yii\bootstrap\Tabs;
     ?>
     
     <div class="form-group buttons">
+        
+        <?php // No referrer, default buttons ?>
+        <?php if (Yii::$app->request->get('referrer') != 'menu-items') : ?>
+            
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create & close') : Yii::t('app', 'Update & close'), ['class' => 'btn btn-default', 'name' => 'close']) ?>
         <?= Html::submitButton(Yii::t('app', $model->isNewRecord ? 'Create & new' : 'Update & new'), ['class' => 'btn btn-default', 'name' => 'new']) ?>
         <?= Html::a(Yii::t('app', 'Close'), ['index'], ['class' => 'btn btn-danger']) ?>
+        
+        <?php // Referrer, custom buttons ?>
+        <?php else : ?>
+        
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create & close') : Yii::t('app', 'Update & close'), ['class' => 'btn btn-default', 'name' => 'close']) ?>
+        <?= Html::a(Yii::t('app', 'Close'), ['/menu/menu-item/index'], ['class' => 'btn btn-danger']) ?>
+            
+        <?php endif; ?>     
     </div>
 
     <?php ActiveForm::end(); ?>
