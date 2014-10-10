@@ -46,10 +46,10 @@ class PageTemplate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'file'], 'required'],
+            [['name', 'layout'], 'required'],
             [['active', 'created_at', 'updated_at'], 'integer'],
             // Types
-            [['name', 'view'], 'string', 'max' => 255]
+            [['name', 'layout'], 'string', 'max' => 255]
         ];
     }
 
@@ -61,7 +61,7 @@ class PageTemplate extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
-            'view' => Yii::t('app', 'File'),
+            'layout' => Yii::t('app', 'Layout'),
             'active' => Yii::t('app', 'Active'),
         ];
     }

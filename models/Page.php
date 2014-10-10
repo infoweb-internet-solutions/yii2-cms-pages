@@ -8,6 +8,7 @@ use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use dosamigos\translateable\TranslateableBehavior;
 use infoweb\seo\models\Seo;
+use infoweb\pages\models\PageTemplate;
 
 /**
  * This is the model class for table "pages".
@@ -87,6 +88,14 @@ class Page extends \yii\db\ActiveRecord
     public function getTranslations()
     {
         return $this->hasMany(PageLang::className(), ['page_id' => 'id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTemplate()
+    {
+        return $this->hasOne(PageTemplate::className(), ['id' => 'template_id'])->where(['active' => 1]);
     }
     
     /**
