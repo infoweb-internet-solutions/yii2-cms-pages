@@ -28,7 +28,6 @@ class m140701_090001_create_pages_table extends \yii\db\Migration
         $this->createTable('{{%pages_lang}}', [
             'page_id'       => Schema::TYPE_INTEGER . ' NOT NULL',
             'language'      => Schema::TYPE_STRING . '(2) NOT NULL',
-            'slug'          => Schema::TYPE_STRING . '(255) NOT NULL',
             'name'          => Schema::TYPE_STRING . '(255) NOT NULL',
             'title'         => Schema::TYPE_STRING . '(255) NOT NULL',
             'content'       => Schema::TYPE_TEXT . ' NOT NULL',
