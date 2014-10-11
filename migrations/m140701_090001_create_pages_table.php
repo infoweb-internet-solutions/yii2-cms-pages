@@ -22,6 +22,8 @@ class m140701_090001_create_pages_table extends \yii\db\Migration
             'updated_at'    => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL',
         ], $tableOptions);
         
+        $this->createIndex('template_id', '{{%pages}}', 'template_id');
+        
         // Create 'pages_lang' table
         $this->createTable('{{%pages_lang}}', [
             'page_id'       => Schema::TYPE_INTEGER . ' NOT NULL',
