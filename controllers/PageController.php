@@ -30,6 +30,7 @@ class PageController extends Controller
                 'actions' => [
                     'delete' => ['post'],
                     'active' => ['post'],
+                    'homepage' => ['post'],
                 ],
             ],
         ];
@@ -397,6 +398,19 @@ class PageController extends Controller
     {
         $model = $this->findModel(Yii::$app->request->post('id'));
         $model->active = ($model->active == 1) ? 0 : 1;
+
+        return $model->save();
+    }
+    
+    /**
+     * Set as homepage
+     * @param string $id
+     * @return mixed
+     */
+    public function actionHomepage()
+    {
+        $model = $this->findModel(Yii::$app->request->post('id'));
+        $model->homepage = 1;
 
         return $model->save();
     }

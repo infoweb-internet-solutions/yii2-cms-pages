@@ -47,12 +47,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'enableSorting' => true
             ],
             [
+                'class'=>'kartik\grid\BooleanColumn',
+                'attribute'=>'homepage',
+                'vAlign'=>'middle'
+            ],
+            [
                 'class' => 'kartik\grid\ActionColumn',
-                'template' => '{update} {delete} {active}',
+                'template' => '{update} {delete} {active} {homepage}',
                 'buttons' => [
                     'active' => function ($url, $model) {
-                        if ($model->active == true)
-                        {
+                        if ($model->active == true) {
                             $icon = 'glyphicon-eye-open';
                         } else {
                             $icon = 'glyphicon-eye-close';
@@ -61,15 +65,29 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Html::a('<span class="glyphicon ' . $icon . '"></span>', $url, [
                             'title' => Yii::t('app', 'Toggle active'),
                             'data-pjax' => '0',
-                            'data-toggle-active' => $model->id,
+                            'data-toggleable' => 'true',
+                            'data-toggle-action' => 'active',
+                            'data-toggle-id' => $model->id,
                             'data-toggle' => 'tooltip',
-                            //'data-placement' => 'left',
+                        ]);
+                    },
+                    'homepage' => function ($url, $model) {
+                        if ($model->homepage == true)
+                            return '<span class="glyphicon glyphicon-home icon-disabled"></span>';
+
+                        return Html::a('<span class="glyphicon glyphicon-home"></span>', $url, [
+                            'title' => Yii::t('app', 'Set as homepage'),
+                            'data-pjax' => '0',
+                            'data-toggleable' => 'true',
+                            'data-toggle-action' => 'homepage',
+                            'data-toggle-id' => $model->id,
+                            'data-toggle' => 'tooltip',
                         ]);
                     },
                 ],
                 'updateOptions'=>['title' => 'Update', 'data-toggle' => 'tooltip'],
                 'deleteOptions'=>['title' => 'Delete', 'data-toggle' => 'tooltip'],
-                'width' => '100px',
+                'width' => '140px',
             ],
         ],
         'responsive' => true,
