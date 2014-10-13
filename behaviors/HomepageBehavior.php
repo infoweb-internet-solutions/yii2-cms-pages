@@ -1,0 +1,40 @@
+<?php
+namespace infoweb\pages\behaviors;
+
+use Yii;
+use yii\base\Behavior;
+use yii\base\Event;
+use yii\db\ActiveRecord;
+use yii\behaviors\AttributeBehavior;
+use infoweb\pages\models\Page;
+
+class HomepageBehavior extends AttributeBehavior
+{
+    public function events()
+    {
+        return [
+            ActiveRecord::EVENT_BEFORE_INSERT => 'checkValue',
+            ActiveRecord::EVENT_BEFORE_UPDATE => 'checkValue'
+        ];
+    }
+    
+    public function checkValue($event)
+    {
+        $homepage = $this->owner->homepage;
+        
+        // Not set as homepage
+        if ($homepage == 0) {
+            // If no other pages are set as homepage, the owner is automatically
+            // set as homepage
+            $homepageExists = (boolean) Page::find()->where(['homepage' => 1])->count();
+            
+            if (!$homepageExists)
+                $this->owner->homepage = 1;
+        } else {
+            // The flag for the current homepage has to be unset
+            $currentHomepage = Page::findOne(['homepage' => 1]);
+            $currentHomepage->homepage = 0;
+            $currentHomepage->update(); 
+        }
+    }
+}    

@@ -37,9 +37,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             'name',
             [
-                'class'=>'kartik\grid\BooleanColumn',
-                'attribute'=>'active',
-                'vAlign'=>'middle',
+                'class' => 'kartik\grid\DataColumn',
+                'label' => Yii::t('app', 'Url'),
+                'value' => function($data) {
+                    $url = '/'.Yii::$app->language.'/'.$data->alias->url;
+                    return $url;
+                    //return Html::a($url, $url, ['target' => '_blank']);
+                },
+                'enableSorting' => true
             ],
             [
                 'class' => 'kartik\grid\ActionColumn',

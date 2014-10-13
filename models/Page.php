@@ -8,7 +8,9 @@ use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use dosamigos\translateable\TranslateableBehavior;
 use infoweb\seo\models\Seo;
+use infoweb\alias\models\Alias;
 use infoweb\pages\models\PageTemplate;
+use infoweb\pages\behaviors\HomepageBehavior;
 
 /**
  * This is the model class for table "pages".
@@ -49,6 +51,13 @@ class Page extends \yii\db\ActiveRecord
                     ActiveRecord::EVENT_BEFORE_UPDATE => 'updated_at',
                 ],
                 'value' => function() { return time(); },
+            ],
+            'homepage'  => [
+                'class' => HomepageBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'homepage',
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'homepage',
+                ],
             ]
         ]);
     }
@@ -65,7 +74,8 @@ class Page extends \yii\db\ActiveRecord
             [['type'], 'string'],
             ['type', 'in', 'range' => ['system', 'user-defined']],
             // Default type to 'user-defined'
-            ['type', 'default', 'value' => 'user-defined']
+            ['type', 'default', 'value' => 'user-defined'],
+            ['homepage', 'default', 'value' => 0]
         ];
     }
 
@@ -78,6 +88,7 @@ class Page extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'type' => Yii::t('app', 'Type'),
             'template_id' => Yii::t('app', 'Template'),
+            'homepage' => Yii::t('app', 'Homepage'),
             'active' => Yii::t('app', 'Active'),
         ];
     }
@@ -104,5 +115,13 @@ class Page extends \yii\db\ActiveRecord
     public function getSeo()
     {
         return $this->hasOne(Seo::className(), ['entity_id' => 'id'])->where(['entity' => Seo::TYPE_PAGE]);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAlias()
+    {
+        return $this->hasOne(Alias::className(), ['entity_id' => 'id'])->where(['entity' => Alias::ENTITY_PAGE]);
     }
 }

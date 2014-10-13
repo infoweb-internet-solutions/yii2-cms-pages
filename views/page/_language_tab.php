@@ -7,7 +7,16 @@ use mihaildev\ckeditor\CKEditor;
     
     <?= $form->field($model, "[{$model->language}]name")->textInput([
         'maxlength' => 255,
-        'name' => "PageLang[{$model->language}][name]"
+        'name' => "PageLang[{$model->language}][name]",
+        'data-slugable' => 'true',
+        'data-slug-target' => "#aliaslang-{$model->language}-url"
+    ]); ?>
+    
+    <?= $form->field($alias, "[{$alias->language}]url")->textInput([
+        'maxlength' => 255,
+        'name' => "AliasLang[{$alias->language}][url]",
+        //'placeholder' => '/'.$model->language.'/',
+        'data-slugified' => 'true'
     ]); ?>
     
     <?= $form->field($model, "[{$model->language}]title")->textInput([

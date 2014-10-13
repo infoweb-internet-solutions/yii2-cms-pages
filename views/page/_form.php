@@ -35,7 +35,8 @@ use yii\bootstrap\Tabs;
             'content' => $this->render('_language_tab', [
                 'model' => $model->getTranslation($languageId),
                 'form'  => $form,
-                'seo'   => ($model->isNewRecord) ? (new \infoweb\seo\models\Seo)->getTranslation($languageId) : $model->seo->getTranslation($languageId)
+                'seo'   => ($model->isNewRecord) ? (new \infoweb\seo\models\Seo)->getTranslation($languageId) : $model->seo->getTranslation($languageId),
+                'alias' => ($model->isNewRecord) ? (new \infoweb\alias\models\Alias)->getTranslation($languageId) : $model->alias->getTranslation($languageId)
             ]),
             'active' => ($languageId == Yii::$app->language) ? true : false
         ];
