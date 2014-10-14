@@ -66,7 +66,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             'title' => Yii::t('app', 'Toggle active'),
                             'data-pjax' => '0',
                             'data-toggleable' => 'true',
-                            'data-toggle-action' => 'active',
                             'data-toggle-id' => $model->id,
                             'data-toggle' => 'tooltip',
                         ]);
@@ -79,7 +78,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             'title' => Yii::t('app', 'Set as homepage'),
                             'data-pjax' => '0',
                             'data-toggleable' => 'true',
-                            'data-toggle-action' => 'homepage',
                             'data-toggle-id' => $model->id,
                             'data-toggle' => 'tooltip',
                         ]);
