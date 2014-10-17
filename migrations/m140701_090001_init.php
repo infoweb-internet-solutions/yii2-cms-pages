@@ -44,7 +44,7 @@ class m140701_090001_init extends \yii\db\Migration
         $this->createTable('{{%page_templates}}', [
             'id'                    => Schema::TYPE_PK,
             'name'                  => Schema::TYPE_STRING . "(255) NOT NULL",
-            'layout'                => Schema::TYPE_STRING . "(255) NOT NULL",
+            'layout_model'          => Schema::TYPE_STRING . "(255) NOT NULL",
             'active'                => 'TINYINT(3) UNSIGNED NOT NULL DEFAULT \'1\'',
             'created_at'            => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL',
             'updated_at'            => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL',
@@ -53,7 +53,7 @@ class m140701_090001_init extends \yii\db\Migration
         // Insert the default template
         $this->insert('{{%page_templates}}', [
             'name'          => 'Default',
-            'layout'        => 'main',
+            'layout_model'  => 'Main',
             'created_at'    => time(),
             'updated_at'    => time()
         ]);
