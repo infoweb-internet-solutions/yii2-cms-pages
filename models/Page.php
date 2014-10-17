@@ -124,4 +124,40 @@ class Page extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Alias::className(), ['entity_id' => 'id'])->where(['entity' => Alias::ENTITY_PAGE]);
     }
+
+    /**
+     * Deletes the attached entities
+     * 
+     * @throws  \yii\base\Exception
+     * @return  boolean
+     */
+    public function deleteAttachedEntities()
+    {
+        // Try to load and delete the attached 'Alias' entity
+        if (!$this->alias->delete())
+            throw new \yii\base\Exception(Yii::t('app', 'Error while deleting the attached alias'));
+        
+        // Try to load and delete the attached 'Seo' entity
+        if (!$this->seo->delete())
+            throw new \yii\base\Exception(Yii::t('app', 'Error while deleting the attached seo tag'));        
+        
+        return true;
+    }
+    
+    /**
+     * Checks if a page is used in a menu
+     * 
+     * @return  boolean
+     */
+    public function isUsedInMenu()
+    {
+        return (new \yii\db\Query)
+                    ->select('id')
+                    ->from(\infoweb\menu\models\MenuItem::tableName())
+                    ->where([
+                        'entity'    => \infoweb\menu\models\MenuItem::ENTITY_PAGE,
+                        'entity_id' => $this->id
+                    ])
+                    ->exists();    
+    }
 }

@@ -381,7 +381,17 @@ class PageController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $model->delete();
+        
+        try {
+            $transaction = Yii::$app->db->beginTransaction();
+            $model->delete();
+            $transaction->commit();    
+        } catch (\yii\base\Exception $e) {
+            // Set flash message
+            Yii::$app->getSession()->setFlash('page-error', $e->getMessage());
+    
+            return $this->redirect(['index']);        
+        }        
         
         // Set flash message
         Yii::$app->getSession()->setFlash('page', Yii::t('app', '{item} has been deleted', ['item' => $model->name]));

@@ -15,10 +15,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     
-    <?php // Flash message ?>
-    <?php if (Yii::$app->getSession()->hasFlash('partial')): ?>
+    <?php // Flash messages ?>
+    <?php if (Yii::$app->getSession()->hasFlash('page')): ?>
     <div class="alert alert-success">
-        <p><?= Yii::$app->getSession()->getFlash('partial') ?></p>
+        <p><?= Yii::$app->getSession()->getFlash('page') ?></p>
+    </div>
+    <?php endif; ?>
+    
+    <?php if (Yii::$app->getSession()->hasFlash('page-error')): ?>
+    <div class="alert alert-danger">
+        <p><?= Yii::$app->getSession()->getFlash('page-error') ?></p>
     </div>
     <?php endif; ?>
 
