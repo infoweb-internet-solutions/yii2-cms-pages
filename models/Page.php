@@ -88,7 +88,7 @@ class Page extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'type' => Yii::t('app', 'Type'),
             'template_id' => Yii::t('app', 'Template'),
-            'homepage' => Yii::t('app', 'Homepage'),
+            'homepage' => Yii::t('infoweb/pages', 'Homepage'),
             'active' => Yii::t('app', 'Active'),
         ];
     }
@@ -135,11 +135,11 @@ class Page extends \yii\db\ActiveRecord
     {
         // Try to load and delete the attached 'Alias' entity
         if (!$this->alias->delete())
-            throw new \yii\base\Exception(Yii::t('app', 'Error while deleting the attached alias'));
+            throw new \yii\base\Exception(Yii::t('infoweb/pages', 'Error while deleting the attached alias'));
         
         // Try to load and delete the attached 'Seo' entity
         if (!$this->seo->delete())
-            throw new \yii\base\Exception(Yii::t('app', 'Error while deleting the attached seo tag'));        
+            throw new \yii\base\Exception(Yii::t('infoweb/pages', 'Error while deleting the attached seo tag'));        
         
         return true;
     }

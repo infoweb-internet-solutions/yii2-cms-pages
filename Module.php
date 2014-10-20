@@ -25,15 +25,15 @@ class Module extends \yii\base\Module
             
             // Check if the page is the homepage
             if ($event->sender->homepage == 1)
-                throw new \yii\base\Exception(Yii::t('app', 'The page can not be deleted because it is the homepage'));
+                throw new \yii\base\Exception(Yii::t('infoweb/pages', 'The page can not be deleted because it is the homepage'));
             
             // Check if the page is not used in a menu
             if ($event->sender->isUsedInMenu())
-                throw new \yii\base\Exception(Yii::t('app', 'The page can not be deleted because it is used in a menu'));
+                throw new \yii\base\Exception(Yii::t('infoweb/pages', 'The page can not be deleted because it is used in a menu'));
             
             // Delete the attached entities
             if (!$event->sender->deleteAttachedEntities())
-                throw new \yii\base\Exception(Yii::t('app', 'Error while deleting the page'));
+                throw new \yii\base\Exception(Yii::t('infoweb/pages', 'Error while deleting the page'));
         });    
     }
 }

@@ -61,7 +61,7 @@ class PageTemplate extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
-            'layout_model' => Yii::t('app', 'Layout'),
+            'layout_model' => Yii::t('infoweb/pages', 'Layout'),
             'active' => Yii::t('app', 'Active'),
         ];
     }

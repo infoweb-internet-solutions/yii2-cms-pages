@@ -74,7 +74,7 @@ class PageLang extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'page_id' => Yii::t('app', 'Page ID'),
+            'page_id' => Yii::t('infoweb/pages', 'Page ID'),
             'language' => Yii::t('app', 'Language'),
             'name' => Yii::t('app', 'Name'),
             'title' => Yii::t('app', 'Title'),

@@ -8,7 +8,7 @@ use kartik\grid\GridView;
 /* @var $searchModel app\models\search\PostSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Pages');
+$this->title = Yii::t('infoweb/pages', 'Pages');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="page-index">
@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a(Yii::t('app', 'Create {modelClass}', [
-            'modelClass' => 'Page',
+            'modelClass' => Yii::t('infoweb/pages', 'Page'),
         ]), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             return '<span class="glyphicon glyphicon-home icon-disabled"></span>';
 
                         return Html::a('<span class="glyphicon glyphicon-home"></span>', $url, [
-                            'title' => Yii::t('app', 'Set as homepage'),
+                            'title' => Yii::t('infoweb/pages', 'Set as homepage'),
                             'data-pjax' => '0',
                             'data-toggleable' => 'true',
                             'data-toggle-id' => $model->id,

@@ -6,9 +6,9 @@ use yii\helpers\Html;
 /* @var $model infoweb\partials\models\PagePartial */
 
 $this->title = Yii::t('app', 'Create {modelClass}', [
-    'modelClass' => 'Page',
+    'modelClass' => Yii::t('infoweb/pages', 'Page'),
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pages'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('infoweb/pages', 'Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="page-create">

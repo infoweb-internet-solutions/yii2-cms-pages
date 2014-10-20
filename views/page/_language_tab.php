@@ -3,7 +3,7 @@ use mihaildev\ckeditor\CKEditor;
 ?>
 <div class="tab-content language-tab">
     
-    <h3 class="page-header"><?php echo Yii::t('app', 'Page'); ?></h3>
+    <h3 class="page-header"><?php echo Yii::t('infoweb/pages', 'Page'); ?></h3>
     
     <?= $form->field($model, "[{$model->language}]name")->textInput([
         'maxlength' => 255,

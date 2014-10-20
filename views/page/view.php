@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Page */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pages'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('infoweb/pages', 'Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="page-view">
@@ -30,10 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'title',
-            'content:ntext',
-            'active',
-            'time_created',
-            'time_updated',
+            'content:ntext'
         ],
     ]) ?>
 
