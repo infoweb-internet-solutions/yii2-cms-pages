@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => 'kartik\grid\ActionColumn',
-                'template' => '{update} {delete} {active} {homepage}',
+                'template' => '{update} {delete} {active} {homepage} {view}',
                 'buttons' => [
                     'active' => function ($url, $model) {
                         if ($model->active == true) {
@@ -88,10 +88,17 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-toggle' => 'tooltip',
                         ]);
                     },
+                    'view' => function ($url, $model) {
+
+                        return Html::a('<span class="glyphicon glyphicon-globe"></span>', '../../'.$model->alias->url, [
+                            'title' => Yii::t('app', 'View'),
+                            'target' => '_blank'
+                        ]);
+                    },
                 ],
                 'updateOptions'=>['title' => 'Update', 'data-toggle' => 'tooltip'],
                 'deleteOptions'=>['title' => 'Delete', 'data-toggle' => 'tooltip'],
-                'width' => '140px',
+                'width' => '180px',
             ],
         ],
         'responsive' => true,
