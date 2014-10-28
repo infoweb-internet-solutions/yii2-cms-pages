@@ -45,6 +45,7 @@ class PageSearch extends Page
         
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => ['defaultOrder' => ['name' => SORT_ASC]],
             'pagination' => [
                 'pageSize' => 50,
             ],
