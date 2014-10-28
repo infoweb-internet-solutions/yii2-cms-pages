@@ -34,9 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ]), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php Pjax::begin([
-        'id'=>'grid-pjax'
-    ]); ?>
+    <?php Pjax::begin(['id'=>'grid-pjax']); ?>
     <?php echo GridView::widget([
         'dataProvider'=> $dataProvider,
         'filterModel' => $searchModel,

@@ -425,6 +425,7 @@ class PageController extends Controller
     {
         $model = $this->findModel(Yii::$app->request->post('id'));
         $model->homepage = 1;
+        $model->active = 1;
 
         return $model->save();
     }
