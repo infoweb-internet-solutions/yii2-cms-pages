@@ -382,7 +382,11 @@ class PageController extends Controller
     {
         $model = $this->findModel($id);
         
-        try {
+        try {                    
+            // Only Superadmin can delete system pages
+            if ($model->type == Page::TYPE_SYSTEM && !Yii::$app->user->can('Superadmin'))
+                throw new \yii\base\Exception(Yii::t('app', 'You do not have the right permissions to delete this item'));
+        
             $transaction = Yii::$app->db->beginTransaction();
             $model->delete();
             $transaction->commit();    
@@ -421,6 +425,7 @@ class PageController extends Controller
     {
         $model = $this->findModel(Yii::$app->request->post('id'));
         $model->homepage = 1;
+        $model->active = 1;
 
         return $model->save();
     }

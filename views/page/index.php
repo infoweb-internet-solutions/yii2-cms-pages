@@ -34,9 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ]), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php Pjax::begin([
-        'id'=>'grid-pjax'
-    ]); ?>
+    <?php Pjax::begin(['id'=>'grid-pjax']); ?>
     <?php echo GridView::widget([
         'dataProvider'=> $dataProvider,
         'filterModel' => $searchModel,
@@ -78,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'homepage' => function ($url, $model) {
                         if ($model->homepage == true)
-                            return '<span class="glyphicon glyphicon-home icon-disabled"></span>';
+                            return '<span class="glyphicon glyphicon-home icon-active"></span>';
 
                         return Html::a('<span class="glyphicon glyphicon-home"></span>', $url, [
                             'title' => Yii::t('infoweb/pages', 'Set as homepage'),
@@ -92,7 +90,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         return Html::a('<span class="glyphicon glyphicon-globe"></span>', '../../'.$model->alias->url, [
                             'title' => Yii::t('app', 'View'),
-                            'target' => '_blank'
+                            'target' => '_blank',
+                            'data-toggle' => 'tooltip'
                         ]);
                     },
                 ],

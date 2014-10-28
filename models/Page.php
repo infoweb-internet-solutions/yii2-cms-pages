@@ -25,6 +25,9 @@ use infoweb\pages\behaviors\HomepageBehavior;
  */
 class Page extends \yii\db\ActiveRecord
 {
+    const TYPE_SYSTEM = 'system';
+    const TYPE_USER_DEFINED = 'user-defined';
+    
     /**
      * @inheritdoc
      */
