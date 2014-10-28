@@ -42,7 +42,7 @@ use mihaildev\ckeditor\CKEditor;
             'name' => "PageLang[{$model->language}][content]",
             'preset' => 'custom',
         ],
-        
+
     ]); ?>
     
     <h3 class="page-header">SEO</h3>
