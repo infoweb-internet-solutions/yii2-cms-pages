@@ -13,27 +13,21 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="page-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <?php // Title ?>
+    <h1>
+        <?= Html::encode($this->title) ?>
+        <?php // Buttons ?>
+        <div class="pull-right">
+            <?= Html::a(Yii::t('app', 'Create {modelClass}', [
+                'modelClass' => Yii::t('infoweb/pages', 'Page'),
+            ]), ['create'], ['class' => 'btn btn-success']) ?>    
+        </div>
+    </h1>
     
     <?php // Flash messages ?>
-    <?php if (Yii::$app->getSession()->hasFlash('page')): ?>
-    <div class="alert alert-success">
-        <p><?= Yii::$app->getSession()->getFlash('page') ?></p>
-    </div>
-    <?php endif; ?>
-    
-    <?php if (Yii::$app->getSession()->hasFlash('page-error')): ?>
-    <div class="alert alert-danger">
-        <p><?= Yii::$app->getSession()->getFlash('page-error') ?></p>
-    </div>
-    <?php endif; ?>
+    <?php echo $this->render('_flash_messages'); ?>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Create {modelClass}', [
-            'modelClass' => Yii::t('infoweb/pages', 'Page'),
-        ]), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
+    <?php // Gridview ?>
     <?php Pjax::begin(['id'=>'grid-pjax']); ?>
     <?php echo GridView::widget([
         'dataProvider'=> $dataProvider,
