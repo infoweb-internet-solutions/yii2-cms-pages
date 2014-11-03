@@ -47,3 +47,7 @@ return [
 ];
 ```
 
+Import the translations and use category 'infoweb/pages':
+```
+yii i18n/import @infoweb/pages/messages
+```
