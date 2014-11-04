@@ -60,6 +60,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             $icon = 'glyphicon-eye-close';
                         }
 
+                        if ($model->homepage)
+                            return "<span class=\"glyphicon {$icon} icon-disabled\"></span>";
+
                         return Html::a('<span class="glyphicon ' . $icon . '"></span>', $url, [
                             'title' => Yii::t('app', 'Toggle active'),
                             'data-pjax' => '0',
