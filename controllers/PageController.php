@@ -67,7 +67,7 @@ class PageController extends Controller
         ]);
         
         // Get all the templates
-        $templates = PageTemplate::find()->all();
+        $templates = PageTemplate::find()->orderBy(['name' => SORT_ASC])->all();
         
         if (Yii::$app->request->getIsPost()) {
             
@@ -236,7 +236,7 @@ class PageController extends Controller
         $model = $this->findModel($id);
         
         // Get all the templates
-        $templates = PageTemplate::find()->all();
+        $templates = PageTemplate::find()->orderBy(['name' => SORT_ASC])->all();
         
         if (Yii::$app->request->getIsPost()) {
             
