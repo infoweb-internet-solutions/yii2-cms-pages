@@ -1,11 +1,6 @@
 <?php
 use mihaildev\ckeditor\CKEditor;
-
-$bootstrapAssetUrl = Yii::$app->assetManager->getAssetUrl(\yii\bootstrap\BootstrapAsset::register($this), 'css/bootstrap.css');
-echo $bootstrapAssetUrl;
-echo '<br>';
-echo Yii::getAlias('@frontendUrl') . '/css/main.css';
-
+use yii\helpers\ArrayHelper;
 ?>
 <div class="tab-content language-tab">
     
@@ -31,20 +26,8 @@ echo Yii::getAlias('@frontendUrl') . '/css/main.css';
     ]); ?>
     
     <?= $form->field($model, "[{$model->language}]content")->widget(CKEditor::className(), [
-        'editorOptions' => [
-            'height' => 300,
-            'toolbarGroups' => Yii::$app->params['toolbarGroups'],
-            'removeButtons' => Yii::$app->params['removeButtons'],
-            'rows' => 20,
-            'name' => "PageLang[{$model->language}][content]",
-            'preset' => 'custom',
-            'contentsCss' => [$bootstrapAssetUrl, Yii::getAlias('@frontendUrl') . '/css/main.css', Yii::getAlias('@frontendUrl') . '/css/editor.css'],
-            'extraAllowedContent' => 'div(*)',
-            'extraPlugins' => ['ckeditor-gwf-plugin', 'codemirror'],
-            'font_names' => 'GoogleWebFonts',
-            //'stylesSet ' => [],
-        ],
-
+        'name' => "PageLang[{$model->language}][content]",
+        'editorOptions' => ArrayHelper::merge(Yii::$app->getModule('cms')->getCKEditorOptions(), ['height' => 500]),
     ]); ?>
     
     <h3 class="page-header">SEO</h3>
