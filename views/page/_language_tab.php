@@ -3,6 +3,9 @@ use mihaildev\ckeditor\CKEditor;
 
 $bootstrapAssetUrl = Yii::$app->assetManager->getAssetUrl(\yii\bootstrap\BootstrapAsset::register($this), 'css/bootstrap.css');
 echo $bootstrapAssetUrl;
+echo '<br>';
+echo Yii::getAlias('@frontendUrl') . '/css/main.css';
+
 ?>
 <div class="tab-content language-tab">
     
@@ -36,8 +39,10 @@ echo $bootstrapAssetUrl;
             'name' => "PageLang[{$model->language}][content]",
             'preset' => 'custom',
             'contentsCss' => [$bootstrapAssetUrl, Yii::getAlias('@frontendUrl') . '/css/main.css', Yii::getAlias('@frontendUrl') . '/css/editor.css'],
+            'extraAllowedContent' => 'div(*)',
+            'extraPlugins' => ['ckeditor-gwf-plugin', 'codemirror'],
+            'font_names' => 'GoogleWebFonts',
             //'stylesSet ' => [],
-            //'stylesheetParser_skipSelectors' => '/(^body\.|^caption\.|\.high|^\.)/i',
         ],
 
     ]); ?>
