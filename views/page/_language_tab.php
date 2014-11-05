@@ -1,8 +1,6 @@
 <?php
 use mihaildev\ckeditor\CKEditor;
-
-$bootstrapAssetUrl = Yii::$app->assetManager->getAssetUrl(\yii\bootstrap\BootstrapAsset::register($this), 'css/bootstrap.css');
-echo $bootstrapAssetUrl;
+use yii\helpers\ArrayHelper;
 ?>
 <div class="tab-content language-tab">
     
@@ -28,18 +26,8 @@ echo $bootstrapAssetUrl;
     ]); ?>
     
     <?= $form->field($model, "[{$model->language}]content")->widget(CKEditor::className(), [
-        'editorOptions' => [
-            'height' => 300,
-            'toolbarGroups' => Yii::$app->params['toolbarGroups'],
-            'removeButtons' => Yii::$app->params['removeButtons'],
-            'rows' => 20,
-            'name' => "PageLang[{$model->language}][content]",
-            'preset' => 'custom',
-            'contentsCss' => [$bootstrapAssetUrl, Yii::getAlias('@frontendUrl') . '/css/main.css', Yii::getAlias('@frontendUrl') . '/css/editor.css'],
-            //'stylesSet ' => [],
-            //'stylesheetParser_skipSelectors' => '/(^body\.|^caption\.|\.high|^\.)/i',
-        ],
-
+        'name' => "PageLang[{$model->language}][content]",
+        'editorOptions' => ArrayHelper::merge(Yii::$app->getModule('cms')->getCKEditorOptions(), ['height' => 500]),
     ]); ?>
     
     <h3 class="page-header">SEO</h3>
