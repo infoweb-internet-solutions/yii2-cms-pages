@@ -85,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'view' => function ($url, $model) {
 
-                        return Html::a('<span class="glyphicon glyphicon-globe"></span>', Yii::getAlias('@domain') . '/' .$model->alias->url, [
+                        return Html::a('<span class="glyphicon glyphicon-globe"></span>', Yii::getAlias('@baseUrl') . '/' .$model->alias->url, [
                             'title' => Yii::t('app', 'View'),
                             'target' => '_blank',
                             'data-toggle' => 'tooltip'
