@@ -36,15 +36,12 @@ yii migrate/up --migrationPath=@infoweb/pages/migrations
 And modify your backend configuration as follows:
 
 ```php
-return [
+'modules' => [
     ...
-    'modules' => [
-        'pages' => [
-            'class' => 'infoweb\pages\Module',
-        ],
+    'pages' => [
+        'class' => 'infoweb\pages\Module',
     ],
-    ...
-];
+],
 ```
 
 Import the translations and use category 'infoweb/pages':
