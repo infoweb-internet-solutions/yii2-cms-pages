@@ -63,7 +63,8 @@ class PageController extends Controller
         // Load the model with default values
         $model = new Page([
             'type' => 'user-defined',
-            'active' => 1
+            'active' => 1,
+            'homepage' => 0,
         ]);
         
         // Get all the templates
