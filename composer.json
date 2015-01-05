@@ -20,14 +20,13 @@
             "homepage": "http://www.infoweb.be/"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
-        "yiisoft/yii2": "*",
-        "infoweb-internet-solutions/yii2-cms": "*",
-        "mihaildev/yii2-ckeditor": "*",
-        "kartik-v/yii2-widgets": "*",
-        "kartik-v/yii2-grid": "*",
-        "2amigos/yii2-translateable-behavior" : "*"
+        "yiisoft/yii2": "@stable",
+        "infoweb-internet-solutions/yii2-cms": "@stable",
+        "mihaildev/yii2-ckeditor": "@stable",
+        "kartik-v/yii2-widgets": "@stable",
+        "kartik-v/yii2-grid": "@stable",
+        "2amigos/yii2-translateable-behavior" : "@stable"
     },
     "autoload": {
         "psr-4": {
