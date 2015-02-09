@@ -37,8 +37,8 @@ class HomepageBehavior extends AttributeBehavior
             if (in_array('homepage', array_keys($this->owner->getDirtyAttributes()))) {
                 $currentHomepage = Page::findOne(['homepage' => 1]);
                 $currentHomepage->homepage = 0;
-                $currentHomepage->update();
-            } 
+                $currentHomepage->save();
+            }
         }
     }
 }    
