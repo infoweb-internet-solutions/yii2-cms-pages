@@ -19,6 +19,7 @@ class m140701_090001_init extends \yii\db\Migration
             'template_id'   => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL',
             'homepage'      => 'TINYINT(3) UNSIGNED NOT NULL DEFAULT \'0\'',
             'active'        => 'TINYINT(3) UNSIGNED NOT NULL DEFAULT \'1\'',
+            'position'      => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL',
             'created_at'    => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL',
             'updated_at'    => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL',
         ], $tableOptions);
