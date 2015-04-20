@@ -28,8 +28,11 @@ class HomepageBehavior extends AttributeBehavior
             // set as homepage
             $homepageExists = (boolean) Page::find()->where(['homepage' => 1])->count();
             
-            if (!$homepageExists)
+            if (!$homepageExists) {
                 $this->owner->homepage = 1;
+                // The homepage is always a public page
+                $this->owner->public = 1;
+            }
         } else {
             // The flag for the current homepage has to be unset only if the 
             // 'homepage' attribute of the owner changed (meaning that the
@@ -39,6 +42,10 @@ class HomepageBehavior extends AttributeBehavior
                 $currentHomepage->homepage = 0;
                 $currentHomepage->save();
             }
+            
+            // The homepage is always a public page
+            if ($this->owner->public != 1)
+                $this->owner->public = 1;
         }
     }
 }    
