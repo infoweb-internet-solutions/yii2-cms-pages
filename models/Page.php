@@ -127,6 +127,18 @@ class Page extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Alias::className(), ['entity_id' => 'id'])->where(['entity' => Alias::ENTITY_PAGE]);
     }
+    
+    /**
+     * Returns the layout model for the page
+     * 
+     * @return  frontend\models\layout\Layout
+     */
+    public function getLayout()
+    {
+        $layoutName = "frontend\models\layout\\{$this->template->layout_model}Layout";
+        
+        return Yii::createObject(['class' => $layoutName]);
+    }
 
     /**
      * Deletes the attached entities
