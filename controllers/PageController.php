@@ -31,6 +31,7 @@ class PageController extends Controller
                     'delete' => ['post'],
                     'active' => ['post'],
                     'homepage' => ['post'],
+                    'public' => ['post']
                 ],
             ],
         ];
@@ -65,6 +66,7 @@ class PageController extends Controller
             'type' => 'user-defined',
             'active' => 1,
             'homepage' => 0,
+            'public' => 1
         ]);
         
         // Get all the templates
@@ -427,6 +429,19 @@ class PageController extends Controller
         $model = $this->findModel(Yii::$app->request->post('id'));
         $model->homepage = 1;
         $model->active = 1;
+
+        return $model->save();
+    }
+    
+    /**
+     * Set public state
+     * @param string $id
+     * @return mixed
+     */
+    public function actionPublic()
+    {
+        $model = $this->findModel(Yii::$app->request->post('id'));
+        $model->public = ($model->public == 1) ? 0 : 1;
 
         return $model->save();
     }

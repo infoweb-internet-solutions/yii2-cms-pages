@@ -38,4 +38,14 @@ use kartik\widgets\SwitchInput;
             'offText' => Yii::t('app', 'No'),
         ]
     ]); ?>
+    
+    <?php echo $form->field($model, 'public')->widget(SwitchInput::classname(), [
+        'inlineLabel' => false,
+        'pluginOptions' => [
+            'onColor' => 'success',
+            'offColor' => 'danger',
+            'onText' => Yii::t('app', 'Yes'),
+            'offText' => Yii::t('app', 'No'),
+        ]
+    ]); ?>
 </div>

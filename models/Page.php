@@ -72,13 +72,14 @@ class Page extends \yii\db\ActiveRecord
     {
         return [
             [['template_id'], 'required'],
-            [['active', 'template_id', 'created_at', 'updated_at'], 'integer'],
+            [['active', 'public',  'template_id', 'created_at', 'updated_at'], 'integer'],
             // Types
             [['type'], 'string'],
             ['type', 'in', 'range' => ['system', 'user-defined']],
             // Default type to 'user-defined'
             ['type', 'default', 'value' => 'user-defined'],
-            ['homepage', 'default', 'value' => 0]
+            ['homepage', 'default', 'value' => 0],
+            ['public', 'default', 'value' => 1]
         ];
     }
 
@@ -93,6 +94,7 @@ class Page extends \yii\db\ActiveRecord
             'template_id' => Yii::t('app', 'Template'),
             'homepage' => Yii::t('infoweb/pages', 'Homepage'),
             'active' => Yii::t('app', 'Active'),
+            'public' => Yii::t('infoweb/pages', 'Public page'),
         ];
     }
 
