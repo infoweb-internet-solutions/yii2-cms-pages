@@ -54,10 +54,6 @@ class PageLang extends \yii\db\ActiveRecord
             [['page_id'], 'required', 'when' => function($model) {
                 return !$model->isNewRecord;
             }],
-            // Only required for the app language
-            [['content'], 'required', 'when' => function($model) {
-                return $model->language == Yii::$app->language;
-            }],
             // Trim
             [['name', 'title', 'content'], 'trim'],
             // Types
