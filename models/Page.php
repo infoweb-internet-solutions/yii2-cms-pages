@@ -135,9 +135,7 @@ class Page extends \yii\db\ActiveRecord
      */
     public function getLayout()
     {
-        $layoutName = "frontend\models\layout\\{$this->template->layout_model}Layout";
-        
-        return Yii::createObject(['class' => $layoutName]);
+        return Yii::createObject(['class' => "frontend\models\layout\\{$this->template->layout_model}"]);
     }
 
     /**
