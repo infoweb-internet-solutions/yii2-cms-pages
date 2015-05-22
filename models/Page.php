@@ -173,4 +173,25 @@ class Page extends \yii\db\ActiveRecord
                     ])
                     ->exists();    
     }
+    
+    /**
+     * Returns the html anchors that are used in the content of a page
+     * 
+     * @return  array
+     */
+    public function getHtmlAnchors()
+    {
+        // Parse the anchors out of the page content
+        // They should be found in the format '<a id="" name=""></a>'
+        $anchors = [];
+        $content = $this->content;
+        preg_match_all('/<a id="([^\"]+)" name="([^\"]+)">[^<]*<\/a>/', $content, $matches);
+   
+        // The 'id' tag is used as key and the 'name' tag as value of the anchors array 
+        if (isset($matches[1]) && isset($matches[2])) {
+            $anchors = array_combine($matches[1], $matches[2]);
+        }
+        
+        return $anchors;        
+    }
 }
