@@ -32,5 +32,8 @@
         "psr-4": {
             "infoweb\\pages\\": ""
         }
+    },
+    "extra": {
+        "bootstrap": "infoweb\\pages\\Bootstrap"
     }
 }
