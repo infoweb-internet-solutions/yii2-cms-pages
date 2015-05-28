@@ -12,16 +12,17 @@ class Bootstrap implements BootstrapInterface
     /** @inheritdoc */
     public function bootstrap($app)
     {
-        // Set eventhandlers
-        $this->setEventHandlers();
-        
-        // If a page slider is enabled in the module, the sliders module has to
-        // be activated
-        $module = $app->getModule('pages');
-        
-        if ($module->enableSliders && !$app->hasModule('sliders')) {
-            // Disable sliders in the module
-            $module->enableSliders = false;        
+        if ($app->hasModule('pages') && ($module = $app->getModule('pages')) instanceof Module) {
+            
+            // Set eventhandlers
+            $this->setEventHandlers();
+            
+            // If the 'enableSliders' setting is true, the sliders module has to
+            // be activated
+            if ($module->enableSliders && !$app->hasModule('sliders')) {
+                // Disable sliders in the module
+                $module->enableSliders = false;        
+            }
         }
     }
     
