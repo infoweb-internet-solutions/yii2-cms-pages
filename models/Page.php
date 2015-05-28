@@ -72,13 +72,13 @@ class Page extends \yii\db\ActiveRecord
     {
         return [
             [['template_id'], 'required'],
-            [['active', 'template_id', 'created_at', 'updated_at'], 'integer'],
+            [['active', 'template_id', 'created_at', 'updated_at', 'slider_id'], 'integer'],
             // Types
             [['type'], 'string'],
             ['type', 'in', 'range' => ['system', 'user-defined']],
             // Default type to 'user-defined'
             ['type', 'default', 'value' => 'user-defined'],
-            ['homepage', 'default', 'value' => 0]
+            [['homepage', 'slider_id'], 'default', 'value' => 0]
         ];
     }
 
@@ -93,6 +93,7 @@ class Page extends \yii\db\ActiveRecord
             'template_id' => Yii::t('app', 'Template'),
             'homepage' => Yii::t('infoweb/pages', 'Homepage'),
             'active' => Yii::t('app', 'Active'),
+            'slider_id' => Yii::t('infoweb/sliders', 'Slider')
         ];
     }
 
@@ -136,6 +137,18 @@ class Page extends \yii\db\ActiveRecord
     public function getLayout()
     {
         return Yii::createObject(['class' => "frontend\models\layout\\{$this->template->layout_model}"]);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSlider()
+    {
+        if (Yii::$app->getModule('pages')->enableSliders) {
+            return $this->hasOne(infoweb\sliders\models\Slider::className(), ['slider_id' => 'id']);
+        } else {
+            return null;
+        }
     }
 
     /**
