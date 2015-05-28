@@ -7,7 +7,7 @@ use Yii;
 class Module extends \yii\base\Module
 {
     /**
-     * Enable link between a page an a slider
+     * Enable link between a page and a slider from the 'sliders' module
      * @var boolean
      */
     public $enableSliders = false;
