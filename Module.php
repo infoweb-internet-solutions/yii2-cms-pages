@@ -12,6 +12,14 @@ class Module extends \yii\base\Module
      */
     public $enableSliders = false;
     
+    /**
+     * Module specific configuration of the ckEditor
+     * @var array
+     */
+    public $ckEditorOptions = [
+        'height' => 500
+    ];
+    
     public function init()
     {
         parent::init();
