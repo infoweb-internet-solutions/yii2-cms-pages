@@ -145,7 +145,7 @@ class Page extends \yii\db\ActiveRecord
     public function getSlider()
     {
         if (Yii::$app->getModule('pages')->enableSliders) {
-            return $this->hasOne(infoweb\sliders\models\Slider::className(), ['slider_id' => 'id']);
+            return $this->hasOne(\infoweb\sliders\models\Slider::className(), ['slider_id' => 'id']);
         } else {
             return null;
         }
