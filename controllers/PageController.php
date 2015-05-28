@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
 use yii\base\Model;
+use yii\helpers\ArrayHelper;
 use infoweb\pages\models\Page;
 use infoweb\pages\models\PageLang;
 use infoweb\pages\models\PageTemplate;
@@ -69,6 +70,13 @@ class PageController extends Controller
         
         // Get all the templates
         $templates = PageTemplate::find()->orderBy(['name' => SORT_ASC])->all();
+        
+        // Get the sliders
+        if ($this->module->enableSliders) {
+            $sliders = ArrayHelper::map(\infoweb\sliders\models\Slider::find()->select(['id', 'name'])->orderBy('name')->all(), 'id', 'name');
+        } else {
+            $sliders = [];
+        }
         
         if (Yii::$app->request->getIsPost()) {
             
@@ -221,7 +229,8 @@ class PageController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'templates' => $templates
+            'templates' => $templates,
+            'sliders' => $sliders
         ]);
     }
 
@@ -237,7 +246,14 @@ class PageController extends Controller
         $model = $this->findModel($id);
         
         // Get all the templates
-            $templates = PageTemplate::find()->orderBy(['name' => SORT_ASC])->all();
+        $templates = PageTemplate::find()->orderBy(['name' => SORT_ASC])->all();
+        
+        // Get the sliders
+        if ($this->module->enableSliders) {
+            $sliders = ArrayHelper::map(\infoweb\sliders\models\Slider::find()->select(['id', 'name'])->orderBy('name')->all(), 'id', 'name');
+        } else {
+            $sliders = [];
+        }
         
         if (Yii::$app->request->getIsPost()) {
             
@@ -369,7 +385,8 @@ class PageController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'templates' => $templates
+            'templates' => $templates,
+            'sliders' => $sliders
         ]);
     }
 

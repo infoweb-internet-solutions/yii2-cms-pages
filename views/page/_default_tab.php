@@ -1,41 +1,23 @@
 <?php
-use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
-use kartik\widgets\SwitchInput;
+use yii\bootstrap\Tabs;
+
+$tabs = [];
+
+// Add the language tabs
+foreach (Yii::$app->params['languages'] as $languageId => $languageName) {
+    $tabs[] = [
+        'label' => $languageName,
+        'content' => $this->render('_default_language_tab', [
+            'model' => $model->getTranslation($languageId),
+            'form'  => $form,
+            'seo'   => ($model->isNewRecord) ? (new \infoweb\seo\models\Seo)->getTranslation($languageId) : $model->seo->getTranslation($languageId),
+            'alias' => ($model->isNewRecord) ? (new \infoweb\alias\models\Alias)->getTranslation($languageId) : $model->alias->getTranslation($languageId),
+            'page' => $model
+        ]),
+        'active' => ($languageId == Yii::$app->language) ? true : false
+    ];
+}
 ?>
 <div class="tab-content default-tab">
-    <?= $form->field($model, 'type')->dropDownList([
-        'system'        => Yii::t('app', 'System'),
-        'user-defined'  => Yii::t('app', 'User defined')
-    ],[
-        'options' => [
-            'system' => ['disabled' => (Yii::$app->user->can('Superadmin')) ? false : true]
-        ]
-    ]); ?>
-    
-    <?= $form->field($model, 'template_id')->dropDownList(ArrayHelper::map($templates, 'id', 'name'),[
-        'options' => [
-            'system' => ['disabled' => (Yii::$app->user->can('Superadmin')) ? false : true]
-        ]
-    ]); ?>
-    
-    <?php echo $form->field($model, 'homepage')->widget(SwitchInput::classname(), [
-        'inlineLabel' => false,
-        'pluginOptions' => [
-            'onColor' => 'success',
-            'offColor' => 'danger',
-            'onText' => Yii::t('app', 'Yes'),
-            'offText' => Yii::t('app', 'No'),
-        ]
-    ]); ?>
-    
-    <?php echo $form->field($model, 'active')->widget(SwitchInput::classname(), [
-        'inlineLabel' => false,
-        'pluginOptions' => [
-            'onColor' => 'success',
-            'offColor' => 'danger',
-            'onText' => Yii::t('app', 'Yes'),
-            'offText' => Yii::t('app', 'No'),
-        ]
-    ]); ?>
+    <?= Tabs::widget(['items' => $tabs]); ?>
 </div>
