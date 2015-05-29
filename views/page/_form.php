@@ -31,7 +31,7 @@ use yii\bootstrap\Tabs;
             'content'   => $this->render('_data_tab', [
                 'model'         => $model,
                 'form'          => $form,
-                'templates'     => $templates, 
+                'templates'     => $templates,
                 'sliders'       => $sliders
             ]),
         ],
