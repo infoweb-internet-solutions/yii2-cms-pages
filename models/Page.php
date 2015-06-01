@@ -210,6 +210,9 @@ class Page extends \yii\db\ActiveRecord
     
     /**
      * Returns the url of the page
+     * 
+     * @param   string  $includeLanguage
+     * @return  string  $url
      */
     public function getUrl($includeLanguage = true)
     {
