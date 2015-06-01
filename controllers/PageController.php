@@ -285,7 +285,7 @@ class PageController extends Controller
                 $aliasModels = [];
                 
                 foreach ($languages as $languageId => $languageName) {
-                    $aliasModels[$languageId] = new AliasLang(['language' => $languageId]);
+                    $aliasModels[$languageId] = $model->alias->getTranslation($languageId);
                 }
                 
                 // Populate the alias models
