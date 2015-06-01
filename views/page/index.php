@@ -38,10 +38,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => Yii::t('app', 'Url'),
                 'value' => function($data) {
                     $url = $data->getUrl(false);
-                    return Html::a($url, $url, ['target' => '_blank']);
+                    return Html::a($url, $url, ['target' => '_blank', 'data-pjax' => 0]);
                 },
                 'enableSorting' => true,
-                'format' => 'html' 
+                'format' => 'raw' 
             ],
             [
                 'class'=>'kartik\grid\BooleanColumn',
