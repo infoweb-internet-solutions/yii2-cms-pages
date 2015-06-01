@@ -128,7 +128,8 @@ class PageController extends Controller
                 if (!$model->load($post) || !$model->save()) {
                     return $this->render('create', [
                         'model' => $model,
-                        'templates' => $templates
+                        'templates' => $templates,
+                        'sliders' => $sliders,
                     ]);
                 }
                 
@@ -141,7 +142,8 @@ class PageController extends Controller
                 if (!$seo->save()) {
                     return $this->render('create', [
                         'model' => $model,
-                        'templates' => $templates
+                        'templates' => $templates,
+                        'sliders' => $sliders,
                     ]);    
                 }
                 
@@ -155,7 +157,8 @@ class PageController extends Controller
                 if (!$alias->save()) {
                     return $this->render('create', [
                         'model' => $model,
-                        'templates' => $templates
+                        'templates' => $templates,
+                        'sliders' => $sliders,
                     ]);    
                 } 
                 
@@ -173,7 +176,8 @@ class PageController extends Controller
                     if (!$model->saveTranslation()) {
                         return $this->render('create', [
                             'model' => $model,
-                            'templates' => $templates
+                            'templates' => $templates,
+                            'sliders' => $sliders,
                         ]);    
                     }
 
@@ -189,7 +193,8 @@ class PageController extends Controller
                     if (!$seo->saveTranslation()) {
                         return $this->render('update', [
                             'model' => $model,
-                            'templates' => $templates
+                            'templates' => $templates,
+                            'sliders' => $sliders,
                         ]);    
                     }
                     
@@ -203,7 +208,8 @@ class PageController extends Controller
                     if (!$alias->saveTranslation()) {
                         return $this->render('update', [
                             'model' => $model,
-                            'templates' => $templates
+                            'templates' => $templates,
+                            'sliders' => $sliders,
                         ]);    
                     }                        
                 }
@@ -305,7 +311,8 @@ class PageController extends Controller
                 if (!$model->load($post) || !$model->save()) {
                     return $this->render('update', [
                         'model' => $model,
-                        'templates' => $templates
+                        'templates' => $templates,
+                        'sliders' => $sliders,
                     ]);
                 } 
                 
@@ -323,7 +330,8 @@ class PageController extends Controller
                     if (!$model->saveTranslation()) {
                         return $this->render('update', [
                             'model' => $model,
-                            'templates' => $templates
+                            'templates' => $templates,
+                            'sliders' => $sliders,
                         ]);    
                     }
                     
@@ -339,7 +347,8 @@ class PageController extends Controller
                     if (!$seo->saveTranslation()) {
                         return $this->render('update', [
                             'model' => $model,
-                            'templates' => $templates
+                            'templates' => $templates,
+                            'sliders' => $sliders,
                         ]);    
                     }
                     
@@ -353,7 +362,8 @@ class PageController extends Controller
                     if (!$alias->saveTranslation()) {
                         return $this->render('update', [
                             'model' => $model,
-                            'templates' => $templates
+                            'templates' => $templates,
+                            'sliders' => $sliders,
                         ]);    
                     }                     
                 }
