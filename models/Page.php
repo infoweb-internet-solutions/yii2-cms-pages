@@ -207,4 +207,18 @@ class Page extends \yii\db\ActiveRecord
         
         return $anchors;        
     }
+    
+    /**
+     * Returns the url of the page
+     */
+    public function getUrl($includeLanguage = true)
+    {
+        $url = Yii::getAlias('@baseUrl') . '/';
+        if ($includeLanguage)
+            $url .= (($this->language == null) ? Yii::$app->language : $this->language) . '/';
+        
+        $url .= $this->alias->url;
+        
+        return $url;
+    }
 }
