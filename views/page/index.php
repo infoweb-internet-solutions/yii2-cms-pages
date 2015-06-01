@@ -28,7 +28,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php echo $this->render('_flash_messages'); ?>
 
     <?php // Gridview ?>
-    <?php Pjax::begin(['id'=>'grid-pjax']); ?>
     <?php echo GridView::widget([
         'dataProvider'=> $dataProvider,
         'filterModel' => $searchModel,
@@ -38,11 +37,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'kartik\grid\DataColumn',
                 'label' => Yii::t('app', 'Url'),
                 'value' => function($data) {
-                    $url = '/'.Yii::$app->language.'/'.$data->alias->url;
-                    return $url;
-                    //return Html::a($url, $url, ['target' => '_blank']);
+                    $url = $data->getUrl(false);
+                    return Html::a($url, $url, ['target' => '_blank']);
                 },
-                'enableSorting' => true
+                'enableSorting' => true,
+                'format' => 'html' 
             ],
             [
                 'class'=>'kartik\grid\BooleanColumn',
@@ -51,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => 'kartik\grid\ActionColumn',
-                'template' => '{update} {delete} {active} {homepage} {view}',
+                'template' => '{update} {delete} {active} {homepage}',
                 'buttons' => [
                     'active' => function ($url, $model) {
                         if ($model->active == true) {
@@ -83,27 +82,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-toggle' => 'tooltip',
                         ]);
                     },
-                    'view' => function ($url, $model) {
-
-                        return Html::a('<span class="glyphicon glyphicon-globe"></span>', Yii::getAlias('@baseUrl') . '/' .$model->alias->url, [
-                            'title' => Yii::t('app', 'View'),
-                            'target' => '_blank',
-                            'data-toggle' => 'tooltip'
-                        ]);
-                    },
                 ],
                 'updateOptions'=>['title' => Yii::t('app', 'Update'), 'data-toggle' => 'tooltip'],
                 'deleteOptions'=>['title' => Yii::t('app', 'Delete'), 'data-toggle' => 'tooltip'],
                 'width' => '180px',
             ],
-        ],
-        'responsive' => true,
-        'floatHeader' => true,
-        'floatHeaderOptions' => ['scrollingTop' => 88],
-        'hover' => true,
-        'export' => false,
+        ],        
     ]);
     ?>
-    <?php Pjax::end(); ?>
 
 </div>
