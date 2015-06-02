@@ -32,6 +32,7 @@ class PageController extends Controller
                     'delete' => ['post'],
                     'active' => ['post'],
                     'homepage' => ['post'],
+                    'remove-image' => ['post']
                 ],
             ],
         ];
@@ -213,6 +214,10 @@ class PageController extends Controller
                         ]);    
                     }                        
                 }
+
+                // Upload and attach images
+                $model->uploadImageByName('ImageUploadForm[image][small]', false, 'small');
+                $model->uploadImageByName('ImageUploadForm[image][large]', false, 'large');
                 
                 $transaction->commit();
                 
@@ -368,6 +373,10 @@ class PageController extends Controller
                     }                     
                 }
                 
+                // Upload and attach images
+                $model->uploadImageByName('ImageUploadForm[image][small]', false, 'small');
+                $model->uploadImageByName('ImageUploadForm[image][large]', false, 'large');
+                
                 $transaction->commit();
                 
                 // Switch back to the main language
@@ -472,5 +481,35 @@ class PageController extends Controller
         } else {
             throw new NotFoundHttpException(Yii::t('app', 'The requested item does not exist'));
         }
+    }
+    
+    /**
+     * Removes a specific image from the model
+     *
+     * @param   string      $model
+     * @param   string      $identifier
+     * @return  string      JSON response
+     */
+    public function actionRemoveImage()
+    {
+        // Default response
+        $response = [
+            'status'    => 1,
+            'msg'       => ''
+        ];
+       
+        $post = Yii::$app->request->post();
+       
+        if (isset($post['model']) && !empty($post['model'])) {
+            // Load model
+            $model = $this->findModel(Yii::$app->request->post('model'));
+           
+            // Remove the images
+            $model->removeImageByIdentifier(Yii::$app->request->post('identifier'));
+        }
+       
+        // Return validation in JSON format
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return $response;
     }
 }
