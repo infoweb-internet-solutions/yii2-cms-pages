@@ -35,6 +35,10 @@ use yii\bootstrap\Tabs;
                 'sliders'       => $sliders
             ]),
         ],
+        [
+            'label' => 'SEO',
+            'content' => $this->render('_seo_tab', ['model' => $model, 'form' => $form]),
+        ],
     ];
     
     // Display the tabs
