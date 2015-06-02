@@ -44,7 +44,8 @@ class Page extends \yii\db\ActiveRecord
                 'translationAttributes' => [
                     'name',
                     'title',
-                    'content'
+                    'content',
+                    'snippet'
                 ]
             ],
             'timestamp' => [

@@ -29,5 +29,10 @@ use infoweb\pages\models\Page;
     <?= $form->field($model, "[{$model->language}]content")->widget(CKEditor::className(), [
         'name' => "PageLang[{$model->language}][content]",
         'editorOptions' => ArrayHelper::merge(Yii::$app->getModule('cms')->getCKEditorOptions(), Yii::$app->getModule('pages')->ckEditorOptions),
+    ]); ?>
+    
+    <?= $form->field($model, "[{$model->language}]snippet")->widget(CKEditor::className(), [
+        'name' => "PageLang[{$model->language}][snippet]",
+        'editorOptions' => ArrayHelper::merge(Yii::$app->getModule('cms')->getCKEditorOptions(), Yii::$app->getModule('pages')->ckEditorOptions, ['height' => 200]),
     ]); ?> 
 </div>
