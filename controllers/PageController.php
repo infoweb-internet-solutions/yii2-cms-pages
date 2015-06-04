@@ -67,6 +67,7 @@ class PageController extends Controller
             'type' => 'user-defined',
             'active' => 1,
             'homepage' => 0,
+            'template_id' => 1,
         ]);
         
         // Get all the templates
