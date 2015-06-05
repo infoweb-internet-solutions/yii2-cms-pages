@@ -33,6 +33,13 @@ use infoweb\pages\models\Page;
     
     <?= $form->field($model, "[{$model->language}]snippet")->widget(CKEditor::className(), [
         'name' => "PageLang[{$model->language}][snippet]",
-        'editorOptions' => ArrayHelper::merge(Yii::$app->getModule('cms')->getCKEditorOptions(), Yii::$app->getModule('pages')->ckEditorOptions, ['height' => 200]),
+        'editorOptions' => ArrayHelper::merge(
+            Yii::$app->getModule('cms')->getCKEditorOptions(),
+            Yii::$app->getModule('pages')->ckEditorOptions,
+            [
+                'height' => 200,
+                'contentsCss' => [Yii::getAlias('@frontendUrl') . '/css/ckeditor/page-snippet.css'],
+            ]
+        ),
     ]); ?> 
 </div>
