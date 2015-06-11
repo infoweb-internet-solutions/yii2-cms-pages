@@ -79,7 +79,7 @@ class Page extends \yii\db\ActiveRecord
             // Default type to 'user-defined'
             ['type', 'default', 'value' => 'user-defined'],
             ['homepage', 'default', 'value' => 0],
-            ['public', 'default', 'value' => 1]
+            ['public', 'default', 'value' => 1],
             ['slider_id', 'default', 'value' => 0]
         ];
     }
