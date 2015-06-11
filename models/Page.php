@@ -224,4 +224,14 @@ class Page extends \yii\db\ActiveRecord
         
         return $url;
     }
+    
+    /**
+     * Returns an array of the non-empty seo tags that are attached to the page.
+     * 
+     * @return  array
+     */
+    public function getSeoTags()
+    {
+        return array_filter($this->seo->getTranslation((($this->language == null) ? Yii::$app->language : $this->language))->attributes);    
+    }
 }
