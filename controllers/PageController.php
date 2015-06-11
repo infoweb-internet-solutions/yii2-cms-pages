@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
 use yii\base\Model;
+use yii\helpers\ArrayHelper;
 use infoweb\pages\models\Page;
 use infoweb\pages\models\PageLang;
 use infoweb\pages\models\PageTemplate;
@@ -66,11 +67,19 @@ class PageController extends Controller
             'type' => 'user-defined',
             'active' => 1,
             'homepage' => 0,
+            'template_id' => 1,
             'public' => 0
         ]);
         
         // Get all the templates
         $templates = PageTemplate::find()->orderBy(['name' => SORT_ASC])->all();
+        
+        // Get the sliders
+        if ($this->module->enableSliders) {
+            $sliders = ArrayHelper::map(\infoweb\sliders\models\Slider::find()->select(['id', 'name'])->orderBy('name')->all(), 'id', 'name');
+        } else {
+            $sliders = [];
+        }
         
         if (Yii::$app->request->getIsPost()) {
             
@@ -122,7 +131,8 @@ class PageController extends Controller
                 if (!$model->load($post) || !$model->save()) {
                     return $this->render('create', [
                         'model' => $model,
-                        'templates' => $templates
+                        'templates' => $templates,
+                        'sliders' => $sliders,
                     ]);
                 }
                 
@@ -135,7 +145,8 @@ class PageController extends Controller
                 if (!$seo->save()) {
                     return $this->render('create', [
                         'model' => $model,
-                        'templates' => $templates
+                        'templates' => $templates,
+                        'sliders' => $sliders,
                     ]);    
                 }
                 
@@ -149,7 +160,8 @@ class PageController extends Controller
                 if (!$alias->save()) {
                     return $this->render('create', [
                         'model' => $model,
-                        'templates' => $templates
+                        'templates' => $templates,
+                        'sliders' => $sliders,
                     ]);    
                 } 
                 
@@ -167,7 +179,8 @@ class PageController extends Controller
                     if (!$model->saveTranslation()) {
                         return $this->render('create', [
                             'model' => $model,
-                            'templates' => $templates
+                            'templates' => $templates,
+                            'sliders' => $sliders,
                         ]);    
                     }
 
@@ -176,14 +189,15 @@ class PageController extends Controller
                     
                     $seo                = $model->seo;
                     $seo->language      = $languageId;
-                    $seo->title         = $data['title'];
+                    $seo->title         = (!empty($data['title'])) ? $data['title'] : $post['PageLang'][$languageId]['title'];
                     $seo->description   = $data['description'];
                     $seo->keywords      = $data['keywords'];
                     
                     if (!$seo->saveTranslation()) {
                         return $this->render('update', [
                             'model' => $model,
-                            'templates' => $templates
+                            'templates' => $templates,
+                            'sliders' => $sliders,
                         ]);    
                     }
                     
@@ -197,7 +211,8 @@ class PageController extends Controller
                     if (!$alias->saveTranslation()) {
                         return $this->render('update', [
                             'model' => $model,
-                            'templates' => $templates
+                            'templates' => $templates,
+                            'sliders' => $sliders,
                         ]);    
                     }                        
                 }
@@ -223,7 +238,8 @@ class PageController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'templates' => $templates
+            'templates' => $templates,
+            'sliders' => $sliders
         ]);
     }
 
@@ -239,7 +255,14 @@ class PageController extends Controller
         $model = $this->findModel($id);
         
         // Get all the templates
-            $templates = PageTemplate::find()->orderBy(['name' => SORT_ASC])->all();
+        $templates = PageTemplate::find()->orderBy(['name' => SORT_ASC])->all();
+        
+        // Get the sliders
+        if ($this->module->enableSliders) {
+            $sliders = ArrayHelper::map(\infoweb\sliders\models\Slider::find()->select(['id', 'name'])->orderBy('name')->all(), 'id', 'name');
+        } else {
+            $sliders = [];
+        }
         
         if (Yii::$app->request->getIsPost()) {
             
@@ -265,7 +288,7 @@ class PageController extends Controller
                 $aliasModels = [];
                 
                 foreach ($languages as $languageId => $languageName) {
-                    $aliasModels[$languageId] = new AliasLang(['language' => $languageId]);
+                    $aliasModels[$languageId] = $model->alias->getTranslation($languageId);
                 }
                 
                 // Populate the alias models
@@ -291,7 +314,8 @@ class PageController extends Controller
                 if (!$model->load($post) || !$model->save()) {
                     return $this->render('update', [
                         'model' => $model,
-                        'templates' => $templates
+                        'templates' => $templates,
+                        'sliders' => $sliders,
                     ]);
                 } 
                 
@@ -309,7 +333,8 @@ class PageController extends Controller
                     if (!$model->saveTranslation()) {
                         return $this->render('update', [
                             'model' => $model,
-                            'templates' => $templates
+                            'templates' => $templates,
+                            'sliders' => $sliders,
                         ]);    
                     }
                     
@@ -318,14 +343,15 @@ class PageController extends Controller
                     
                     $seo                = $model->seo;
                     $seo->language      = $languageId;
-                    $seo->title         = $data['title'];
+                    $seo->title         = (!empty($data['title'])) ? $data['title'] : $post['PageLang'][$languageId]['title'];
                     $seo->description   = $data['description'];
                     $seo->keywords      = $data['keywords'];
                     
                     if (!$seo->saveTranslation()) {
                         return $this->render('update', [
                             'model' => $model,
-                            'templates' => $templates
+                            'templates' => $templates,
+                            'sliders' => $sliders,
                         ]);    
                     }
                     
@@ -339,7 +365,8 @@ class PageController extends Controller
                     if (!$alias->saveTranslation()) {
                         return $this->render('update', [
                             'model' => $model,
-                            'templates' => $templates
+                            'templates' => $templates,
+                            'sliders' => $sliders,
                         ]);    
                     }                     
                 }
@@ -350,7 +377,7 @@ class PageController extends Controller
                 $model->language = Yii::$app->language;
                 
                 // Set flash message
-                Yii::$app->getSession()->setFlash('partial', Yii::t('app', '"{item}" has been updated', ['item' => $model->name]));
+                Yii::$app->getSession()->setFlash('page', Yii::t('app', '"{item}" has been updated', ['item' => $model->name]));
               
                 // Take appropriate action based on the pushed button
                 if (isset($post['close'])) {
@@ -371,7 +398,8 @@ class PageController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'templates' => $templates
+            'templates' => $templates,
+            'sliders' => $sliders
         ]);
     }
 

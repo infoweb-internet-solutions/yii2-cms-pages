@@ -72,7 +72,7 @@ class Page extends \yii\db\ActiveRecord
     {
         return [
             [['template_id'], 'required'],
-            [['active', 'public',  'template_id', 'created_at', 'updated_at'], 'integer'],
+            [['active', 'public', 'template_id', 'created_at', 'updated_at', 'slider_id'], 'integer'],
             // Types
             [['type'], 'string'],
             ['type', 'in', 'range' => ['system', 'user-defined']],
@@ -80,6 +80,7 @@ class Page extends \yii\db\ActiveRecord
             ['type', 'default', 'value' => 'user-defined'],
             ['homepage', 'default', 'value' => 0],
             ['public', 'default', 'value' => 1]
+            ['slider_id', 'default', 'value' => 0]
         ];
     }
 
@@ -95,6 +96,7 @@ class Page extends \yii\db\ActiveRecord
             'homepage' => Yii::t('infoweb/pages', 'Homepage'),
             'active' => Yii::t('app', 'Active'),
             'public' => Yii::t('infoweb/pages', 'Public page'),
+            'slider_id' => Yii::t('infoweb/sliders', 'Slider')
         ];
     }
 
@@ -139,6 +141,18 @@ class Page extends \yii\db\ActiveRecord
     {
         return Yii::createObject(['class' => "frontend\models\layout\\{$this->template->layout_model}"]);
     }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSlider()
+    {
+        if (Yii::$app->getModule('pages')->enableSliders) {
+            return $this->hasOne(\infoweb\sliders\models\Slider::className(), ['slider_id' => 'id']);
+        } else {
+            return null;
+        }
+    }
 
     /**
      * Deletes the attached entities
@@ -174,5 +188,53 @@ class Page extends \yii\db\ActiveRecord
                         'entity_id' => $this->id
                     ])
                     ->exists();    
+    }
+    
+    /**
+     * Returns the html anchors that are used in the content of a page
+     * 
+     * @return  array
+     */
+    public function getHtmlAnchors()
+    {
+        // Parse the anchors out of the page content
+        // They should be found in the format '<a id="" name=""></a>'
+        $anchors = [];
+        $content = $this->content;
+        preg_match_all('/<a id="([^\"]+)" name="([^\"]+)">[^<]*<\/a>/', $content, $matches);
+   
+        // The 'id' tag is used as key and the 'name' tag as value of the anchors array 
+        if (isset($matches[1]) && isset($matches[2])) {
+            $anchors = array_combine($matches[1], $matches[2]);
+        }
+        
+        return $anchors;        
+    }
+    
+    /**
+     * Returns the url of the page
+     * 
+     * @param   string  $includeLanguage
+     * @return  string  $url
+     */
+    public function getUrl($includeLanguage = true)
+    {
+        $url = Yii::getAlias('@baseUrl') . '/';
+        if ($includeLanguage)
+            $url .= (($this->language == null) ? Yii::$app->language : $this->language) . '/';
+        
+        $url .= $this->alias->url;
+        
+        return $url;
+    }
+    
+    /**
+     * Returns an array of the non-empty seo tags that are attached to the page.
+     * 
+     * @return  array
+     */
+    public function getSeoTags()
+    {
+        return array_filter($this->seo->getTranslation((($this->language == null) ? Yii::$app->language : $this->language))->attributes);    
     }
 }

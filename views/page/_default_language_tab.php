@@ -4,9 +4,7 @@ use yii\helpers\ArrayHelper;
 use infoweb\pages\models\Page;
 ?>
 <div class="tab-content language-tab">
-    
-    <h3 class="page-header"><?php echo Yii::t('infoweb/pages', 'Page'); ?></h3>
-    
+
     <?= $form->field($model, "[{$model->language}]name")->textInput([
         'maxlength' => 255,
         'name' => "PageLang[{$model->language}][name]",
@@ -30,21 +28,6 @@ use infoweb\pages\models\Page;
     
     <?= $form->field($model, "[{$model->language}]content")->widget(CKEditor::className(), [
         'name' => "PageLang[{$model->language}][content]",
-        'editorOptions' => ArrayHelper::merge(Yii::$app->getModule('cms')->getCKEditorOptions(), ['height' => 500]),
-    ]); ?>
-    
-    <h3 class="page-header">SEO</h3>
-
-    <?= $form->field($seo, "[{$seo->language}]title")->textInput([
-        'maxlength' => 255,
-        'name' => "SeoLang[{$seo->language}][title]",
-    ]); ?>
-    
-    <?= $form->field($seo, "[{$seo->language}]description")->textArea([
-        'name' => "SeoLang[{$seo->language}][description]",
-    ]); ?>
-    
-    <?= $form->field($seo, "[{$seo->language}]keywords")->textArea([
-        'name' => "SeoLang[{$seo->language}][keywords]",
+        'editorOptions' => ArrayHelper::merge(Yii::$app->getModule('cms')->getCKEditorOptions(), Yii::$app->getModule('pages')->ckEditorOptions),
     ]); ?> 
 </div>
