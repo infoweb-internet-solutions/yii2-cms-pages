@@ -189,7 +189,7 @@ class PageController extends Controller
                     
                     $seo                = $model->seo;
                     $seo->language      = $languageId;
-                    $seo->title         = $data['title'];
+                    $seo->title         = (!empty($data['title'])) ? $data['title'] : $post['PageLang'][$languageId]['title'];
                     $seo->description   = $data['description'];
                     $seo->keywords      = $data['keywords'];
                     
@@ -348,7 +348,7 @@ class PageController extends Controller
                     
                     $seo                = $model->seo;
                     $seo->language      = $languageId;
-                    $seo->title         = $data['title'];
+                    $seo->title         = (!empty($data['title'])) ? $data['title'] : $post['PageLang'][$languageId]['title'];
                     $seo->description   = $data['description'];
                     $seo->keywords      = $data['keywords'];
                     
