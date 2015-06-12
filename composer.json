@@ -23,6 +23,7 @@
     "require": {
         "yiisoft/yii2": "@stable",
         "infoweb-internet-solutions/yii2-cms": "@stable",
+        "infoweb-internet-solutions/yii2-cms-sliders": "@stable",
         "mihaildev/yii2-ckeditor": "@stable",
         "kartik-v/yii2-widgets": "@stable",
         "kartik-v/yii2-grid": "@stable",

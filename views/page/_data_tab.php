@@ -51,4 +51,18 @@ use kartik\widgets\Select2;
             'offText' => Yii::t('app', 'No'),
         ]
     ]); ?>
+    
+    <?php if (Yii::$app->getModule('pages')->enablePrivatePages) : ?>
+        
+    <?php echo $form->field($model, 'public')->widget(SwitchInput::classname(), [
+        'inlineLabel' => false,
+        'pluginOptions' => [
+            'onColor' => 'success',
+            'offColor' => 'danger',
+            'onText' => Yii::t('app', 'Yes'),
+            'offText' => Yii::t('app', 'No'),
+        ]
+    ]); ?>
+    
+    <?php endif; ?>
 </div>

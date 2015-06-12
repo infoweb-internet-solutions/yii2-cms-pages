@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => 'kartik\grid\ActionColumn',
-                'template' => '{update} {delete} {active} {homepage}',
+                'template' => '{update} {delete} {active} {homepage}' . ((Yii::$app->getModule('pages')->enablePrivatePages) ? ' {public}' : ''),
                 'buttons' => [
                     'active' => function ($url, $model) {
                         if ($model->active == true) {
@@ -76,6 +76,24 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         return Html::a('<span class="glyphicon glyphicon-home"></span>', $url, [
                             'title' => Yii::t('infoweb/pages', 'Set as homepage'),
+                            'data-pjax' => '0',
+                            'data-toggleable' => 'true',
+                            'data-toggle-id' => $model->id,
+                            'data-toggle' => 'tooltip',
+                        ]);
+                    },
+                    'public' => function ($url, $model) {
+                        $icon = 'glyphicon-lock';
+                        
+                        if ($model->public == true || $model->homepage) {
+                            $icon .= ' icon-disabled';
+                        }
+
+                        if ($model->homepage)
+                            return "<span class=\"glyphicon {$icon}\"></span>";
+
+                        return Html::a('<span class="glyphicon ' . $icon . '"></span>', $url, [
+                            'title' => Yii::t('infoweb/pages', 'Toggle public visiblity'),
                             'data-pjax' => '0',
                             'data-toggleable' => 'true',
                             'data-toggle-id' => $model->id,
