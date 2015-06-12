@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => 'kartik\grid\ActionColumn',
-                'template' => '{update} {delete} {active} {homepage} {public}',
+                'template' => '{update} {delete} {active} {homepage}' . ((Yii::$app->getModule('pages')->enablePrivatePages) ? ' {public}' : ''),
                 'buttons' => [
                     'active' => function ($url, $model) {
                         if ($model->active == true) {

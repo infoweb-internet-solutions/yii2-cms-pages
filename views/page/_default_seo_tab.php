@@ -1,6 +1,4 @@
 <div class="tab-content seo-tab">
-
-
     <?= $form->field($seo, "[{$seo->language}]title")->textInput([
         'maxlength' => 255,
         'name' => "SeoLang[{$seo->language}][title]",

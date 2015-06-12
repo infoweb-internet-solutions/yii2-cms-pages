@@ -13,6 +13,18 @@ class Module extends \yii\base\Module
     public $enableSliders = false;
     
     /**
+     * Enable the possibility to toggle the public visibility of pages
+     * @var boolean
+     */
+    public $enablePrivatePages = false;
+    
+    /**
+     * The default value for the public visibility of a page
+     * @var boolean
+     */
+    public $defaultPublicVisibility = true;
+    
+    /**
      * Module specific configuration of the ckEditor
      * @var array
      */

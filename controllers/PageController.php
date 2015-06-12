@@ -68,7 +68,7 @@ class PageController extends Controller
             'active' => 1,
             'homepage' => 0,
             'template_id' => 1,
-            'public' => 0
+            'public' => (int) $this->module->defaultPublicVisibility
         ]);
         
         // Get all the templates

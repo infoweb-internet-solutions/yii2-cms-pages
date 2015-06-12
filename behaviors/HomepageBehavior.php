@@ -36,7 +36,7 @@ class HomepageBehavior extends AttributeBehavior
         } else {
             // The flag for the current homepage has to be unset only if the 
             // 'homepage' attribute of the owner changed (meaning that the
-            // owner was notalready the current homepage)
+            // owner was not already the current homepage)
             if (in_array('homepage', array_keys($this->owner->getDirtyAttributes()))) {
                 $currentHomepage = Page::findOne(['homepage' => 1]);
                 

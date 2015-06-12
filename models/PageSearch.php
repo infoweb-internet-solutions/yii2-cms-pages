@@ -18,8 +18,13 @@ class PageSearch extends Page
      */
     public function rules()
     {
+        $integerFields = ['id', 'active'];
+        
+        if (Yii::$app->getModule('pages')->enablePrivatePages)
+            $integerFields[] = 'public';
+        
         return [
-            [['id', 'active', 'public'], 'integer'],
+            [$integerFields, 'integer'],
             [['name'], 'safe'],
         ];
     }
@@ -67,10 +72,12 @@ class PageSearch extends Page
         $query->andFilterWhere([
             'id' => $this->id,
             'active' => $this->active,
-            'public' => $this->public,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
+        
+        if (Yii::$app->getModule('pages')->enablePrivatePages)
+            $query->andFilterWhere(['public' => $this->public]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);
 

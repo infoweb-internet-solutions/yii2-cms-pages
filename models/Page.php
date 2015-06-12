@@ -79,7 +79,7 @@ class Page extends \yii\db\ActiveRecord
             // Default type to 'user-defined'
             ['type', 'default', 'value' => 'user-defined'],
             ['homepage', 'default', 'value' => 0],
-            ['public', 'default', 'value' => 1],
+            ['public', 'default', 'value' => Yii::$app->getModule('pages')->defaultPublicVisibility],
             ['slider_id', 'default', 'value' => 0]
         ];
     }
@@ -95,7 +95,7 @@ class Page extends \yii\db\ActiveRecord
             'template_id' => Yii::t('app', 'Template'),
             'homepage' => Yii::t('infoweb/pages', 'Homepage'),
             'active' => Yii::t('app', 'Active'),
-            'public' => Yii::t('infoweb/pages', 'Public page'),
+            'public' => Yii::t('infoweb/pages', 'Public'),
             'slider_id' => Yii::t('infoweb/sliders', 'Slider')
         ];
     }
