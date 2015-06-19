@@ -216,6 +216,9 @@ class PageController extends Controller
                         ]);    
                     }                        
                 }
+
+                // Upload and attach images
+                $model->uploadImage();
                 
                 $transaction->commit();
                 
@@ -370,7 +373,10 @@ class PageController extends Controller
                         ]);    
                     }                     
                 }
-                
+
+                // Upload and attach images
+                $model->uploadImage();
+
                 $transaction->commit();
                 
                 // Switch back to the main language

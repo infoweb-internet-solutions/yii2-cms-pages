@@ -39,6 +39,10 @@ use yii\bootstrap\Tabs;
             'label' => 'SEO',
             'content' => $this->render('_seo_tab', ['model' => $model, 'form' => $form]),
         ],
+        [
+            'label' => Yii::t('infoweb/cms', 'Image'),
+            'content' => $this->render('_image_tab', ['model' => $model, 'form' => $form]),
+        ],
     ];
     
     // Display the tabs
