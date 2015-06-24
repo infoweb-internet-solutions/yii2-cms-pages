@@ -9,7 +9,6 @@ use yii\helpers\ArrayHelper;
 use dosamigos\translateable\TranslateableBehavior;
 use infoweb\seo\models\Seo;
 use infoweb\alias\models\Alias;
-use infoweb\pages\models\PageTemplate;
 use infoweb\pages\behaviors\HomepageBehavior;
 
 /**

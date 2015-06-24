@@ -15,7 +15,7 @@ use yii\bootstrap\Tabs;
     // Init the form
     $form = ActiveForm::begin([
         'id'                        => 'page-form',
-        'options'                   => ['class' => 'tabbed-form'],
+        'options'                   => ['class' => 'tabbed-form', 'enctype' => 'multipart/form-data'],
         'enableAjaxValidation'      => true,
         'enableClientValidation'    => false,       
     ]);
