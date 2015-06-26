@@ -11,6 +11,9 @@ use yii\bootstrap\Tabs;
 
 <div class="page-form">
 
+    <?php // Flash messages ?>
+    <?php echo $this->render('_flash_messages'); ?>
+    
     <?php
     // Init the form
     $form = ActiveForm::begin([
