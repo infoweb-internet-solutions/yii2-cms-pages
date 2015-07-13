@@ -2,6 +2,7 @@
 
 namespace infoweb\pages\models;
 
+use infoweb\location\models\Location;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -238,5 +239,15 @@ class Page extends \yii\db\ActiveRecord
     public function getSeoTags()
     {
         return array_filter($this->seo->getTranslation((($this->language == null) ? Yii::$app->language : $this->language))->attributes);    
+    }
+
+    public function getLocations()
+    {
+        return $this->hasMany(Location::className(), ['id' => 'location_id'])
+            ->viaTable('location_page', ['page_id' => 'id']);
+    }
+
+    public static function getBrands() {
+        return ArrayHelper::map(Page::find()->select(['id', 'name'])->joinWith('translations')->where(['id' => Yii::$app->params['brands']])->all(), 'id', 'name');
     }
 }
