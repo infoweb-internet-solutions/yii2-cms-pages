@@ -48,3 +48,17 @@ Import the translations and use category 'infoweb/pages':
 ```
 yii i18n/import @infoweb/pages/messages
 ```
+
+Configuration
+-------------
+All available configuration options are listed below with their default values.
+___
+##### enableSliders (type: `boolean`, default: `false`)
+If this option is set to `true`, it is possible to attach an entity from the `sliders` module to a page. 
+___
+##### enablePrivatePages (type: `boolean`, default: `false`)
+If this option is set to `true`, the `public` attribute of a page can be managed.
+___
+##### defaultPublicVisibility (type: `boolean`, default: `true`)
+This is the value that will be used as the default value of the `public` attribute of a page.
+___
