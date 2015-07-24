@@ -62,3 +62,7 @@ ___
 ##### defaultPublicVisibility (type: `boolean`, default: `true`)
 This is the value that will be used as the default value of the `public` attribute of a page.
 ___
+##### ckEditorOptions (type: `array`, default: `['height' => 500]`)
+These are the custom options for that will be used for each `ckEditor` instance in this module.
+It is also possible to override these settings per instance in its own view.
+___
