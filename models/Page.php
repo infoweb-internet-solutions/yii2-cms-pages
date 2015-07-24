@@ -6,6 +6,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
+use yii\db\Query;
 use dosamigos\translateable\TranslateableBehavior;
 use infoweb\seo\models\Seo;
 use infoweb\alias\models\Alias;
@@ -236,5 +237,27 @@ class Page extends \yii\db\ActiveRecord
     public function getSeoTags()
     {
         return array_filter($this->seo->getTranslation((($this->language == null) ? Yii::$app->language : $this->language))->attributes);    
+    }
+    
+    /**
+     * Returns all items formatted for usage in a Html::dropDownList widget:
+     *      [
+     *          'id' => 'name',
+     *          'id' => 'name,
+     *          ...
+     *      ]
+     * 
+     * @return  array
+     */
+    public function getAllForDropDownList()
+    {
+        $items = (new Query())
+                    ->select('page.id, page_lang.name')
+                    ->from(['page' => 'pages'])
+                    ->innerJoin(['page_lang' => 'pages_lang'], "page.id = page_lang.page_id AND page_lang.language = '".Yii::$app->language."'")
+                    ->orderBy(['page_lang.name' => SORT_ASC])
+                    ->all();
+                    
+        return ArrayHelper::map($items, 'id', 'name');
     }
 }
