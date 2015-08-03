@@ -6,6 +6,7 @@ use infoweb\location\models\Location;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use dosamigos\translateable\TranslateableBehavior;
 use infoweb\seo\models\Seo;
@@ -249,5 +250,27 @@ class Page extends \yii\db\ActiveRecord
 
     public static function getBrands() {
         return ArrayHelper::map(Page::find()->select(['id', 'name'])->joinWith('translations')->where(['id' => Yii::$app->params['brands']])->all(), 'id', 'name');
+    }
+
+    /**
+     * Returns all items formatted for usage in a Html::dropDownList widget:
+     *      [
+     *          'id' => 'name',
+     *          'id' => 'name,
+     *          ...
+     *      ]
+     *
+     * @return  array
+     */
+    public static function getAllForDropDownList()
+    {
+        $items = (new Query())
+            ->select('page.id, page_lang.name')
+            ->from(['page' => 'pages'])
+            ->innerJoin(['page_lang' => 'pages_lang'], "page.id = page_lang.page_id AND page_lang.language = '".Yii::$app->language."'")
+            ->orderBy(['page_lang.name' => SORT_ASC])
+            ->all();
+
+        return ArrayHelper::map($items, 'id', 'name');
     }
 }
