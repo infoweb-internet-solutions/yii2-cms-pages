@@ -249,7 +249,7 @@ class Page extends \yii\db\ActiveRecord
      * 
      * @return  array
      */
-    public function getAllForDropDownList()
+    public static function getAllForDropDownList()
     {
         $items = (new Query())
                     ->select('page.id, page_lang.name')
