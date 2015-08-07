@@ -55,10 +55,10 @@ class PageLang extends \yii\db\ActiveRecord
                 return !$model->isNewRecord;
             }],
             // Trim
-            [['name', 'title', 'content'], 'trim'],
+            [['name', 'title', 'content', 'snippet'], 'trim'],
             // Types
             [['page_id', 'created_at', 'updated_at'], 'integer'],
-            [['content'], 'string'],
+            [['content', 'snippet'], 'string'],
             [['language'], 'string', 'max' => 2],
             [['name', 'title'], 'string', 'max' => 255]
         ];

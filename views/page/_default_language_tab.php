@@ -25,9 +25,23 @@ use infoweb\pages\models\Page;
         'maxlength' => 255,
         'name' => "PageLang[{$model->language}][title]"
     ]); ?>
-    
+
+    <?= $form->field($model, "[{$model->language}]snippet")->widget(CKEditor::className(), [
+        'name' => "PageLang[{$model->language}][snippet]",
+        'editorOptions' => ArrayHelper::merge(
+            Yii::$app->getModule('cms')->getCKEditorOptions(),
+            Yii::$app->getModule('pages')->ckEditorOptions,
+            [
+                'height' => 300,
+                'contentsCss' => [Yii::getAlias('@frontendUrl') . '/css/ckeditor/page-snippet.css'],
+            ]
+        ),
+    ]); ?>
+
     <?= $form->field($model, "[{$model->language}]content")->widget(CKEditor::className(), [
         'name' => "PageLang[{$model->language}][content]",
         'editorOptions' => ArrayHelper::merge(Yii::$app->getModule('cms')->getCKEditorOptions(), Yii::$app->getModule('pages')->ckEditorOptions),
-    ]); ?> 
+    ]); ?>
+
+
 </div>

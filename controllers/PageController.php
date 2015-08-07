@@ -175,6 +175,7 @@ class PageController extends Controller
                     $model->name        = $data['name'];
                     $model->title       = $data['title'];
                     $model->content     = $data['content'];
+                    $model->snippet     = $data['snippet'];
                     
                     if (!$model->saveTranslation()) {
                         return $this->render('create', [
@@ -329,6 +330,7 @@ class PageController extends Controller
                     $model->name        = $data['name'];
                     $model->title       = $data['title'];
                     $model->content     = $data['content'];
+                    $model->snippet     = $data['snippet'];
                     
                     if (!$model->saveTranslation()) {
                         return $this->render('update', [
