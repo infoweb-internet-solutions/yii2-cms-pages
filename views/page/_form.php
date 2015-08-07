@@ -18,7 +18,7 @@ use yii\bootstrap\Tabs;
     // Init the form
     $form = ActiveForm::begin([
         'id'                        => 'page-form',
-        'options'                   => ['class' => 'tabbed-form'],
+        'options'                   => ['class' => 'tabbed-form', 'enctype' => 'multipart/form-data'],
         'enableAjaxValidation'      => true,
         'enableClientValidation'    => false,       
     ]);
@@ -35,8 +35,12 @@ use yii\bootstrap\Tabs;
                 'model'         => $model,
                 'form'          => $form,
                 'templates'     => $templates,
-                'sliders'       => $sliders
+                'sliders'       => $sliders,
             ]),
+        ],
+        [
+            'label' => Yii::t('infoweb/cms', 'Image'),
+            'content' => $this->render('_image_tab', ['model' => $model, 'form' => $form]),
         ],
         [
             'label' => 'SEO',

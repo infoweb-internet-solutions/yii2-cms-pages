@@ -217,6 +217,9 @@ class PageController extends Controller
                         ]);    
                     }                        
                 }
+
+                // Upload and attach images
+                $model->uploadImage();
                 
                 $transaction->commit();
                 
@@ -372,6 +375,9 @@ class PageController extends Controller
                         ]);    
                     }                     
                 }
+
+                // Upload and attach images
+                $model->uploadImage();
                 
                 $transaction->commit();
                 
@@ -490,5 +496,34 @@ class PageController extends Controller
         } else {
             throw new NotFoundHttpException(Yii::t('app', 'The requested item does not exist'));
         }
+    }
+
+    /**
+     * Removes all images that are attached to a model
+     *
+     * @param   string      $model
+     * @return  string      JSON response
+     */
+    public function actionRemoveImages()
+    {
+        // Default response
+        $response = [
+            'status'    => 1,
+            'msg'       => ''
+        ];
+
+        $post = Yii::$app->request->post();
+
+        if (isset($post['model']) && !empty($post['model'])) {
+            // Load model
+            $model = $this->findModel(Yii::$app->request->post('model'));
+
+            // Remove the images
+            $model->removeImages();
+        }
+
+        // Return validation in JSON format
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return $response;
     }
 }

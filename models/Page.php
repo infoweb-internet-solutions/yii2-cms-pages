@@ -63,7 +63,10 @@ class Page extends \yii\db\ActiveRecord
                     ActiveRecord::EVENT_BEFORE_INSERT => 'homepage',
                     ActiveRecord::EVENT_BEFORE_UPDATE => 'homepage',
                 ],
-            ]
+            ],
+            'image' => [
+                'class' => 'infoweb\cms\behaviors\ImageBehave',
+            ],
         ]);
     }
 
