@@ -1,8 +1,6 @@
-Do not use this module! It's far from ready and it\'s not yet usefull
-
-Simple pages extension for Yii 2
+Pages extension for Yii 2
 ================================
-This extension provides pages that can be added to a menu
+With this extension you can manage pages that can be used in a website.
 
 Installation
 ------------
@@ -12,13 +10,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist infoweb-internet-solutions/yii2-pages "*"
+php composer.phar require --prefer-dist infoweb-internet-solutions/yii2-cms-pages "*"
 ```
 
 or add
 
 ```
-"infoweb-internet-solutions/yii2-pages": "*"
+"infoweb-internet-solutions/yii2-cms-pages": "*"
 ```
 
 to the require section of your `composer.json` file.
