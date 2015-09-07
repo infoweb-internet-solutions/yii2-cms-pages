@@ -58,7 +58,7 @@ class Page extends \yii\base\Component
             ]);
 
             if (!$aliasLang) {
-                throw new \yii\web\HttpException(404, Yii::t('app', 'The requested page could not be found.'));
+                return Yii::$app->response->redirect('@web/404');
             }
 
             // Get the alias
@@ -78,7 +78,7 @@ class Page extends \yii\base\Component
 
         // The page must be active
         if ($page->active != 1) {
-            throw new \yii\web\HttpException(404, Yii::t('app', 'The requested page could not be found.'));
+            return Yii::$app->response->redirect('@web/404');
         }
 
         // Set the page language
