@@ -5,14 +5,12 @@ use kartik\widgets\SwitchInput;
 use kartik\widgets\Select2;
 ?>
 <div class="tab-content default-tab">
+    <?php if (Yii::$app->user->can('Superadmin')): ?>
     <?= $form->field($model, 'type')->dropDownList([
         'system'        => Yii::t('app', 'System'),
         'user-defined'  => Yii::t('app', 'User defined')
-    ],[
-        'options' => [
-            'system' => ['disabled' => (Yii::$app->user->can('Superadmin')) ? false : true]
-        ]
     ]); ?>
+    <?php endif; ?>
     
     <?= $form->field($model, 'template_id')->dropDownList(ArrayHelper::map($templates, 'id', 'name'),[
         'options' => [
