@@ -46,7 +46,7 @@ class Page extends \yii\base\Component
         $page = $this->findRequestedPage();
         
         // No page found, redirect to error page
-        if (!$page) {
+        if ($page === false) {
             return Yii::$app->response->redirect($this->errorPageUrl);    
         } else {
             $this->setModel($page);    
@@ -72,7 +72,7 @@ class Page extends \yii\base\Component
             ]);
 
             if (!$aliasLang) {
-                return null;
+                return false;
             }
 
             // Get the alias
@@ -92,7 +92,7 @@ class Page extends \yii\base\Component
 
         // The page must be active
         if ($page->active != 1) {
-            return null;
+            return false;
         }
 
         // Set the page language
