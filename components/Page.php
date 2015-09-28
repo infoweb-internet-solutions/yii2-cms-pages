@@ -29,6 +29,13 @@ class Page extends \yii\base\Component
     public $linkedMenuItemsIds = [];
     
     /**
+     * The url of the error page to wich the component redirects in case of a
+     * request for a non-existing page
+     * @var string
+     */
+    public $errorPageUrl = '@web/404';
+    
+    /**
      * @var array  The entity that is attached to the page
      */ 
     protected $entity = null;
@@ -36,7 +43,14 @@ class Page extends \yii\base\Component
     public function init()
     {
         // Try to load the Page model based on the request
-        $this->setModel($this->findRequestedPage());
+        $page = $this->findRequestedPage();
+        
+        // No page found, redirect to error page
+        if (!$page) {
+            return Yii::$app->response->redirect($this->errorPageUrl);    
+        } else {
+            $this->setModel($page);    
+        }
         
         parent::init();    
     }
@@ -58,7 +72,7 @@ class Page extends \yii\base\Component
             ]);
 
             if (!$aliasLang) {
-                return Yii::$app->response->redirect('@web/404');
+                return null;
             }
 
             // Get the alias
@@ -78,7 +92,7 @@ class Page extends \yii\base\Component
 
         // The page must be active
         if ($page->active != 1) {
-            return Yii::$app->response->redirect('@web/404');
+            return null;
         }
 
         // Set the page language

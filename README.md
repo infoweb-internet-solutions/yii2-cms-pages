@@ -31,7 +31,7 @@ Once the extension is installed run this migration
 yii migrate/up --migrationPath=@infoweb/pages/migrations
 ```
 
-And modify your backend configuration as follows:
+Enable the module in `backend/config/main.php`:
 
 ```php
 'modules' => [
@@ -45,6 +45,15 @@ And modify your backend configuration as follows:
 Import the translations and use category 'infoweb/pages':
 ```
 yii i18n/import @infoweb/pages/messages
+```
+And finally enable the page component in `frontend/config/main.php`:
+```php
+'components' => [
+	...
+    'page' => [
+    	'class' => 'infoweb\pages\components\Page'
+    ]
+]
 ```
 
 Configuration
