@@ -70,7 +70,7 @@ class PageController extends Controller
             'template_id' => 1,
             'public' => (int) $this->module->defaultPublicVisibility
         ]);
-        
+
         // Get all the templates
         $templates = PageTemplate::find()->orderBy(['name' => SORT_ASC])->all();
         
@@ -317,7 +317,19 @@ class PageController extends Controller
                         'templates' => $templates,
                         'sliders' => $sliders,
                     ]);
-                } 
+                }
+
+                // Update alias type
+                $alias              = $model->alias;
+                $alias->type        = $model->type;
+
+                if (!$alias->save()) {
+                    return $this->render('update', [
+                        'model' => $model,
+                        'templates' => $templates,
+                        'sliders' => $sliders,
+                    ]);
+                }
                 
                 // Save the translation models and seo tags
                 foreach ($languages as $languageId => $languageName) {
@@ -346,7 +358,7 @@ class PageController extends Controller
                     $seo->title         = (!empty($data['title'])) ? $data['title'] : $post['PageLang'][$languageId]['title'];
                     $seo->description   = $data['description'];
                     $seo->keywords      = $data['keywords'];
-                    
+
                     if (!$seo->saveTranslation()) {
                         return $this->render('update', [
                             'model' => $model,
@@ -361,7 +373,7 @@ class PageController extends Controller
                     $alias              = $model->alias;
                     $alias->language    = $languageId;
                     $alias->url         = $data['url'];
-                    
+
                     if (!$alias->saveTranslation()) {
                         return $this->render('update', [
                             'model' => $model,
