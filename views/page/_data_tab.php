@@ -11,7 +11,8 @@ use kartik\widgets\Select2;
         'user-defined' => Yii::t('app', 'User defined')
     ], [
         'options' => [
-            'system' => ['disabled' => (Yii::$app->user->can('Superadmin')) ? false : true]
+            'system' => ['disabled' => (Yii::$app->user->can('Superadmin')) ? false : true],
+            'user-defined' => ['disabled' => ($model->type == 'system' && !Yii::$app->user->can('Superadmin')) ? true : false],
         ]
     ]); ?>
     
