@@ -147,9 +147,7 @@ class Page extends \yii\base\Component
             'entity_id' => $this->entity['id'],
             'active'    => 1,
         ]);
-        
-        $this->linkedMenuItems = ArrayHelper::index($menuItems, 'id');
-        
+
         // Add all parents of the directly linked items
         foreach ($menuItems as $menuItem) {
             $this->linkedMenuItems = ArrayHelper::merge(
@@ -157,6 +155,11 @@ class Page extends \yii\base\Component
                 ArrayHelper::index($menuItem->getParents(), 'id')
             );
         }
+
+        $this->linkedMenuItems = ArrayHelper::merge(
+            $this->linkedMenuItems,
+            ArrayHelper::index($menuItems, 'id')
+        );
         
         $this->linkedMenuItemsIds = $this->linkedMenuItemsIds();   
     }
