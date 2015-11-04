@@ -2,6 +2,7 @@
 use mihaildev\ckeditor\CKEditor;
 use yii\helpers\ArrayHelper;
 use infoweb\pages\models\Page;
+use infoweb\cms\helpers\LanguageHelper;
 ?>
 <div class="tab-content language-tab">
 
@@ -31,7 +32,7 @@ use infoweb\pages\models\Page;
 
     <?= $form->field($model, "[{$model->language}]content")->widget(CKEditor::className(), [
         'name' => "PageLang[{$model->language}][content]",
-        'editorOptions' => ArrayHelper::merge(Yii::$app->getModule('cms')->getCKEditorOptions(), Yii::$app->getModule('pages')->ckEditorOptions),
+        'editorOptions' => ArrayHelper::merge(Yii::$app->getModule('cms')->getCKEditorOptions(), Yii::$app->getModule('pages')->ckEditorOptions, (LanguageHelper::isRtl($model->language)) ? ['contentsLangDirection' => 'rtl'] : []),
         'options' => ['data-duplicateable' => Yii::$app->getModule('pages')->allowContentDuplication ? 'true' : 'false']
     ]); ?>
 </div>

@@ -1,12 +1,13 @@
 <?php
 use yii\bootstrap\Tabs;
 use kartik\icons\Icon;
+use infoweb\cms\helpers\LanguageHelper;
 
 $tabs = [];
 
 // Add the language tabs
 foreach (Yii::$app->params['languages'] as $languageId => $languageName) {
-    $tabs[] = [
+    $tabs[$languageId] = [
         'label' => $languageName . ((Yii::$app->getModule('pages')->allowContentDuplication) ? Icon::show('exchange', ['class' => 'duplicateable-all-icon not-converted', 'data-language' => $languageId]) : ''),
         'content' => $this->render('_default_language_tab', [
             'model' => $model->getTranslation($languageId),
@@ -15,7 +16,8 @@ foreach (Yii::$app->params['languages'] as $languageId => $languageName) {
             'alias' => ($model->isNewRecord) ? (new \infoweb\alias\models\Alias)->getTranslation($languageId) : $model->alias->getTranslation($languageId),
             'page' => $model
         ]),
-        'active' => ($languageId == Yii::$app->language) ? true : false
+        'active' => ($languageId == Yii::$app->language) ? true : false,
+        'options' => ['class' => (LanguageHelper::isRtl($languageId)) ? 'rtl' : ''],
     ];
 }
 ?>

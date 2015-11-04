@@ -148,6 +148,12 @@ class Page extends \yii\base\Component
             'active'    => 1,
         ]);
 
+        // Merge directly linked menu items
+        $this->linkedMenuItems = ArrayHelper::merge(
+            $this->linkedMenuItems,
+            ArrayHelper::index($menuItems, 'id')
+        );
+
         // Add all parents of the directly linked items
         foreach ($menuItems as $menuItem) {
             $this->linkedMenuItems = ArrayHelper::merge(
@@ -156,12 +162,10 @@ class Page extends \yii\base\Component
             );
         }
 
-        $this->linkedMenuItems = ArrayHelper::merge(
-            $this->linkedMenuItems,
-            ArrayHelper::index($menuItems, 'id')
-        );
-        
-        $this->linkedMenuItemsIds = $this->linkedMenuItemsIds();   
+        $this->linkedMenuItemsIds = $this->linkedMenuItemsIds();
+
+        // Reverse the sorting order of the menu items
+        $this->linkedMenuItems = array_reverse($this->linkedMenuItems);
     }
     
     protected function linkedMenuItemsIds()
