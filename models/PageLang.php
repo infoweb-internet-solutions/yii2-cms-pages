@@ -59,7 +59,7 @@ class PageLang extends \yii\db\ActiveRecord
             // Types
             [['page_id', 'created_at', 'updated_at'], 'integer'],
             [['content'], 'string'],
-            [['language'], 'string', 'max' => 2],
+            [['language'], 'string', 'max' => 10],
             [['name', 'title'], 'string', 'max' => 255]
         ];
     }
