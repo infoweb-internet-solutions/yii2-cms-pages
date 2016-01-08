@@ -8,56 +8,57 @@ use infoweb\menu\models\MenuItem;
 use infoweb\alias\models\AliasLang;
 
 class Page extends \yii\base\Component
-{    
+{
     /**
      * @var infoweb\pages\models\Page
      */
     public $model = null;
 
     /**
-     * The menu items that are (in)directly linked to the page and have to be 
+     * The menu items that are (in)directly linked to the page and have to be
      * marked as 'active' in the navigatio widget(s).
      * @var infoweb\menu\models\MenuItem[]
      */
     public $linkedMenuItems = [];
-    
+
     /**
-     * The id's of the menu items that are (in)directly linked to the page and have to be 
+     * The id's of the menu items that are (in)directly linked to the page and have to be
      * marked as 'active' in the navigatio widget(s).
      * @var infoweb\menu\models\MenuItem[]
      */
     public $linkedMenuItemsIds = [];
-    
+
     /**
      * The url of the error page to wich the component redirects in case of a
      * request for a non-existing page
      * @var string
      */
     public $errorPageUrl = '@web/404';
-    
+
     /**
      * @var array  The entity that is attached to the page
-     */ 
+     */
     protected $entity = null;
-    
+
     public function init()
     {
         // Try to load the Page model based on the request
         $page = $this->findRequestedPage();
-        
+
         // No page found, redirect to error page
         if ($page === false) {
-            return Yii::$app->response->redirect($this->errorPageUrl);    
+           Yii::$app->response->redirect($this->errorPageUrl)->send();
+           exit;
         } else {
-            $this->setModel($page);    
+            $this->setModel($page);
         }
-        
-        parent::init();    
+
+        parent::init();
     }
-    
+
     /**
      * Returns a page, based on the alias that is provided in the request
-     * 
+     *
      * @return  infoweb\pages\models\Page | null
      */
     public function findRequestedPage()
@@ -85,7 +86,7 @@ class Page extends \yii\base\Component
         } elseif (empty(Yii::$app->request->pathInfo)) {
             // Load the page that is marked as the 'homepage'
             $page = PageModel::findOne(['homepage' => 1]);
-        // A custom page is requested and this has to be set in the controller action    
+        // A custom page is requested and this has to be set in the controller action
         } else {
             return null;
         }
@@ -97,20 +98,20 @@ class Page extends \yii\base\Component
 
         // Set the page language
         $page->language = Yii::$app->language;
-        
+
         return $page;
     }
 
     /**
      * Sets the page model.
      * If not null, it also loads all the linked menu-items.
-     * 
-     * @param   infoweb\pages\models\Page | null 
+     *
+     * @param   infoweb\pages\models\Page | null
      */
     public function setModel($value = null)
     {
         $this->model = $value;
-        
+
         // Set the entity and (re)load the linked menu items each time the model is set
         if ($this->model !== null) {
             $this->entity = [
@@ -120,17 +121,17 @@ class Page extends \yii\base\Component
             $this->loadLinkedMenuItems();
         }
     }
-    
+
     /**
      * Sets the page entity.
      * If not null, it also loads all the linked menu-items.
-     * 
-     * @param   array | null 
+     *
+     * @param   array | null
      */
     public function setEntity($value = null)
     {
         $this->entity = $value;
-        
+
         // (Re)load the linked menu items each time the entity is set
         if ($this->entity !== null)
             $this->loadLinkedMenuItems();
@@ -167,9 +168,9 @@ class Page extends \yii\base\Component
         // Reverse the sorting order of the menu items
         $this->linkedMenuItems = array_reverse($this->linkedMenuItems);
     }
-    
+
     protected function linkedMenuItemsIds()
     {
         return array_keys($this->linkedMenuItems);
-    }   
+    }
 }
