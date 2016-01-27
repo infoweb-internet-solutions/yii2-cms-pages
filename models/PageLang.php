@@ -58,7 +58,7 @@ class PageLang extends \yii\db\ActiveRecord
             [['name', 'title', 'content'], 'trim'],
             // Types
             [['page_id', 'created_at', 'updated_at'], 'integer'],
-            [['content'], 'string'],
+            [['content', 'snippet'], 'string'],
             [['language'], 'string', 'max' => 10],
             [['name', 'title'], 'string', 'max' => 255]
         ];
@@ -75,6 +75,7 @@ class PageLang extends \yii\db\ActiveRecord
             'name' => Yii::t('app', 'Name'),
             'title' => Yii::t('app', 'Title'),
             'content' => Yii::t('app', 'Content'),
+            'snippet' => Yii::t('infoweb/pages', 'Snippet')
         ];
     }
 

@@ -30,6 +30,18 @@ use infoweb\cms\helpers\LanguageHelper;
         'data-duplicateable' => Yii::$app->getModule('pages')->allowContentDuplication ? 'true' : 'false'
     ]); ?>
 
+    <?= $form->field($model, "[{$model->language}]snippet")->widget(CKEditor::className(), [
+        'name' => "PageLang[{$model->language}][snippet]",
+        'editorOptions' => ArrayHelper::merge(
+            Yii::$app->getModule('cms')->getCKEditorOptions(),
+            Yii::$app->getModule('pages')->ckEditorOptions,
+            [
+                'height' => 200,
+                'contentsCss' => [Yii::getAlias('@frontendUrl') . '/css/ckeditor/page-snippet.css'],
+            ]
+        ),
+    ]); ?>
+
     <?= $form->field($model, "[{$model->language}]content")->widget(CKEditor::className(), [
         'name' => "PageLang[{$model->language}][content]",
         'editorOptions' => ArrayHelper::merge(Yii::$app->getModule('cms')->getCKEditorOptions(), Yii::$app->getModule('pages')->ckEditorOptions, (LanguageHelper::isRtl($model->language)) ? ['contentsLangDirection' => 'rtl'] : []),
