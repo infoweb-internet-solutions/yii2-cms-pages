@@ -40,6 +40,7 @@ use infoweb\cms\helpers\LanguageHelper;
                 'contentsCss' => [Yii::getAlias('@frontendUrl') . '/css/ckeditor/page-snippet.css'],
             ]
         ),
+        'options' => ['data-duplicateable' => Yii::$app->getModule('pages')->allowContentDuplication ? 'true' : 'false']
     ]); ?>
 
     <?= $form->field($model, "[{$model->language}]content")->widget(CKEditor::className(), [
