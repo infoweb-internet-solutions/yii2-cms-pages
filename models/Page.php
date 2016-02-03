@@ -2,6 +2,7 @@
 
 namespace infoweb\pages\models;
 
+use infoweb\seo\behaviors\SeoBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -62,7 +63,11 @@ class Page extends \yii\db\ActiveRecord
                     ActiveRecord::EVENT_BEFORE_INSERT => 'homepage',
                     ActiveRecord::EVENT_BEFORE_UPDATE => 'homepage',
                 ],
-            ]
+            ],
+            'seo' => [
+                'class' => SeoBehavior::className(),
+                'titleAttribute' => 'title',
+            ],
         ]);
     }
 
@@ -106,7 +111,7 @@ class Page extends \yii\db\ActiveRecord
      */
     public function getTranslations()
     {
-        return $this->hasMany(PageLang::className(), ['page_id' => 'id']);
+        return $this->hasMany(Lang::className(), ['page_id' => 'id']);
     }
     
     /**
@@ -116,15 +121,7 @@ class Page extends \yii\db\ActiveRecord
     {
         return $this->hasOne(PageTemplate::className(), ['id' => 'template_id'])->where(['active' => 1]);
     }
-    
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSeo()
-    {
-        return $this->hasOne(Seo::className(), ['entity_id' => 'id'])->where(['entity' => Seo::TYPE_PAGE]);
-    }
-    
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -166,11 +163,7 @@ class Page extends \yii\db\ActiveRecord
         // Try to load and delete the attached 'Alias' entity
         if (!$this->alias->delete())
             throw new \yii\base\Exception(Yii::t('infoweb/pages', 'Error while deleting the attached alias'));
-        
-        // Try to load and delete the attached 'Seo' entity
-        if (!$this->seo->delete())
-            throw new \yii\base\Exception(Yii::t('infoweb/pages', 'Error while deleting the attached seo tag'));        
-        
+
         return true;
     }
     

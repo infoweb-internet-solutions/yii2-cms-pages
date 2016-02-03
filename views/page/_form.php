@@ -35,12 +35,12 @@ use yii\bootstrap\Tabs;
                 'model'         => $model,
                 'form'          => $form,
                 'templates'     => $templates,
-                'sliders'       => $sliders
+                'sliders'       => $sliders,
             ]),
         ],
         [
             'label' => 'SEO',
-            'content' => $this->render('_seo_tab', ['model' => $model, 'form' => $form]),
+            'content' => $this->render('@infoweb/seo/views/behaviors/seo/_seo_tab', ['model' => $model, 'form' => $form]),
         ],
     ];
     

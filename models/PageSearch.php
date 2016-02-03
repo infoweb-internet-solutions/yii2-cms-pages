@@ -5,8 +5,6 @@ namespace infoweb\pages\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use infoweb\pages\models\Page;
-use infoweb\pages\models\PageLang;
 
 /**
  * PageSearch represents the model behind the search form about `app\models\Page`.

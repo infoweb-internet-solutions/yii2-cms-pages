@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
 use infoweb\pages\models\Page;
-use infoweb\pages\models\PageLang;
+use infoweb\pages\models\Lang;
 use infoweb\pages\models\PageTemplate;
 use infoweb\pages\models\PageSearch;
 use infoweb\seo\models\Seo;
@@ -95,7 +95,7 @@ class PageController extends Controller
                 $translationModels = [];
                 
                 foreach ($languages as $languageId => $languageName) {
-                    $translationModels[$languageId] = new PageLang(['language' => $languageId]);
+                    $translationModels[$languageId] = new Lang(['language' => $languageId]);
                 }
                 
                 // Populate the translation models
@@ -135,21 +135,7 @@ class PageController extends Controller
                         'sliders' => $sliders,
                     ]);
                 }
-                
-                // Create the seo tag
-                $seo = new Seo([
-                    'entity'    => Seo::TYPE_PAGE,
-                    'entity_id' => $model->id
-                ]);
-                
-                if (!$seo->save()) {
-                    return $this->render('create', [
-                        'model' => $model,
-                        'templates' => $templates,
-                        'sliders' => $sliders,
-                    ]);    
-                }
-                
+
                 // Create the alias
                 $alias = new Alias([
                     'entity'    => Alias::ENTITY_PAGE,
@@ -168,7 +154,7 @@ class PageController extends Controller
                 // Save the translations
                 foreach ($languages as $languageId => $languageName) {
                     
-                    $data = $post['PageLang'][$languageId];
+                    $data = $post['Lang'][$languageId];
                     
                     // Set the translation language and attributes                    
                     $model->language    = $languageId;
@@ -184,23 +170,6 @@ class PageController extends Controller
                         ]);    
                     }
 
-                    // Save the seo tag translations
-                    $data = $post['SeoLang'][$languageId];
-                    
-                    $seo                = $model->seo;
-                    $seo->language      = $languageId;
-                    $seo->title         = (!empty($data['title'])) ? $data['title'] : $post['PageLang'][$languageId]['title'];
-                    $seo->description   = $data['description'];
-                    $seo->keywords      = $data['keywords'];
-                    
-                    if (!$seo->saveTranslation()) {
-                        return $this->render('update', [
-                            'model' => $model,
-                            'templates' => $templates,
-                            'sliders' => $sliders,
-                        ]);    
-                    }
-                    
                     // Save the alias translations
                     $data = $post['AliasLang'][$languageId];
                     
@@ -335,7 +304,7 @@ class PageController extends Controller
                 foreach ($languages as $languageId => $languageName) {
                     
                     // Save the translation
-                    $data = $post['PageLang'][$languageId];
+                    $data = $post['Lang'][$languageId];
                     
                     $model->language    = $languageId;
                     $model->name        = $data['name'];
@@ -355,7 +324,7 @@ class PageController extends Controller
                     
                     $seo                = $model->seo;
                     $seo->language      = $languageId;
-                    $seo->title         = (!empty($data['title'])) ? $data['title'] : $post['PageLang'][$languageId]['title'];
+                    $seo->title         = (!empty($data['title'])) ? $data['title'] : $post['Lang'][$languageId]['title'];
                     $seo->description   = $data['description'];
                     $seo->keywords      = $data['keywords'];
 

@@ -18,7 +18,7 @@ use yii\helpers\ArrayHelper;
  *
  * @property Pages $page
  */
-class PageLang extends \yii\db\ActiveRecord
+class Lang extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
