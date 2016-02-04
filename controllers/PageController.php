@@ -14,7 +14,6 @@ use infoweb\pages\models\Page;
 use infoweb\pages\models\Lang;
 use infoweb\pages\models\PageTemplate;
 use infoweb\pages\models\PageSearch;
-use infoweb\seo\models\Seo;
 use infoweb\alias\models\Alias;
 use infoweb\alias\models\AliasLang;
 
@@ -136,20 +135,6 @@ class PageController extends Controller
                     ]);
                 }
 
-                // Create the seo tag
-                $seo = new Seo([
-                    'entity'    => Seo::TYPE_PAGE,
-                    'entity_id' => $model->id
-                ]);
-
-                if (!$seo->save()) {
-                    return $this->render('create', [
-                        'model' => $model,
-                        'templates' => $templates,
-                        'sliders' => $sliders,
-                    ]);
-                }
-
                 // Create the alias
                 $alias = new Alias([
                     'entity'    => Alias::ENTITY_PAGE,
@@ -182,23 +167,6 @@ class PageController extends Controller
                             'templates' => $templates,
                             'sliders' => $sliders,
                         ]);    
-                    }
-
-                    // Save the seo tag translations
-                    $data = $post['SeoLang'][$languageId];
-
-                    $seo                = $model->seo;
-                    $seo->language      = $languageId;
-                    $seo->title         = (!empty($data['title'])) ? $data['title'] : $post['Lang'][$languageId]['title'];
-                    $seo->description   = $data['description'];
-                    $seo->keywords      = $data['keywords'];
-
-                    if (!$seo->saveTranslation()) {
-                        return $this->render('update', [
-                            'model' => $model,
-                            'templates' => $templates,
-                            'sliders' => $sliders,
-                        ]);
                     }
 
                     // Save the alias translations
@@ -331,7 +299,7 @@ class PageController extends Controller
                     ]);
                 }
                 
-                // Save the translation models and seo tags
+                // Save the translation models
                 foreach ($languages as $languageId => $languageName) {
                     
                     // Save the translation
@@ -349,24 +317,7 @@ class PageController extends Controller
                             'sliders' => $sliders,
                         ]);    
                     }
-                    
-                    // Save the seo tag translations
-                    $data = $post['SeoLang'][$languageId];
-                    
-                    $seo                = $model->seo;
-                    $seo->language      = $languageId;
-                    $seo->title         = (!empty($data['title'])) ? $data['title'] : $post['Lang'][$languageId]['title'];
-                    $seo->description   = $data['description'];
-                    $seo->keywords      = $data['keywords'];
 
-                    if (!$seo->saveTranslation()) {
-                        return $this->render('update', [
-                            'model' => $model,
-                            'templates' => $templates,
-                            'sliders' => $sliders,
-                        ]);    
-                    }
-                    
                     // Save the alias translations
                     $data = $post['AliasLang'][$languageId];
                     
