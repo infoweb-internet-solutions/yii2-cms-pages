@@ -3,6 +3,7 @@
 namespace infoweb\pages\controllers;
 
 use Yii;
+use yii\base\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -376,15 +377,19 @@ class PageController extends Controller
     {
         $model = $this->findModel($id);
         
-        try {                    
+        try {
             // Only Superadmin can delete system pages
             if ($model->type == Page::TYPE_SYSTEM && !Yii::$app->user->can('Superadmin'))
-                throw new \yii\base\Exception(Yii::t('app', 'You do not have the right permissions to delete this item'));
+                throw new Exception(Yii::t('app', 'You do not have the right permissions to delete this item'));
         
             $transaction = Yii::$app->db->beginTransaction();
-            $model->delete();
+
+            if ($model->delete()) {
+                throw new Exception(Yii::t('app', 'Error while deleting the node'));
+            }
+
             $transaction->commit();    
-        } catch (\yii\base\Exception $e) {
+        } catch (Exception $e) {
             // Set flash message
             Yii::$app->getSession()->setFlash('page-error', $e->getMessage());
     
