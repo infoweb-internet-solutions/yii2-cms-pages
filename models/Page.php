@@ -2,17 +2,15 @@
 
 namespace infoweb\pages\models;
 
-use infoweb\seo\behaviors\SeoBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\db\Query;
 use dosamigos\translateable\TranslateableBehavior;
-use infoweb\seo\models\Seo;
-use infoweb\alias\models\Alias;
-use infoweb\pages\models\PageTemplate;
 use infoweb\pages\behaviors\HomepageBehavior;
+use infoweb\alias\behaviors\AliasBehavior;
+use infoweb\seo\behaviors\SeoBehavior;
 
 /**
  * This is the model class for table "pages".
@@ -67,6 +65,9 @@ class Page extends \yii\db\ActiveRecord
             'seo' => [
                 'class' => SeoBehavior::className(),
                 'titleAttribute' => 'title',
+            ],
+            'alias' => [
+                'class' => AliasBehavior::className(),
             ],
         ]);
     }
@@ -123,14 +124,6 @@ class Page extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAlias()
-    {
-        return $this->hasOne(Alias::className(), ['entity_id' => 'id'])->where(['entity' => Alias::ENTITY_PAGE]);
-    }
-    
-    /**
      * Returns the layout model for the page
      * 
      * @return  frontend\models\layout\Layout
@@ -152,21 +145,6 @@ class Page extends \yii\db\ActiveRecord
         }
     }
 
-    /**
-     * Deletes the attached entities
-     * 
-     * @throws  \yii\base\Exception
-     * @return  boolean
-     */
-    public function deleteAttachedEntities()
-    {
-        // Try to load and delete the attached 'Alias' entity
-        if (!$this->alias->delete())
-            throw new \yii\base\Exception(Yii::t('infoweb/pages', 'Error while deleting the attached alias'));
-
-        return true;
-    }
-    
     /**
      * Checks if a page is used in a menu
      * 
@@ -216,22 +194,14 @@ class Page extends \yii\db\ActiveRecord
         $url = Yii::getAlias('@baseUrl') . '/';
         if ($includeLanguage)
             $url .= (($this->language == null) ? Yii::$app->language : $this->language) . '/';
-        
-        $url .= $this->alias->url;
+
+        if ($this->alias) {
+            $url .= $this->alias->url;
+        }
         
         return $url;
     }
-    
-    /**
-     * Returns an array of the non-empty seo tags that are attached to the page.
-     * 
-     * @return  array
-     */
-    public function getSeoTags()
-    {
-        return array_filter($this->seo->getTranslation((($this->language == null) ? Yii::$app->language : $this->language))->attributes);    
-    }
-    
+
     /**
      * Returns all items formatted for usage in a Html::dropDownList widget:
      *      [

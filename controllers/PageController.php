@@ -136,21 +136,6 @@ class PageController extends Controller
                     ]);
                 }
 
-                // Create the alias
-                $alias = new Alias([
-                    'entity'    => Alias::ENTITY_PAGE,
-                    'entity_id' => $model->id,
-                    'type'      => $model->type
-                ]);
-                
-                if (!$alias->save()) {
-                    return $this->render('create', [
-                        'model' => $model,
-                        'templates' => $templates,
-                        'sliders' => $sliders,
-                    ]);    
-                } 
-                
                 // Save the translations
                 foreach ($languages as $languageId => $languageName) {
                     
@@ -169,21 +154,6 @@ class PageController extends Controller
                             'sliders' => $sliders,
                         ]);    
                     }
-
-                    // Save the alias translations
-                    $data = $post['AliasLang'][$languageId];
-                    
-                    $alias              = $model->alias;
-                    $alias->language    = $languageId;
-                    $alias->url         = $data['url'];
-                    
-                    if (!$alias->saveTranslation()) {
-                        return $this->render('update', [
-                            'model' => $model,
-                            'templates' => $templates,
-                            'sliders' => $sliders,
-                        ]);    
-                    }                        
                 }
                 
                 $transaction->commit();
@@ -288,18 +258,6 @@ class PageController extends Controller
                     ]);
                 }
 
-                // Update alias type
-                $alias              = $model->alias;
-                $alias->type        = $model->type;
-
-                if (!$alias->save()) {
-                    return $this->render('update', [
-                        'model' => $model,
-                        'templates' => $templates,
-                        'sliders' => $sliders,
-                    ]);
-                }
-                
                 // Save the translation models
                 foreach ($languages as $languageId => $languageName) {
                     
@@ -318,21 +276,6 @@ class PageController extends Controller
                             'sliders' => $sliders,
                         ]);    
                     }
-
-                    // Save the alias translations
-                    $data = $post['AliasLang'][$languageId];
-                    
-                    $alias              = $model->alias;
-                    $alias->language    = $languageId;
-                    $alias->url         = $data['url'];
-
-                    if (!$alias->saveTranslation()) {
-                        return $this->render('update', [
-                            'model' => $model,
-                            'templates' => $templates,
-                            'sliders' => $sliders,
-                        ]);    
-                    }                     
                 }
                 
                 $transaction->commit();
