@@ -2,6 +2,7 @@
 
 namespace infoweb\pages\controllers;
 
+use infoweb\pages\models\Car;
 use Yii;
 use yii\base\Exception;
 use yii\web\Controller;
@@ -15,8 +16,6 @@ use infoweb\pages\models\Page;
 use infoweb\pages\models\Lang;
 use infoweb\pages\models\PageTemplate;
 use infoweb\pages\models\PageSearch;
-use infoweb\alias\models\Alias;
-use infoweb\alias\models\AliasLang;
 
 /**
  * PageController implements the CRUD actions for Page model.
@@ -100,22 +99,11 @@ class PageController extends Controller
                 
                 // Populate the translation models
                 Model::loadMultiple($translationModels, $post);
-                
-                // Create an array of alias models
-                $aliasModels = [];
-                
-                foreach ($languages as $languageId => $languageName) {
-                    $aliasModels[$languageId] = new AliasLang(['language' => $languageId]);
-                }
-                
-                // Populate the alias models
-                Model::loadMultiple($aliasModels, $post);
 
-                // Validate the model and translation and alias models
+                // Validate the model and translation
                 $response = array_merge(
                     ActiveForm::validate($model),
-                    ActiveForm::validateMultiple($translationModels),
-                    ActiveForm::validateMultiple($aliasModels)
+                    ActiveForm::validateMultiple($translationModels)
                 );
                 
                 // Return validation in JSON format
@@ -223,21 +211,10 @@ class PageController extends Controller
                 // Populate the translation models
                 Model::loadMultiple($translationModels, $post);
 
-                // Create an array of alias models
-                $aliasModels = [];
-                
-                foreach ($languages as $languageId => $languageName) {
-                    $aliasModels[$languageId] = $model->alias->getTranslation($languageId);
-                }
-                
-                // Populate the alias models
-                Model::loadMultiple($aliasModels, $post);
-
-                // Validate the model and translation and alias models
+                // Validate the model and translation
                 $response = array_merge(
                     ActiveForm::validate($model),
-                    ActiveForm::validateMultiple($translationModels),
-                    ActiveForm::validateMultiple($aliasModels)
+                    ActiveForm::validateMultiple($translationModels)
                 );
                 
                 // Return validation in JSON format
