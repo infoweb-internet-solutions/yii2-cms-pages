@@ -15,7 +15,7 @@ use infoweb\cms\helpers\LanguageHelper;
         'data-duplicateable' => Yii::$app->getModule('pages')->allowContentDuplication ? 'true' : 'false'
     ]); ?>
 
-    <?= $this->render('@infoweb/alias/views/behaviors/alias/_url', ['form' => $form, 'model' => $model]) ?>
+    <?= $this->render('@infoweb/alias/views/behaviors/alias/_url', ['form' => $form, 'model' => $model, 'alias' => $alias]) ?>
 
     <?= $form->field($model, "[{$model->language}]title")->textInput([
         'maxlength' => 255,
