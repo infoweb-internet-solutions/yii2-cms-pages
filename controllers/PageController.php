@@ -57,8 +57,13 @@ class PageController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($test = false)
     {
+        if ($test) {
+            $this->layout = false;
+        }
+
+
         $languages = Yii::$app->params['languages'];
 
         // Load the model with default values
