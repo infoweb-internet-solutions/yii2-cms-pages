@@ -16,7 +16,7 @@ use infoweb\pages\models\Page;
 use infoweb\pages\models\Lang;
 use infoweb\pages\models\PageTemplate;
 use infoweb\pages\models\PageSearch;
-
+use infoweb\cms\helpers\CMS;
 /**
  * PageController implements the CRUD actions for Page model.
  */
@@ -95,10 +95,10 @@ class PageController extends Controller
         if (Yii::$app->request->getIsPost()) {
             
             $post = Yii::$app->request->post();
-mail('ruben@infoweb.be', __FILE__ . ' => ' . __LINE__, var_export($post, TRUE));
+
             // Ajax request, validate the models
-            if (Yii::$app->request->isAjax && !isset($post['test'])) { /*  && !isset($post['modal']) */
-                mail('ruben@infoweb.be', __FILE__ . ' => ' . __LINE__, 'test');
+            if (Yii::$app->request->isAjax && isset($post['ajax'])) {
+
                 // Populate the model with the POST data
                 $model->load($post);
                 
@@ -124,7 +124,7 @@ mail('ruben@infoweb.be', __FILE__ . ' => ' . __LINE__, var_export($post, TRUE));
             
             // Normal request, save models
             } else {
-                mail('ruben@infoweb.be', __FILE__ . ' => ' . __LINE__, 'test');
+
                 // Wrap the everything in a database transaction
                 $transaction = Yii::$app->db->beginTransaction();                
                 
@@ -148,36 +148,37 @@ mail('ruben@infoweb.be', __FILE__ . ' => ' . __LINE__, var_export($post, TRUE));
                         return $this->render('create', $returnOptions);
                     }
                 }
-                
+
                 $transaction->commit();
                 
                 // Switch back to the main language
                 $model->language = Yii::$app->language;
 
-                // Set flash message
-                Yii::$app->getSession()->setFlash('page', Yii::t('app', '"{item}" has been created', ['item' => $model->name]));
-
                 // Take appropriate action based on the pushed button
-                if (isset($post['close'])) {
-                    return $this->redirect(['index']);
-                } elseif (isset($post['new'])) {
-                    return $this->redirect(['create']);
-                } elseif (isset($post['test'])) {
-
-
-
+                if (Yii::$app->session->get('modal', false) && Yii::$app->request->isAjax) {
                     // Remove session cookie
                     Yii::$app->session->remove('modal');
 
                     $response['status'] = 1;
                     $response['id'] = $model->id;
-mail('ruben@infoweb.be', __FILE__ . ' => ' . __LINE__, var_export($response, TRUE));
+
                     Yii::$app->response->format = 'json';
                     return $response;
 
+
                 } else {
-                    return $this->redirect(['update', 'id' => $model->id]);
-                }   
+
+                    // Set flash message
+                    Yii::$app->getSession()->setFlash('page', Yii::t('app', '"{item}" has been created', ['item' => $model->name]));
+
+                    if (isset($post['close'])) {
+                        return $this->redirect(['index']);
+                    } elseif (isset($post['new'])) {
+                        return $this->redirect(['create']);
+                    } else {
+                        return $this->redirect(['update', 'id' => $model->id]);
+                    }
+                }
             }    
         }
 

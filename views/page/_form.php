@@ -54,7 +54,7 @@ use yii\helpers\Url;
         <?php // Modal referrer, custom buttons ?>
         <?php if (Yii::$app->session->get('modal') == true): ?>
 
-        <?= Html::submitButton(Yii::t('app', 'Create'), ['class' => 'btn btn-success btn-modal', 'name' => 'modal'/*, 'data-url' => Url::toRoute('/pages/page/create') */]) ?>
+        <?= Html::submitButton(Yii::t('app', 'Create'), ['class' => 'btn btn-success btn-modal', 'name' => 'save']) ?>
         <?= Html::button(Yii::t('app', 'Close'), ['class' => 'btn btn-danger', 'data-dismiss' => 'modal']) ?>
 
         <?php // No referrer, default buttons ?>
