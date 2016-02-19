@@ -57,12 +57,13 @@ class PageController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($test = false)
+    public function actionCreate($modal = false)
     {
-        if ($test) {
+        // Disable layout if the request comes from a modal
+        if ($modal) {
             $this->layout = false;
+            Yii::$app->session->set('modal', true);
         }
-
 
         $languages = Yii::$app->params['languages'];
 
@@ -84,14 +85,20 @@ class PageController extends Controller
         } else {
             $sliders = [];
         }
+
+        $returnOptions = [
+            'model' => $model,
+            'templates' => $templates,
+            'sliders' => $sliders,
+        ];
         
         if (Yii::$app->request->getIsPost()) {
             
             $post = Yii::$app->request->post();
-            
+mail('ruben@infoweb.be', __FILE__ . ' => ' . __LINE__, var_export($post, TRUE));
             // Ajax request, validate the models
-            if (Yii::$app->request->isAjax) {
-                               
+            if (Yii::$app->request->isAjax && !isset($post['test'])) { /*  && !isset($post['modal']) */
+                mail('ruben@infoweb.be', __FILE__ . ' => ' . __LINE__, 'test');
                 // Populate the model with the POST data
                 $model->load($post);
                 
@@ -117,16 +124,13 @@ class PageController extends Controller
             
             // Normal request, save models
             } else {
+                mail('ruben@infoweb.be', __FILE__ . ' => ' . __LINE__, 'test');
                 // Wrap the everything in a database transaction
                 $transaction = Yii::$app->db->beginTransaction();                
                 
                 // Save the main model
                 if (!$model->load($post) || !$model->save()) {
-                    return $this->render('create', [
-                        'model' => $model,
-                        'templates' => $templates,
-                        'sliders' => $sliders,
-                    ]);
+                    return $this->render('create', $returnOptions);
                 }
 
                 // Save the translations
@@ -141,11 +145,7 @@ class PageController extends Controller
                     $model->content     = $data['content'];
                     
                     if (!$model->saveTranslation()) {
-                        return $this->render('create', [
-                            'model' => $model,
-                            'templates' => $templates,
-                            'sliders' => $sliders,
-                        ]);    
+                        return $this->render('create', $returnOptions);
                     }
                 }
                 
@@ -153,26 +153,35 @@ class PageController extends Controller
                 
                 // Switch back to the main language
                 $model->language = Yii::$app->language;
-                
+
                 // Set flash message
                 Yii::$app->getSession()->setFlash('page', Yii::t('app', '"{item}" has been created', ['item' => $model->name]));
-                
+
                 // Take appropriate action based on the pushed button
                 if (isset($post['close'])) {
                     return $this->redirect(['index']);
                 } elseif (isset($post['new'])) {
                     return $this->redirect(['create']);
+                } elseif (isset($post['test'])) {
+
+
+
+                    // Remove session cookie
+                    Yii::$app->session->remove('modal');
+
+                    $response['status'] = 1;
+                    $response['id'] = $model->id;
+mail('ruben@infoweb.be', __FILE__ . ' => ' . __LINE__, var_export($response, TRUE));
+                    Yii::$app->response->format = 'json';
+                    return $response;
+
                 } else {
                     return $this->redirect(['update', 'id' => $model->id]);
                 }   
             }    
         }
 
-        return $this->render('create', [
-            'model' => $model,
-            'templates' => $templates,
-            'sliders' => $sliders
-        ]);
+        return $this->render('create', $returnOptions);
     }
 
     /**

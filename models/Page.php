@@ -66,9 +66,6 @@ class Page extends \yii\db\ActiveRecord
                 'class' => SeoBehavior::className(),
                 'titleAttribute' => 'title',
             ],
-            'alias' => [
-                'class' => AliasBehavior::className(),
-            ],
         ]);
     }
 
@@ -195,7 +192,7 @@ class Page extends \yii\db\ActiveRecord
         if ($includeLanguage)
             $url .= (($this->language == null) ? Yii::$app->language : $this->language) . '/';
 
-        if ($this->alias) {
+        if (isset($this->alias)) {
             $url .= $this->alias->url;
         }
         
