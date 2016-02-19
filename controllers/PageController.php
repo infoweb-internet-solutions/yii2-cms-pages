@@ -124,25 +124,15 @@ class PageController extends Controller
                     ]);
                 }
 
-                // Save the translations
-                foreach ($languages as $languageId => $languageName) {
-                    
-                    $data = $post['Lang'][$languageId];
-                    
-                    // Set the translation language and attributes                    
-                    $model->language    = $languageId;
-                    $model->name        = $data['name'];
-                    $model->title       = $data['title'];
-                    $model->content     = $data['content'];
-                    
-                    if (!$model->saveTranslation()) {
-                        return $this->render('create', [
-                            'model' => $model,
-                            'templates' => $templates,
-                            'sliders' => $sliders,
-                        ]);    
+                foreach (Yii::$app->request->post('Lang', []) as $language => $data) {
+                    foreach ($data as $attribute => $translation) {
+                        $model->translate($language)->$attribute = $translation;
                     }
                 }
+
+
+
+
                 
                 $transaction->commit();
                 
@@ -226,8 +216,8 @@ class PageController extends Controller
                 // Wrap the everything in a database transaction
                 $transaction = Yii::$app->db->beginTransaction();                
                 
-                // Save the main model
-                if (!$model->load($post) || !$model->save()) {
+                // Load the model
+                if (!$model->load($post)) {
                     return $this->render('update', [
                         'model' => $model,
                         'templates' => $templates,
@@ -235,31 +225,24 @@ class PageController extends Controller
                     ]);
                 }
 
-                // Save the translation models
-                foreach ($languages as $languageId => $languageName) {
-                    
-                    // Save the translation
-                    $data = $post['Lang'][$languageId];
-                    
-                    $model->language    = $languageId;
-                    $model->name        = $data['name'];
-                    $model->title       = $data['title'];
-                    $model->content     = $data['content'];
-                    
-                    if (!$model->saveTranslation()) {
-                        return $this->render('update', [
-                            'model' => $model,
-                            'templates' => $templates,
-                            'sliders' => $sliders,
-                        ]);    
+                // Add translations
+                foreach (Yii::$app->request->post('Lang', []) as $language => $data) {
+                    foreach ($data as $attribute => $translation) {
+                        $model->translate($language)->$attribute = $translation;
                     }
                 }
-                
+
+                // Save the model
+                if (!$model->save()) {
+                    return $this->render('update', [
+                        'model' => $model,
+                        'templates' => $templates,
+                        'sliders' => $sliders,
+                    ]);
+                }
+
                 $transaction->commit();
-                
-                // Switch back to the main language
-                $model->language = Yii::$app->language;
-                
+
                 // Set flash message
                 Yii::$app->getSession()->setFlash('page', Yii::t('app', '"{item}" has been updated', ['item' => $model->name]));
               

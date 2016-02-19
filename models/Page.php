@@ -7,7 +7,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\db\Query;
-use dosamigos\translateable\TranslateableBehavior;
+use creocoder\translateable\TranslateableBehavior;
 use infoweb\pages\behaviors\HomepageBehavior;
 use infoweb\alias\behaviors\AliasBehavior;
 use infoweb\seo\behaviors\SeoBehavior;
@@ -39,13 +39,9 @@ class Page extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return ArrayHelper::merge(parent::behaviors(), [
-            'trans' => [
+            'translateable' => [
                 'class' => TranslateableBehavior::className(),
-                'translationAttributes' => [
-                    'name',
-                    'title',
-                    'content'
-                ]
+                'translationAttributes' => ['name', 'title', 'content'],
             ],
             'timestamp' => [
                 'class' => TimestampBehavior::className(),
@@ -65,9 +61,6 @@ class Page extends \yii\db\ActiveRecord
             'seo' => [
                 'class' => SeoBehavior::className(),
                 'titleAttribute' => 'title',
-            ],
-            'alias' => [
-                'class' => AliasBehavior::className(),
             ],
         ]);
     }
@@ -195,9 +188,6 @@ class Page extends \yii\db\ActiveRecord
         if ($includeLanguage)
             $url .= (($this->language == null) ? Yii::$app->language : $this->language) . '/';
 
-        if ($this->alias) {
-            $url .= $this->alias->url;
-        }
         
         return $url;
     }
