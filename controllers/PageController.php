@@ -116,7 +116,7 @@ class PageController extends Controller
                 $transaction = Yii::$app->db->beginTransaction();                
                 
                 // Save the main model
-                if (!$model->load($post) || !$model->save()) {
+                if (!$model->load($post)) {
                     return $this->render('create', [
                         'model' => $model,
                         'templates' => $templates,
@@ -130,14 +130,16 @@ class PageController extends Controller
                     }
                 }
 
-
-
-
+                // Save the model
+                if (!$model->save()) {
+                    return $this->render('update', [
+                        'model' => $model,
+                        'templates' => $templates,
+                        'sliders' => $sliders,
+                    ]);
+                }
                 
                 $transaction->commit();
-                
-                // Switch back to the main language
-                $model->language = Yii::$app->language;
                 
                 // Set flash message
                 Yii::$app->getSession()->setFlash('page', Yii::t('app', '"{item}" has been created', ['item' => $model->name]));
