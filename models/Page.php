@@ -7,7 +7,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\db\Query;
-use dosamigos\translateable\TranslateableBehavior;
+use creocoder\translateable\TranslateableBehavior;
 use infoweb\pages\behaviors\HomepageBehavior;
 use infoweb\alias\behaviors\AliasBehavior;
 use infoweb\seo\behaviors\SeoBehavior;
@@ -27,7 +27,7 @@ class Page extends \yii\db\ActiveRecord
 {
     const TYPE_SYSTEM = 'system';
     const TYPE_USER_DEFINED = 'user-defined';
-    
+
     /**
      * @inheritdoc
      */
@@ -39,7 +39,7 @@ class Page extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return ArrayHelper::merge(parent::behaviors(), [
-            'trans' => [
+            'translateable' => [
                 'class' => TranslateableBehavior::className(),
                 'translationAttributes' => [
                     'name',
@@ -114,7 +114,7 @@ class Page extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Lang::className(), ['page_id' => 'id']);
     }
-    
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -125,14 +125,14 @@ class Page extends \yii\db\ActiveRecord
 
     /**
      * Returns the layout model for the page
-     * 
+     *
      * @return  frontend\models\layout\Layout
      */
     public function getLayout()
     {
         return Yii::createObject(['class' => "frontend\models\layout\\{$this->template->layout_model}"]);
     }
-    
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -147,7 +147,7 @@ class Page extends \yii\db\ActiveRecord
 
     /**
      * Checks if a page is used in a menu
-     * 
+     *
      * @return  boolean
      */
     public function isUsedInMenu()
@@ -159,12 +159,12 @@ class Page extends \yii\db\ActiveRecord
                         'entity'    => \infoweb\menu\models\MenuItem::ENTITY_PAGE,
                         'entity_id' => $this->id
                     ])
-                    ->exists();    
+                    ->exists();
     }
-    
+
     /**
      * Returns the html anchors that are used in the content of a page
-     * 
+     *
      * @return  array
      */
     public function getHtmlAnchors()
@@ -174,18 +174,18 @@ class Page extends \yii\db\ActiveRecord
         $anchors = [];
         $content = $this->content;
         preg_match_all('/<a id="([^\"]+)" name="([^\"]+)">[^<]*<\/a>/', $content, $matches);
-   
-        // The 'id' tag is used as key and the 'name' tag as value of the anchors array 
+
+        // The 'id' tag is used as key and the 'name' tag as value of the anchors array
         if (isset($matches[1]) && isset($matches[2])) {
             $anchors = array_combine($matches[1], $matches[2]);
         }
-        
-        return $anchors;        
+
+        return $anchors;
     }
-    
+
     /**
      * Returns the url of the page
-     * 
+     *
      * @param   string  $includeLanguage
      * @return  string  $url
      */
