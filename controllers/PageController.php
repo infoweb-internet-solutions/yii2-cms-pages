@@ -140,7 +140,7 @@ class PageController extends Controller
                 }
                 
                 $transaction->commit();
-                
+
                 // Set flash message
                 Yii::$app->getSession()->setFlash('page', Yii::t('app', '"{item}" has been created', ['item' => $model->name]));
                 
