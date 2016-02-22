@@ -57,18 +57,23 @@ class PageController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id = null)
     {
         $languages = Yii::$app->params['languages'];
 
-        // Load the model with default values
-        $model = new Page([
-            'type' => 'user-defined',
-            'active' => 1,
-            'homepage' => 0,
-            'template_id' => 1,
-            'public' => (int) $this->module->defaultPublicVisibility
-        ]);
+        if ($id) {
+            $model = $this->findModel($id);
+            $model = $model->duplicate();
+        } else {
+            // Load the model with default values
+            $model = new Page([
+                'type' => 'user-defined',
+                'active' => 1,
+                'homepage' => 0,
+                'template_id' => 1,
+                'public' => (int) $this->module->defaultPublicVisibility
+            ]);
+        }
 
         // Get all the templates
         $templates = PageTemplate::find()->orderBy(['name' => SORT_ASC])->all();
@@ -285,6 +290,60 @@ class PageController extends Controller
             'templates' => $templates,
             'sliders' => $sliders
         ]);
+    }
+
+    /**
+     * Duplicate an existing Page model.
+     * If duplication is successful, the browser will be redirected to the 'index' page.
+     * @param string $id
+     * @return mixed
+     */
+    public function actionDuplicate($id)
+    {
+        //$model = $this->findModel($id);
+
+
+        $this->redirect(['create', 'id' => $id]);
+        Yii::$app->end();
+        echo __FILE__ . ' => ' . __LINE__; exit();
+
+        try {
+            $oldModel = $this->findModel($id);
+            $model = $oldModel;
+            $model->id = null; //primaryKey
+            $model->isNewRecord = true;
+
+            $transaction = Yii::$app->db->beginTransaction();
+
+            if (!$model->save()) {
+                throw new Exception(Yii::t('app', 'Error while duplicating the node'));
+            }
+
+            $translations = $this->findModel($id)->getTranslations()->all();
+
+            // Save the translation models
+            foreach ($translations as $_model) {
+
+                $_model->page_id = $model->id;
+                $_model->isNewRecord = true;
+
+                if (!$_model->save()) {
+                    throw new Exception(Yii::t('app', 'Error while duplicating the node translations'));
+                }
+            }
+
+            $transaction->commit();
+        } catch (Exception $e) {
+            // Set flash message
+            Yii::$app->getSession()->setFlash('page-error', $e->getMessage());
+
+            return $this->redirect(['index']);
+        }
+
+        // Set flash message
+        Yii::$app->getSession()->setFlash('page', Yii::t('app', '"{item}" has been duplicated', ['item' => $model->name]));
+
+        return $this->redirect(['index']);
     }
 
     /**

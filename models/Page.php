@@ -7,7 +7,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\db\Query;
-use dosamigos\translateable\TranslateableBehavior;
+use creocoder\translateable\TranslateableBehavior;
 use infoweb\pages\behaviors\HomepageBehavior;
 use infoweb\alias\behaviors\AliasBehavior;
 use infoweb\seo\behaviors\SeoBehavior;
@@ -39,13 +39,11 @@ class Page extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return ArrayHelper::merge(parent::behaviors(), [
-            'trans' => [
+            'translateable' => [
                 'class' => TranslateableBehavior::className(),
-                'translationAttributes' => [
-                    'name',
-                    'title',
-                    'content'
-                ]
+                'translationAttributes' => ['title', 'title', 'content'],
+                // translationRelation => 'translations',
+                // translationLanguageAttribute => 'language',
             ],
             'timestamp' => [
                 'class' => TimestampBehavior::className(),
@@ -222,5 +220,48 @@ class Page extends \yii\db\ActiveRecord
                     ->all();
                     
         return ArrayHelper::map($items, 'id', 'name');
+    }
+
+    public function duplicate()
+    {
+
+        // Originial model
+        $oldModel = $this;
+
+        // New model
+        $model = new Page();
+
+        $attributes = $oldModel->getAttributes();
+        foreach ($attributes as $attribute => $value) {
+            $model->$attribute = $value;
+        }
+
+        echo '<pre>'; print_r($model); echo '</pre>'; exit();
+
+        // Translations
+        foreach (Yii::$app->params['languages'] as $languageId => $language) {
+
+            $languageAttributes = $oldModel->translate($languageId)->getAttributes();
+            unset($languageAttributes['page_id']);
+
+            foreach ($languageAttributes as $attribute => $value) {
+                $model->translate($language)->$attribute = $value;
+            }
+        }
+
+        echo '<pre>'; print_r($model); echo '</pre>'; exit();
+
+        return $model;
+
+        //$this->link('seo', $seo);
+
+        //$seo->id = null; //primaryKey
+        //$seo->isNewRecord = true;
+
+
+
+
+        //echo '<pre>'; print_r($model->seo); echo '</pre>'; exit();
+
     }
 }
