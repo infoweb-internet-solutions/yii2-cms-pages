@@ -2,7 +2,6 @@
 
 namespace infoweb\pages\controllers;
 
-use infoweb\pages\models\Car;
 use Yii;
 use yii\base\Exception;
 use yii\web\Controller;
@@ -47,8 +46,9 @@ class PageController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'searchModel'        => $searchModel,
+            'dataProvider'       => $dataProvider,
+            'enablePrivatePages' => Yii::$app->getModule('pages')->enablePrivatePages
         ]);
     }
 
@@ -130,28 +130,29 @@ class PageController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        
+        $name = $model->name;
+
         try {
             // Only Superadmin can delete system pages
             if ($model->type == Page::TYPE_SYSTEM && !Yii::$app->user->can('Superadmin'))
                 throw new Exception(Yii::t('app', 'You do not have the right permissions to delete this item'));
-        
+
             $transaction = Yii::$app->db->beginTransaction();
 
-            if ($model->delete()) {
+            if (!$model->delete()) {
                 throw new Exception(Yii::t('app', 'Error while deleting the node'));
             }
 
-            $transaction->commit();    
+            $transaction->commit();
         } catch (Exception $e) {
             // Set flash message
             Yii::$app->getSession()->setFlash('page-error', $e->getMessage());
-    
-            return $this->redirect(['index']);        
-        }        
-        
+
+            return $this->redirect(['index']);
+        }
+
         // Set flash message
-        Yii::$app->getSession()->setFlash('page', Yii::t('app', '{item} has been deleted', ['item' => $model->name]));
+        Yii::$app->getSession()->setFlash('page', Yii::t('app', '{item} has been deleted', ['item' => $name]));
 
         return $this->redirect(['index']);
     }
@@ -168,7 +169,7 @@ class PageController extends Controller
 
         return $model->save();
     }
-    
+
     /**
      * Set as homepage
      * @param string $id
@@ -182,7 +183,7 @@ class PageController extends Controller
 
         return $model->save();
     }
-    
+
     /**
      * Set public state
      * @param string $id

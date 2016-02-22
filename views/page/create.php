@@ -2,9 +2,6 @@
 
 use yii\helpers\Html;
 
-/* @var $this yii\web\View */
-/* @var $model infoweb\partials\models\PagePartial */
-
 $this->title = Yii::t('app', 'Create {modelClass}', [
     'modelClass' => Yii::t('infoweb/pages', 'Page'),
 ]);

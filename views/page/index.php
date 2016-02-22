@@ -20,10 +20,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="pull-right">
             <?= Html::a(Yii::t('app', 'Create {modelClass}', [
                 'modelClass' => Yii::t('infoweb/pages', 'Page'),
-            ]), ['create'], ['class' => 'btn btn-success']) ?>    
+            ]), ['create'], ['class' => 'btn btn-success']) ?>
         </div>
     </h1>
-    
+
     <?php // Flash messages ?>
     <?php echo $this->render('_flash_messages'); ?>
 
@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a($url, $url, ['target' => '_blank', 'data-pjax' => 0]);
                 },
                 'enableSorting' => true,
-                'format' => 'raw' 
+                'format' => 'raw'
             ],
             [
                 'class'=>'kartik\grid\BooleanColumn',
@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => 'kartik\grid\ActionColumn',
-                'template' => '{update} {delete} {active} {homepage}' . ((Yii::$app->getModule('pages')->enablePrivatePages) ? ' {public}' : ''),
+                'template' => '{update} {delete} {active} {homepage}' . (($enablePrivatePages) ? ' {public}' : ''),
                 'buttons' => [
                     'active' => function ($url, $model) {
                         if ($model->active == true) {
@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'public' => function ($url, $model) {
                         $icon = 'glyphicon-lock';
-                        
+
                         if ($model->public == true || $model->homepage) {
                             $icon .= ' icon-disabled';
                         }
@@ -105,7 +105,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'deleteOptions'=>['title' => Yii::t('app', 'Delete'), 'data-toggle' => 'tooltip'],
                 'width' => '180px',
             ],
-        ],        
+        ],
     ]);
     ?>
 
