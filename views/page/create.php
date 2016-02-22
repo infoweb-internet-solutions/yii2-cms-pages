@@ -16,9 +16,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
-        'model' => $model,
-        'templates' => $templates,
-        'sliders'       => $sliders
+        'model'                   => $model,
+        'templates'               => $templates,
+        'sliders'                 => $sliders,
+        'allowContentDuplication' => $allowContentDuplication
     ]) ?>
 
 </div>

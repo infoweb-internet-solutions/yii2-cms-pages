@@ -6,6 +6,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
+use infoweb\alias\behaviors\AliasBehavior;
 
 /**
  * This is the model class for table "pages_lang".
@@ -27,7 +28,7 @@ class Lang extends \yii\db\ActiveRecord
     {
         return 'pages_lang';
     }
-    
+
     public function behaviors()
     {
         return ArrayHelper::merge(parent::behaviors(), [
@@ -38,7 +39,12 @@ class Lang extends \yii\db\ActiveRecord
                     ActiveRecord::EVENT_BEFORE_UPDATE => 'updated_at',
                 ],
                 'value' => function() { return time(); },
-            ]
+            ],
+            'alias' => [
+                'class' => AliasBehavior::className(),
+                'entityType' => Page::className(),
+                'entityIdField' => 'page_id',
+            ],
         ]);
     }
 

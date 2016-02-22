@@ -9,8 +9,8 @@ use yii\helpers\ArrayHelper;
 use yii\db\Query;
 use creocoder\translateable\TranslateableBehavior;
 use infoweb\pages\behaviors\HomepageBehavior;
-use infoweb\alias\behaviors\AliasBehavior;
 use infoweb\seo\behaviors\SeoBehavior;
+use infoweb\alias\models\Alias;
 
 /**
  * This is the model class for table "pages".
@@ -66,9 +66,6 @@ class Page extends \yii\db\ActiveRecord
                 'class' => SeoBehavior::className(),
                 'titleAttribute' => 'title',
             ],
-            'alias' => [
-                'class' => AliasBehavior::className(),
-            ],
         ]);
     }
 
@@ -105,6 +102,20 @@ class Page extends \yii\db\ActiveRecord
             'public' => Yii::t('infoweb/pages', 'Public'),
             'slider_id' => Yii::t('infoweb/sliders', 'Slider')
         ];
+    }
+
+    public function events()
+    {
+        return [
+            ActiveRecord::EVENT_AFTER_DELETE  => 'afterDelete'
+        ];
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        // Delete all attached aliases
+        $this->deleteAliases();
     }
 
     /**
@@ -198,8 +209,18 @@ class Page extends \yii\db\ActiveRecord
         if ($this->alias) {
             $url .= $this->alias->url;
         }
-        
+
         return $url;
+    }
+
+    /**
+     * Returns the attached Alias model
+     *
+     * @return Alias
+     */
+    public function getAlias($language = null)
+    {
+        return $this->getTranslation($language)->alias;
     }
 
     /**
@@ -209,7 +230,7 @@ class Page extends \yii\db\ActiveRecord
      *          'id' => 'name,
      *          ...
      *      ]
-     * 
+     *
      * @return  array
      */
     public static function getAllForDropDownList()
@@ -220,7 +241,17 @@ class Page extends \yii\db\ActiveRecord
                     ->innerJoin(['page_lang' => 'pages_lang'], "page.id = page_lang.page_id AND page_lang.language = '".Yii::$app->language."'")
                     ->orderBy(['page_lang.name' => SORT_ASC])
                     ->all();
-                    
+
         return ArrayHelper::map($items, 'id', 'name');
+    }
+
+    /**
+     * Deletes all aliases for the model
+     *
+     * @return boolean
+     */
+    protected function deleteAliases()
+    {
+        return Alias::deleteAll(['entity' => self::className(), 'entity_id' => $this->id]);
     }
 }
