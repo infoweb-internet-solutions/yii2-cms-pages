@@ -96,9 +96,6 @@ class Page extends \yii\base\Component
             return false;
         }
 
-        // Set the page language
-        $page->language = Yii::$app->language;
-
         return $page;
     }
 
