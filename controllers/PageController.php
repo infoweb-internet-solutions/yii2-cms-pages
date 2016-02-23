@@ -290,6 +290,9 @@ class PageController extends Controller
         // Wrap everything in a database transaction
         $transaction = Yii::$app->db->beginTransaction();
 
+        // Get the params
+        $params = $this->getDefaultViewParams();
+
         // Validate the main model
         if (!$model->load($post)) {
             return $this->render($this->action, $params);
@@ -310,7 +313,7 @@ class PageController extends Controller
         $transaction->commit();
 
         // Set flash message
-        if ($this->action == 'create') {
+        if ($this->action->id == 'create') {
             Yii::$app->getSession()->setFlash('page', Yii::t('app', '"{item}" has been created', ['item' => $model->name]));
         } else {
             Yii::$app->getSession()->setFlash('page', Yii::t('app', '"{item}" has been updated', ['item' => $model->name]));
