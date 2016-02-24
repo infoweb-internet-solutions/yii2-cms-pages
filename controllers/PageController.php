@@ -292,7 +292,7 @@ class PageController extends Controller
 
         // Validate the main model
         if (!$model->load($post)) {
-            return $this->render($this->action, $params);
+            return $this->render($this->action->id, $params);
         }
 
         // Add the translations
@@ -304,13 +304,13 @@ class PageController extends Controller
 
         // Save the main model
         if (!$model->save()) {
-            return $this->render($this->action, $params);
+            return $this->render($this->action->id, $params);
         }
 
         $transaction->commit();
 
         // Set flash message
-        if ($this->action == 'create') {
+        if ($this->action->id == 'create') {
             Yii::$app->getSession()->setFlash('page', Yii::t('app', '"{item}" has been created', ['item' => $model->name]));
         } else {
             Yii::$app->getSession()->setFlash('page', Yii::t('app', '"{item}" has been updated', ['item' => $model->name]));
