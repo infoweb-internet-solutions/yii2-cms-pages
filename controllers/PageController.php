@@ -290,6 +290,9 @@ class PageController extends Controller
         // Wrap everything in a database transaction
         $transaction = Yii::$app->db->beginTransaction();
 
+        // Get the params
+        $params = $this->getDefaultViewParams();
+
         // Validate the main model
         if (!$model->load($post)) {
             return $this->render($this->action->id, $params);
