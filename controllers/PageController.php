@@ -291,7 +291,7 @@ class PageController extends Controller
         $transaction = Yii::$app->db->beginTransaction();
 
         // Get the params
-        $params = $this->getDefaultViewParams();
+        $params = $this->getDefaultViewParams($model);
 
         // Validate the main model
         if (!$model->load($post)) {
