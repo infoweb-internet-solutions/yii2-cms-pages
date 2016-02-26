@@ -5,7 +5,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use infoweb\pages\models\Page as PageModel;
 use infoweb\menu\models\MenuItem;
-use infoweb\alias\models\AliasLang;
+use infoweb\alias\models\Alias;
 
 class Page extends \yii\base\Component
 {
@@ -66,18 +66,16 @@ class Page extends \yii\base\Component
         // An alias is provided
         if (Yii::$app->request->get('alias')) {
 
-            // Load the alias translation
-            $aliasLang = AliasLang::findOne([
+            // Load the alias
+            $alias = Alias::findOne([
                 'url'       => Yii::$app->request->get('alias'),
-                'language'  => Yii::$app->language
+                'language'  => Yii::$app->language,
+                'entity'    => \infoweb\pages\models\Page::className(),
             ]);
 
-            if (!$aliasLang) {
+            if (!$alias) {
                 return false;
             }
-
-            // Get the alias
-            $alias = $aliasLang->alias;
 
             // Get the page
             $page = $alias->entityModel;
