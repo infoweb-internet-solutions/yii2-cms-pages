@@ -111,7 +111,7 @@ class Page extends \yii\base\Component
         if ($this->model !== null) {
             $this->entity = [
                 'id'    => $value->id,
-                'type'  => MenuItem::ENTITY_PAGE
+                'type'  => \infoweb\pages\models\Page::className(),
             ];
             $this->loadLinkedMenuItems();
         }
