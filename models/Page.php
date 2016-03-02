@@ -10,7 +10,7 @@ use yii\db\Query;
 use creocoder\translateable\TranslateableBehavior;
 use infoweb\pages\behaviors\HomepageBehavior;
 use infoweb\seo\behaviors\SeoBehavior;
-use infoweb\alias\behaviors\AliasRelationBehavior;
+use infoweb\alias\traits\AliasRelationTrait;
 
 /**
  * This is the model class for table "pages".
@@ -23,8 +23,10 @@ use infoweb\alias\behaviors\AliasRelationBehavior;
  *
  * @property PagesLang[] $pagesLangs
  */
-class Page extends \yii\db\ActiveRecord
+class Page extends ActiveRecord
 {
+    use AliasRelationTrait;
+
     const TYPE_SYSTEM = 'system';
     const TYPE_USER_DEFINED = 'user-defined';
 
@@ -66,9 +68,6 @@ class Page extends \yii\db\ActiveRecord
                 'class' => SeoBehavior::className(),
                 'titleAttribute' => 'title',
             ],
-            'aliasRelation' => [
-                'class' => AliasRelationBehavior::className()
-            ]
         ]);
     }
 
