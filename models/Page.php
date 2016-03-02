@@ -10,7 +10,7 @@ use yii\db\Query;
 use creocoder\translateable\TranslateableBehavior;
 use infoweb\pages\behaviors\HomepageBehavior;
 use infoweb\seo\behaviors\SeoBehavior;
-use infoweb\alias\models\Alias;
+use infoweb\alias\behaviors\AliasRelationBehavior;
 
 /**
  * This is the model class for table "pages".
@@ -66,6 +66,9 @@ class Page extends \yii\db\ActiveRecord
                 'class' => SeoBehavior::className(),
                 'titleAttribute' => 'title',
             ],
+            'aliasRelation' => [
+                'class' => AliasRelationBehavior::className()
+            ]
         ]);
     }
 
@@ -102,20 +105,6 @@ class Page extends \yii\db\ActiveRecord
             'public' => Yii::t('infoweb/pages', 'Public'),
             'slider_id' => Yii::t('infoweb/sliders', 'Slider')
         ];
-    }
-
-    public function events()
-    {
-        return [
-            ActiveRecord::EVENT_AFTER_DELETE  => 'afterDelete'
-        ];
-    }
-
-    public function afterDelete()
-    {
-        parent::afterDelete();
-        // Delete all attached aliases
-        $this->deleteAliases();
     }
 
     /**
@@ -214,16 +203,6 @@ class Page extends \yii\db\ActiveRecord
     }
 
     /**
-     * Returns the attached Alias model
-     *
-     * @return Alias
-     */
-    public function getAlias($language = null)
-    {
-        return $this->getTranslation($language)->alias;
-    }
-
-    /**
      * Returns all items formatted for usage in a Html::dropDownList widget:
      *      [
      *          'id' => 'name',
@@ -243,15 +222,5 @@ class Page extends \yii\db\ActiveRecord
                     ->all();
 
         return ArrayHelper::map($items, 'id', 'name');
-    }
-
-    /**
-     * Deletes all aliases for the model
-     *
-     * @return boolean
-     */
-    protected function deleteAliases()
-    {
-        return Alias::deleteAll(['entity' => self::className(), 'entity_id' => $this->id]);
     }
 }
