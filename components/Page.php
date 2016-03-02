@@ -65,20 +65,12 @@ class Page extends \yii\base\Component
     {
         // An alias is provided
         if (Yii::$app->request->get('alias')) {
+            // Try to load the page with the provided alias
+            $page = PageModel::findByAlias(Yii::$app->request->get('alias'), Yii::$app->language);
 
-            // Load the alias
-            $alias = Alias::findOne([
-                'url'       => Yii::$app->request->get('alias'),
-                'language'  => Yii::$app->language,
-                'entity'    => \infoweb\pages\models\Page::className(),
-            ]);
-
-            if (!$alias) {
+            if (!$page) {
                 return false;
             }
-
-            // Get the page
-            $page = $alias->entityModel;
 
         // No specific page is requested, load the homepage
         } elseif (empty(Yii::$app->request->pathInfo)) {
@@ -111,7 +103,7 @@ class Page extends \yii\base\Component
         if ($this->model !== null) {
             $this->entity = [
                 'id'    => $value->id,
-                'type'  => \infoweb\pages\models\Page::className(),
+                'type'  => PageModel::className(),
             ];
             $this->loadLinkedMenuItems();
         }
