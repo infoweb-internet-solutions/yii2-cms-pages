@@ -29,13 +29,6 @@ class Page extends \yii\base\Component
     public $linkedMenuItemsIds = [];
 
     /**
-     * The url of the error page to wich the component redirects in case of a
-     * request for a non-existing page
-     * @var string
-     */
-    public $errorPageUrl = '@web/404';
-
-    /**
      * @var array  The entity that is attached to the page
      */
     protected $entity = null;
@@ -47,8 +40,7 @@ class Page extends \yii\base\Component
 
         // No page found, redirect to error page
         if ($page === false) {
-           Yii::$app->response->redirect($this->errorPageUrl)->send();
-           exit;
+            throw new \yii\web\NotFoundHttpException();
         } else {
             $this->setModel($page);
         }
@@ -66,7 +58,7 @@ class Page extends \yii\base\Component
         // An alias is provided
         if (Yii::$app->request->get('alias')) {
             // Try to load the page with the provided alias
-            $page = PageModel::findByAlias(Yii::$app->request->get('alias'), Yii::$app->language);
+            $page = PageModel::findByAlias(Yii::$app->request->get('alias'), Yii::$app->language)->one();
 
             if (!$page) {
                 return false;
