@@ -193,8 +193,10 @@ class Page extends ActiveRecord
     public function getUrl($includeLanguage = true, $language = null)
     {
         $url = Yii::getAlias('@baseUrl') . '/';
-        if ($includeLanguage)
+
+        if ($includeLanguage) {
             $url .= (($language) ?: Yii::$app->language) . '/';
+        }
 
         if ($this->getAlias($language)) {
             $url .= $this->getAlias($language)->url;
