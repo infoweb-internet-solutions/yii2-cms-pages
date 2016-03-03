@@ -185,17 +185,19 @@ class Page extends ActiveRecord
     /**
      * Returns the url of the page
      *
-     * @param   string  $includeLanguage
-     * @return  string  $url
+     * @param string $includeLanguage Option to determine if the language should
+     *                                be included in the url.
+     * @param mixed $language The language that has to be used for the url
+     * @return string $url The complete url
      */
-    public function getUrl($includeLanguage = true)
+    public function getUrl($includeLanguage = true, $language = null)
     {
         $url = Yii::getAlias('@baseUrl') . '/';
         if ($includeLanguage)
-            $url .= (($this->language == null) ? Yii::$app->language : $this->language) . '/';
+            $url .= (($language == null) ? Yii::$app->language : $language) . '/';
 
-        if ($this->alias) {
-            $url .= $this->alias->url;
+        if ($this->getAlias($language)) {
+            $url .= $this->getAlias($language)->url;
         }
 
         return $url;
