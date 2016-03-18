@@ -25,12 +25,12 @@ class PageController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class'   => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['post'],
-                    'active' => ['post'],
+                    'delete'   => ['post'],
+                    'active'   => ['post'],
                     'homepage' => ['post'],
-                    'public' => ['post']
+                    'public'   => ['post'],
                 ],
             ],
         ];
@@ -48,7 +48,7 @@ class PageController extends Controller
         return $this->render('index', [
             'searchModel'        => $searchModel,
             'dataProvider'       => $dataProvider,
-            'enablePrivatePages' => Yii::$app->getModule('pages')->enablePrivatePages
+            'enablePrivatePages' => Yii::$app->getModule('pages')->enablePrivatePages,
         ]);
     }
 
@@ -61,11 +61,12 @@ class PageController extends Controller
     {
         // Create the model with default values
         $model = new Page([
-            'type'        => 'user-defined',
-            'active'      => 1,
-            'homepage'    => 0,
-            'template_id' => 1,
-            'public'      => (int) $this->module->defaultPublicVisibility
+            'type'              => 'user-defined',
+            'active'            => 1,
+            'homepage'          => 0,
+            'template_id'       => 1,
+            'show_testimonials' => 0,
+            'public'            => (int)$this->module->defaultPublicVisibility,
         ]);
 
         // The view params
@@ -80,7 +81,7 @@ class PageController extends Controller
 
                 return $this->validateModel($model, $post);
 
-            // Normal request, save
+                // Normal request, save
             } else {
                 return $this->saveModel($model, $post);
             }
@@ -112,7 +113,7 @@ class PageController extends Controller
 
                 return $this->validateModel($model, $post);
 
-            // Normal request, save models
+                // Normal request, save models
             } else {
                 return $this->saveModel($model, $post);
             }
@@ -225,7 +226,7 @@ class PageController extends Controller
             'model'                   => $model,
             'templates'               => $this->getTemplates(),
             'sliders'                 => ($this->module->enableSliders) ? ArrayHelper::map(\infoweb\sliders\models\Slider::find()->select(['id', 'name'])->orderBy('name')->all(), 'id', 'name') : [],
-            'allowContentDuplication' => $this->module->allowContentDuplication
+            'allowContentDuplication' => $this->module->allowContentDuplication,
         ];
     }
 
@@ -260,7 +261,7 @@ class PageController extends Controller
             foreach ($languages as $languageId => $languageName) {
                 $translationModels[$languageId] = new Lang(['language' => $languageId]);
             }
-        // Update
+            // Update
         } else {
             $translationModels = ArrayHelper::index($model->getTranslations()->all(), 'language');
         }
@@ -282,6 +283,7 @@ class PageController extends Controller
 
         // Return validation in JSON format
         Yii::$app->response->format = Response::FORMAT_JSON;
+
         return $response;
     }
 

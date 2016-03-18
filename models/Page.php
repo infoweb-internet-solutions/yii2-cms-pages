@@ -78,7 +78,7 @@ class Page extends ActiveRecord
     {
         return [
             [['template_id'], 'required'],
-            [['active', 'public', 'template_id', 'created_at', 'updated_at', 'slider_id'], 'integer'],
+            [['active', 'public', 'template_id', 'created_at', 'updated_at', 'slider_id', 'show_testimonials'], 'integer'],
             // Types
             [['type'], 'string'],
             ['type', 'in', 'range' => ['system', 'user-defined']],
@@ -102,7 +102,8 @@ class Page extends ActiveRecord
             'homepage' => Yii::t('infoweb/pages', 'Homepage'),
             'active' => Yii::t('app', 'Active'),
             'public' => Yii::t('infoweb/pages', 'Public'),
-            'slider_id' => Yii::t('infoweb/sliders', 'Slider')
+            'slider_id' => Yii::t('infoweb/sliders', 'Slider'),
+            'show_testimonials' => 'Toon getuigenissen',
         ];
     }
 

@@ -67,4 +67,14 @@ use kartik\widgets\Select2;
     ]); ?>
 
     <?php endif; ?>
+
+    <?php echo $form->field($model, 'show_testimonials')->widget(SwitchInput::classname(), [
+        'inlineLabel' => false,
+        'pluginOptions' => [
+            'onColor' => 'success',
+            'offColor' => 'danger',
+            'onText' => Yii::t('app', 'Yes'),
+            'offText' => Yii::t('app', 'No'),
+        ]
+    ]); ?>
 </div>
