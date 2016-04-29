@@ -2,7 +2,11 @@
 
 namespace infoweb\pages;
 
+use infoweb\menu\models\MenuItem;
+use infoweb\pages\models\Page;
 use Yii;
+use yii\base\Event;
+use yii\db\ActiveRecord;
 
 class Module extends \yii\base\Module
 {
@@ -44,9 +48,25 @@ class Module extends \yii\base\Module
 
         Yii::configure($this, require(__DIR__ . '/config.php'));
 
+        // Set eventhandlers
+        $this->setEventHandlers();
+
         // Content duplication is only possible if there is more than 1 app language
         if (isset(Yii::$app->params['languages']) && count(Yii::$app->params['languages']) == 1) {
             $this->allowContentDuplication = false;
         }
+    }
+
+    public function setEventHandlers()
+    {
+        // Set eventhandlers for the 'Menu' model
+        Event::on(Page::className(), ActiveRecord::EVENT_BEFORE_DELETE, function ($event) {
+
+            $menuItem = MenuItem::find()->where(['entity' => Page::className(), 'entity_id' => $event->sender->id])->one();
+
+            if ($menuItem) {
+                throw new \yii\base\Exception(Yii::t('app', "Deze pagina is gekoppeld aan menu item '{$menuItem->name}', verwijder eerst het menu item"));
+            }
+        });
     }
 }
