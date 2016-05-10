@@ -143,6 +143,7 @@ class PageController extends Controller
                 throw new Exception(Yii::t('app', 'Error while deleting the node'));
             }
 
+
             $transaction->commit();
         } catch (Exception $e) {
             // Set flash message
@@ -164,10 +165,18 @@ class PageController extends Controller
      */
     public function actionActive()
     {
+        $transaction = Yii::$app->db->beginTransaction();
+
         $model = $this->findModel(Yii::$app->request->post('id'));
+        $model->trigger(Page::EVENT_BEFORE_ACTIVE);
+
         $model->active = ($model->active == 1) ? 0 : 1;
 
-        return $model->save();
+        $r = $model->save();
+
+        $transaction->commit();
+
+        return $r;
     }
 
     /**

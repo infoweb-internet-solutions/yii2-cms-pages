@@ -30,6 +30,8 @@ class Page extends ActiveRecord
     const TYPE_SYSTEM = 'system';
     const TYPE_USER_DEFINED = 'user-defined';
 
+    const EVENT_BEFORE_ACTIVE = 'before-active';
+
     /**
      * @inheritdoc
      */

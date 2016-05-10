@@ -2,7 +2,11 @@
 
 namespace infoweb\pages;
 
+use infoweb\menu\models\MenuItem;
+use infoweb\pages\models\Page;
 use Yii;
+use yii\base\Event;
+use yii\db\ActiveRecord;
 
 class Module extends \yii\base\Module
 {
@@ -35,7 +39,7 @@ class Module extends \yii\base\Module
      * @var array
      */
     public $ckEditorOptions = [
-        'height' => 500
+        'height' => 500,
     ];
 
     public function init()
@@ -44,9 +48,29 @@ class Module extends \yii\base\Module
 
         Yii::configure($this, require(__DIR__ . '/config.php'));
 
+        // Set eventhandlers
+        $this->setEventHandlers();
+
         // Content duplication is only possible if there is more than 1 app language
         if (isset(Yii::$app->params['languages']) && count(Yii::$app->params['languages']) == 1) {
             $this->allowContentDuplication = false;
         }
     }
+
+    public function setEventHandlers()
+    {
+        /**
+         * Update menuitem active state
+         */
+        Event::on(Page::className(), Page::EVENT_BEFORE_ACTIVE, function ($event) {
+            $menuItem = MenuItem::find()->where(['entity' => Page::className(), 'entity_id' => $event->sender->id])->one();
+
+            if ($menuItem) {
+                $menuItem->active = ($event->sender->active == 1) ? 0 : 1;
+                $menuItem->save();
+            }
+        });
+
+    }
+
 }
