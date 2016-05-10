@@ -153,7 +153,7 @@ class PageController extends Controller
         }
 
         // Set flash message
-        Yii::$app->getSession()->setFlash('page', Yii::t('app', '{item} has been deleted', ['item' => $name]));
+        Yii::$app->getSession()->setFlash('page', Yii::t('app', '"{item}" has been deleted', ['item' => $name]));
 
         return $this->redirect(['index']);
     }

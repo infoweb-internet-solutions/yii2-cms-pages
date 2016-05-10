@@ -59,6 +59,7 @@ class Module extends \yii\base\Module
 
     public function setEventHandlers()
     {
+
         /**
          * Update menuitem active state
          */
@@ -71,6 +72,15 @@ class Module extends \yii\base\Module
             }
         });
 
+        // Set eventhandlers for the 'Menu' model
+        Event::on(Page::className(), ActiveRecord::EVENT_BEFORE_DELETE, function ($event) {
+
+            $menuItem = MenuItem::find()->where(['entity' => Page::className(), 'entity_id' => $event->sender->id])->one();
+
+            if ($menuItem) {
+                throw new \yii\base\Exception(Yii::t('app', "Deze pagina is gekoppeld aan menu item '{$menuItem->name}', verwijder eerst het menu item"));
+            }
+        });
     }
 
 }
