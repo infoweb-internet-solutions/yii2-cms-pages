@@ -35,14 +35,16 @@ class Page extends \yii\base\Component
 
     public function init()
     {
-        // Try to load the Page model based on the request
-        $page = $this->findRequestedPage();
+        if(Yii::$app->controller->action->id != 'error') {
+            // Try to load the Page model based on the request
+            $page = $this->findRequestedPage();
 
-        // No page found, redirect to error page
-        if ($page === false) {
-            throw new \yii\web\NotFoundHttpException();
-        } else {
-            $this->setModel($page);
+            // No page found, redirect to error page
+            if ($page === false) {
+                throw new \yii\web\NotFoundHttpException();
+            } else {
+                $this->setModel($page);
+            }
         }
 
         parent::init();
