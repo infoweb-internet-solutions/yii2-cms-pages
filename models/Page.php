@@ -70,6 +70,9 @@ class Page extends ActiveRecord
                 'class' => SeoBehavior::className(),
                 'titleAttribute' => 'title',
             ],
+            'image' => [
+                'class' => 'infoweb\cms\behaviors\ImageBehave',
+            ],
         ]);
     }
 

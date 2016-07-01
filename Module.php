@@ -15,6 +15,12 @@ class Module extends \yii\base\Module
      * @var boolean
      */
     public $enableSliders = false;
+    
+    /**
+     * Enable image in a page
+     * @var boolean
+     */
+    public $enableImage = false;
 
     /**
      * Enable the possibility to toggle the public visibility of pages

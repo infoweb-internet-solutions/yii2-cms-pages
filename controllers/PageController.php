@@ -319,6 +319,8 @@ class PageController extends Controller
             return $this->render($this->action->id, $params);
         }
 
+        $model->uploadImage();
+
         $transaction->commit();
 
         // Set flash message
