@@ -207,6 +207,79 @@ class PageController extends Controller
     }
 
     /**
+     * Duplicates existing page
+     * If update is successful, the browser will be redirected to the 'index' page.
+     * @param string $id
+     * @return mixed
+     */
+    public function actionDuplicate($id)
+    {
+        // Exclude needed fields
+        $excludeAttributes = ['id', 'homepage', 'created_at', 'updated_at'];
+        $excludeTranslationAttributes = ['id', 'created_at', 'updated_at'];
+        $excludeTranslationAliasAttributes = ['id', 'created_at', 'updated_at'];
+
+        // Get needed page data
+        $model = $this->findModel($id);
+
+        // Wrap everything in a database transaction
+        $transaction = Yii::$app->db->beginTransaction();
+
+        // Define new object
+        $newModel = new Page();
+
+        // Add model data
+        foreach($model->getAttributes() as $attribute => $data) {
+            if(!in_array($attribute, $excludeAttributes)) {
+                $newModel->$attribute = $data;
+            }
+        }
+
+        // Add the translations.
+        foreach ($model->translations as $key => $data) {
+            $language = $data->language;
+
+            // Duplicate translations to a new page.
+            foreach ($data->getAttributes() as $attribute => $translation) {
+                if(!in_array($attribute, $excludeTranslationAttributes)) {
+                    $newModel->translate($language)->$attribute = $translation;
+                }
+            }
+            $newModel->translate($language)->name .= Yii::t('app', ' (Copy)');
+
+            // Duplicates aliases to a new page.
+            $alias = new \infoweb\alias\models\Alias;
+            foreach ($data->alias->getAttributes() as $attribute => $translation) {
+                if(!in_array($attribute, $excludeTranslationAliasAttributes)) {
+                    $alias->$attribute = $translation;
+                }
+            }
+            $alias->url .= Yii::t('app', '-copy');
+            $newModel->translate($language)->setAliasModel($alias);
+        }
+
+        // The view params
+        $params = $this->getDefaultViewParams($newModel);
+
+        if (Yii::$app->request->getIsPost()) {
+
+            $post = Yii::$app->request->post();
+
+            // Ajax request, validate
+            if (Yii::$app->request->isAjax) {
+
+                return $this->validateModel($newModel, $post);
+
+            // Normal request, save
+            } else {
+                return $this->saveModel($newModel, $post);
+            }
+        }
+
+        return $this->render('create', $params);
+    }
+
+    /**
      * Finds the Page model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id

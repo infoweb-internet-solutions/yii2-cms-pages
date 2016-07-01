@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => 'kartik\grid\ActionColumn',
-                'template' => '{update} {delete} {active} {homepage}' . (($enablePrivatePages) ? ' {public}' : ''),
+                'template' => '{update} {delete} {active} {homepage} {duplicate}' . (($enablePrivatePages) ? ' {public}' : ''),
                 'buttons' => [
                     'active' => function ($url, $model) {
                         if ($model->active == true) {
@@ -98,6 +98,15 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-toggleable' => 'true',
                             'data-toggle-id' => $model->id,
                             'data-toggle' => 'tooltip',
+                        ]);
+                    },
+                    'duplicate' => function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-duplicate"></span>', $url, [
+                            'title' => Yii::t('infoweb/pages', 'Duplicate'),
+                            'data-pjax' => '0',
+                            'data-toggleable' => 'true',
+                            'data-toggle-id' => $model->id,
+                            'data-toggle' => 'tooltip'
                         ]);
                     },
                 ],
