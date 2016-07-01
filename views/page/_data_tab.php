@@ -22,18 +22,6 @@ use kartik\widgets\Select2;
         ]
     ]); ?>
 
-    <?php if (Yii::$app->getModule('pages')->enableSliders) : ?>
-
-    <?= $form->field($model, 'slider_id')->widget(Select2::classname(), [
-        'data' => $sliders,
-        'options' => ['placeholder' => Yii::t('app', 'Select a slider')],
-        'pluginOptions' => [
-            'allowClear' => true,
-        ],
-    ]); ?>
-
-    <?php endif; ?>
-
     <?php echo $form->field($model, 'homepage')->widget(SwitchInput::classname(), [
         'inlineLabel' => false,
         'pluginOptions' => [

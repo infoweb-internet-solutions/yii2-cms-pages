@@ -35,7 +35,6 @@ use yii\bootstrap\Tabs;
                 'model'                   => $model,
                 'form'                    => $form,
                 'templates'               => $templates,
-                'sliders'                 => $sliders
             ]),
         ],
         [
@@ -43,6 +42,18 @@ use yii\bootstrap\Tabs;
             'content' => $this->render('@infoweb/seo/views/behaviors/seo/_seo_tab', ['model' => $model, 'form' => $form]),
         ],
     ];
+    
+    if (Yii::$app->getModule('pages')->enableSliders):
+        $tabs[] = [
+            'label' => Yii::t('app', 'Sliders'),
+            'content'   => $this->render('_sliders_tab', [
+                'model'                   => $model,
+                'form'                    => $form,
+                'templates'               => $templates,
+                'sliders'                 => $sliders
+            ]),
+        ];
+    endif;
 
     // Display the tabs
     echo Tabs::widget(['items' => $tabs]);
