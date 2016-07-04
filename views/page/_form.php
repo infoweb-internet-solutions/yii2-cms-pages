@@ -3,6 +3,11 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Tabs;
+use yii\helpers\Url;
+
+/* @var $this yii\web\View */
+/* @var $model infoweb\partials\models\PagePartial */
+/* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="page-form">
@@ -44,48 +49,34 @@ use yii\bootstrap\Tabs;
         ],
     ];
 
-    if (Yii::$app->getModule('pages')->enableSliders):
-        $tabs[] = [
-            'label' => Yii::t('app', 'Sliders'),
-            'content'   => $this->render('_sliders_tab', [
-                'model'                   => $model,
-                'form'                    => $form,
-                'templates'               => $templates,
-                'sliders'                 => $sliders
-            ]),
-        ];
-    endif;
-
-    if (Yii::$app->getModule('pages')->enableImage):
-        $tabs[] = [
-            'label' => Yii::t('app', 'Image'),
-            'content'   => $this->render('_image_tab', [
-                'model'                   => $model,
-                'form'                    => $form,
-                'templates'               => $templates,
-                'sliders'                 => $sliders
-            ]),
-        ];
-    endif;
-
     // Display the tabs
     echo Tabs::widget(['items' => $tabs]);
     ?>
-
+    
     <div class="form-group buttons">
 
-        <?php // No referrer, default buttons ?>
-        <?php if (Yii::$app->request->get('referrer') != 'menu-items') : ?>
+        <?php // Modal referrer, custom buttons ?>
+        <?php if (Yii::$app->session->get('modal') == true): ?>
 
-        <?= $this->render('@infoweb/cms/views/ui/formButtons', ['model' => $model]) ?>
+        <?= Html::submitButton(Yii::t('app', 'Create'), ['class' => 'btn btn-success btn-modal', 'name' => 'save']) ?>
+        <?= Html::button(Yii::t('app', 'Close'), ['class' => 'btn btn-danger', 'data-dismiss' => 'modal']) ?>
+
+        <?php // No referrer, default buttons ?>
+
+        <?php if (Yii::$app->request->get('referrer') != 'menu-items') : ?>
+            
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create & close') : Yii::t('app', 'Update & close'), ['class' => 'btn btn-default', 'name' => 'close']) ?>
+        <?= Html::submitButton(Yii::t('app', $model->isNewRecord ? 'Create & new' : 'Update & new'), ['class' => 'btn btn-default', 'name' => 'new']) ?>
+        <?= Html::a(Yii::t('app', 'Close'), ['index'], ['class' => 'btn btn-danger']) ?>
 
         <?php // Referrer, custom buttons ?>
         <?php else : ?>
 
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create & close') : Yii::t('app', 'Update & close'), ['class' => 'btn btn-default', 'name' => 'save-close']) ?>
-        <?= Html::a(Yii::t('app', 'Close'), ['/menu/menu-item/index'], ['class' => 'btn btn-danger', 'name' => 'close']) ?>
-
-        <?php endif; ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create & close') : Yii::t('app', 'Update & close'), ['class' => 'btn btn-default', 'name' => 'close']) ?>
+        <?= Html::a(Yii::t('app', 'Close'), ['/menu/menu-item/index'], ['class' => 'btn btn-danger']) ?>
+            
+        <?php endif; ?>     
     </div>
 
     <?php ActiveForm::end(); ?>

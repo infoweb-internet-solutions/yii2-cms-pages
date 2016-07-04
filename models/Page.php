@@ -9,8 +9,8 @@ use yii\helpers\ArrayHelper;
 use yii\db\Query;
 use creocoder\translateable\TranslateableBehavior;
 use infoweb\pages\behaviors\HomepageBehavior;
+use infoweb\alias\behaviors\AliasBehavior;
 use infoweb\seo\behaviors\SeoBehavior;
-use infoweb\alias\traits\AliasRelationTrait;
 
 /**
  * This is the model class for table "pages".
@@ -204,8 +204,8 @@ class Page extends ActiveRecord
             $url .= $language . '/';
         }
 
-        if ($this->getAlias($language)) {
-            $url .= $this->getAlias($language)->url;
+        if ($this->alias) {
+            $url .= $this->alias->url;
         }
 
         return $url;
