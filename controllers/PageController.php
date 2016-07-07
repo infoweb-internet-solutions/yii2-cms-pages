@@ -307,6 +307,7 @@ class PageController extends Controller
             'model'                   => $model,
             'templates'               => $this->getTemplates(),
             'sliders'                 => ($this->module->enableSliders) ? ArrayHelper::map(\infoweb\sliders\models\Slider::find()->select(['id', 'name'])->orderBy('name')->all(), 'id', 'name') : [],
+            'menus'                   => ($this->module->enableMenu) ? ArrayHelper::map(\infoweb\menu\models\Menu::find()->select(['id', 'name'])->orderBy('name')->all(), 'id', 'name') : [],
             'allowContentDuplication' => $this->module->allowContentDuplication
         ];
     }

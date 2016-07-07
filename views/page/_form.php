@@ -56,6 +56,18 @@ use yii\bootstrap\Tabs;
         ];
     endif;
 
+    if (Yii::$app->getModule('pages')->enableMenu):
+        $tabs[] = [
+            'label' => Yii::t('app', 'Menu'),
+            'content'   => $this->render('_menu_tab', [
+                'model'                   => $model,
+                'form'                    => $form,
+                'templates'               => $templates,
+                'menus'                   => $menus
+            ]),
+        ];
+    endif;
+
     if (Yii::$app->getModule('pages')->enableImage):
         $tabs[] = [
             'label' => Yii::t('app', 'Image'),

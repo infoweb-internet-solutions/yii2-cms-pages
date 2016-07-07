@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model'                   => $model,
         'templates'               => $templates,
         'sliders'                 => $sliders,
+        'menus'                   => $menus,
         'allowContentDuplication' => $allowContentDuplication
     ]) ?>
 

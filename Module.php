@@ -17,6 +17,12 @@ class Module extends \yii\base\Module
     public $enableSliders = false;
     
     /**
+     * Enable link between a page and a menu from the 'menu' module
+     * @var boolean
+     */
+    public $enableMenu = false;
+    
+    /**
      * Enable image in a page
      * @var boolean
      */

@@ -83,15 +83,14 @@ class Page extends ActiveRecord
     {
         return [
             [['template_id'], 'required'],
-            [['active', 'public', 'template_id', 'created_at', 'updated_at', 'slider_id'], 'integer'],
+            [['active', 'public', 'template_id', 'created_at', 'updated_at', 'slider_id', 'menu_id'], 'integer'],
             // Types
             [['type'], 'string'],
             ['type', 'in', 'range' => ['system', 'user-defined']],
             // Default type to 'user-defined'
             ['type', 'default', 'value' => 'user-defined'],
-            ['homepage', 'default', 'value' => 0],
             ['public', 'default', 'value' => Yii::$app->getModule('pages')->defaultPublicVisibility],
-            ['slider_id', 'default', 'value' => 0]
+            [['slider_id', 'menu_id', 'homepage'], 'default', 'value' => 0]
         ];
     }
 
@@ -107,7 +106,8 @@ class Page extends ActiveRecord
             'homepage' => Yii::t('infoweb/pages', 'Homepage'),
             'active' => Yii::t('app', 'Active'),
             'public' => Yii::t('infoweb/pages', 'Public'),
-            'slider_id' => Yii::t('infoweb/sliders', 'Slider')
+            'slider_id' => Yii::t('infoweb/sliders', 'Slider'),
+            'menu_id' => Yii::t('infoweb/menu', 'Menu')
         ];
     }
 
@@ -143,7 +143,19 @@ class Page extends ActiveRecord
     public function getSlider()
     {
         if (Yii::$app->getModule('pages')->enableSliders) {
-            return $this->hasOne(\infoweb\sliders\models\Slider::className(), ['slider_id' => 'id']);
+            return $this->hasOne(\infoweb\sliders\models\Slider::className(), ['id' => 'slider_id']);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMenu()
+    {
+        if (Yii::$app->getModule('pages')->enableMenu) {
+            return $this->hasOne(\infoweb\menu\models\Menu::className(), ['id' => 'menu_id']);
         } else {
             return null;
         }
