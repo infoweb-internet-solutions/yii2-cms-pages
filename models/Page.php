@@ -233,14 +233,17 @@ class Page extends ActiveRecord
      *
      * @return  array
      */
-    public static function getAllForDropDownList()
+    public static function getAllForDropDownList($language = null)
     {
+        $language = ($language) ?: Yii::$app->language;
+
         $items = (new Query())
                     ->select('page.id, page_lang.name')
                     ->from(['page' => 'pages'])
-                    ->innerJoin(['page_lang' => 'pages_lang'], "page.id = page_lang.page_id AND page_lang.language = '".Yii::$app->language."'")
+                    ->innerJoin(['page_lang' => 'pages_lang'], "page.id = page_lang.page_id AND page_lang.language = :language")
+                    ->addParams([':language' => $language])
                     ->orderBy(['page_lang.name' => SORT_ASC])
-                    ->all();
+                    ->all();        
 
         return ArrayHelper::map($items, 'id', 'name');
     }
