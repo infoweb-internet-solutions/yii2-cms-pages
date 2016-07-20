@@ -104,8 +104,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Html::a('<span class="glyphicon glyphicon-duplicate"></span>', $url, [
                             'title' => Yii::t('infoweb/pages', 'Duplicate'),
                             'data-pjax' => '0',
-                            'data-toggleable' => 'true',
-                            'data-toggle-id' => $model->id,
                             'data-toggle' => 'tooltip'
                         ]);
                     },

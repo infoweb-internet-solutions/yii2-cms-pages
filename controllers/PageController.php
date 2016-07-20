@@ -16,6 +16,7 @@ use infoweb\pages\models\Lang;
 use infoweb\pages\models\PageTemplate;
 use infoweb\pages\models\PageSearch;
 use infoweb\cms\helpers\CMS;
+
 /**
  * PageController implements the CRUD actions for Page model.
  */
@@ -51,23 +52,15 @@ class PageController extends Controller
             'enablePrivatePages' => Yii::$app->getModule('pages')->enablePrivatePages
         ]);
     }
-
+    
     /**
      * Creates a new Page model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($modal = false)
+    public function actionCreate()
     {
-        // Disable layout if the request comes from a modal
-        if ($modal) {
-            $this->layout = false;
-            Yii::$app->session->set('modal', true);
-        }
-
-        $languages = Yii::$app->params['languages'];
-
-        // Load the model with default values
+        // Create the model with default values
         $model = new Page([
             'type'        => 'user-defined',
             'active'      => 1,
@@ -76,113 +69,44 @@ class PageController extends Controller
             'public'      => (int) $this->module->defaultPublicVisibility
         ]);
 
-
-        // Get all the templates
-        $templates = PageTemplate::find()->orderBy(['name' => SORT_ASC])->all();
-        
-        // Get the sliders
-        if ($this->module->enableSliders) {
-            $sliders = ArrayHelper::map(\infoweb\sliders\models\Slider::find()->select(['id', 'name'])->orderBy('name')->all(), 'id', 'name');
-        } else {
-            $sliders = [];
-        }
-
-        $returnOptions = [
-            'model' => $model,
-            'templates' => $templates,
-            'sliders' => $sliders,
-        ];
-        
-	// The view params
+        // The view params
         $params = $this->getDefaultViewParams($model);
+
         if (Yii::$app->request->getIsPost()) {
-
             $post = Yii::$app->request->post();
-            
-            // Ajax request, validate the models
-            if (Yii::$app->request->isAjax) {
-                               
-                // Populate the model with the POST data
-                $model->load($post);
-                
-                // Create an array of translation models
-                $translationModels = [];
-                
-                foreach ($languages as $languageId => $languageName) {
-                    $translationModels[$languageId] = new Lang(['language' => $languageId]);
-                }
-                
-                // Populate the translation models
-                Model::loadMultiple($translationModels, $post);
 
-                // Validate the model and translation
-                $response = array_merge(
-                    ActiveForm::validate($model),
-                    ActiveForm::validateMultiple($translationModels)
-                );
-                
-                // Return validation in JSON format
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return $response;
-            
-            // Normal request, save models
-            } else {
-                // Wrap the everything in a database transaction
-                $transaction = Yii::$app->db->beginTransaction();                
-                
-                // Save the main model
-                if (!$model->load($post) || !$model->save()) {
-                    return $this->render('create', [
-                        'model' => $model,
-                        'templates' => $templates,
-                        'sliders' => $sliders,
-                    ]);
-                }
+            // Ajax request
+            if(Yii::$app->request->isAjax) {
+                // saveModel, saveModel is 1
+                if((int) Yii::$app->request->post('saveModel', 0) == 1) {
+                    $response = ['status' => 406, 'message' => 'Not Acceptable'];
 
-                // Save the translations
-                foreach ($languages as $languageId => $languageName) {
-                    
-                    $data = $post['Lang'][$languageId];
-                    
-                    // Set the translation language and attributes                    
-                    $model->language    = $languageId;
-                    $model->name        = $data['name'];
-                    $model->title       = $data['title'];
-                    $model->content     = $data['content'];
-                    
-                    if (!$model->saveTranslation()) {
-                        return $this->render('create', [
-                            'model' => $model,
-                            'templates' => $templates,
-                            'sliders' => $sliders,
-                        ]);    
+                    $id = $this->saveModel($model, $post, false);
+                    if($id !== false) {
+                        $response = ['status' => 200, 'message' => 'OK', 'id' => $id];
                     }
+
+                    // Return response in JSON format
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return $response;
                 }
-                
-                $transaction->commit();
-                
-                // Switch back to the main language
-                $model->language = Yii::$app->language;
-                
-                // Set flash message
-                Yii::$app->getSession()->setFlash('page', Yii::t('app', '"{item}" has been created', ['item' => $model->name]));
-                
-                // Take appropriate action based on the pushed button
-                if (isset($post['close'])) {
-                    return $this->redirect(['index']);
-                } elseif (isset($post['new'])) {
-                    return $this->redirect(['create']);
-                } else {
-                    return $this->redirect(['update', 'id' => $model->id]);
-                }   
+                // validateModel, saveModel is not 1
+                else {
+                    return $this->validateModel($model, $post);
+                }
+            }
+            // Normal request, save
+            else {
+                return $this->saveModel($model, $post);
             }
         }
 
-        return $this->render('create', [
-            'model' => $model,
-            'templates' => $templates,
-            'sliders' => $sliders
-        ]);
+        if (Yii::$app->request->isAjax) {
+            return $this->renderAjax('create', $params);
+        }
+        else {
+            return $this->render('create', $params);
+        }
     }
 
     /**
@@ -463,7 +387,7 @@ class PageController extends Controller
         return $response;
     }
 
-    protected function saveModel($model, $post)
+    protected function saveModel($model, $post, $redirect = true)
     {
         // Wrap everything in a database transaction
         $transaction = Yii::$app->db->beginTransaction();
@@ -491,6 +415,10 @@ class PageController extends Controller
         $model->uploadImage();
 
         $transaction->commit();
+
+        if($redirect === false) {
+            return $model->id;
+        }
 
         // Set flash message
         if ($this->action->id == 'create') {

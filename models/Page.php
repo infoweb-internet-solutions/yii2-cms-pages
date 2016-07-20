@@ -11,6 +11,7 @@ use creocoder\translateable\TranslateableBehavior;
 use infoweb\pages\behaviors\HomepageBehavior;
 use infoweb\alias\behaviors\AliasBehavior;
 use infoweb\seo\behaviors\SeoBehavior;
+use infoweb\alias\traits\AliasRelationTrait;
 
 /**
  * This is the model class for table "pages".

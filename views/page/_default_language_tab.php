@@ -15,6 +15,16 @@ use infoweb\cms\helpers\LanguageHelper;
         'data-duplicateable' => var_export($allowContentDuplication,true)
     ]); ?>
 
+    <?php // Url field ?>
+    <?= $this->render('@infoweb/alias/views/behaviors/alias/_url', [
+        'form' => $form,
+        'model' => $model,
+        'alias' => $alias,
+        'readonly' => ($page->type == Page::TYPE_SYSTEM && !Yii::$app->user->can('Superadmin')) ? true : false,
+        'duplicateable' => var_export($allowContentDuplication,true),
+        'urlPrefix' => Yii::getAlias("@baseUrl/{$model->language}/")
+    ]) ?>
+
     <?= $form->field($model, "[{$model->language}]title")->textInput([
         'maxlength' => 255,
         'name' => "Lang[{$model->language}][title]",

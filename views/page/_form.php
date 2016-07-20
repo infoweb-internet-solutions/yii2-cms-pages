@@ -55,30 +55,19 @@ use yii\helpers\Url;
     
     <div class="form-group buttons">
 
-        <?php // Modal referrer, custom buttons ?>
-        <?php if (Yii::$app->session->get('modal') == true): ?>
-
-        <?= Html::submitButton(Yii::t('app', 'Create'), ['class' => 'btn btn-success btn-modal', 'name' => 'save']) ?>
-        <?= Html::button(Yii::t('app', 'Close'), ['class' => 'btn btn-danger', 'data-dismiss' => 'modal']) ?>
-
         <?php // No referrer, default buttons ?>
-
         <?php if (Yii::$app->request->get('referrer') != 'menu-items') : ?>
-            
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create & close') : Yii::t('app', 'Update & close'), ['class' => 'btn btn-default', 'name' => 'close']) ?>
-        <?= Html::submitButton(Yii::t('app', $model->isNewRecord ? 'Create & new' : 'Update & new'), ['class' => 'btn btn-default', 'name' => 'new']) ?>
-        <?= Html::a(Yii::t('app', 'Close'), ['index'], ['class' => 'btn btn-danger']) ?>
+
+        <?= $this->render('@infoweb/cms/views/ui/formButtons', ['model' => $model]) ?>
 
         <?php // Referrer, custom buttons ?>
         <?php else : ?>
 
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create & close') : Yii::t('app', 'Update & close'), ['class' => 'btn btn-default', 'name' => 'close']) ?>
-        <?= Html::a(Yii::t('app', 'Close'), ['/menu/menu-item/index'], ['class' => 'btn btn-danger']) ?>
-            
-        <?php endif; ?>     
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create & close') : Yii::t('app', 'Update & close'), ['class' => 'btn btn-default', 'name' => 'save-close']) ?>
+        <?= Html::a(Yii::t('app', 'Close'), ['/menu/menu-item/index'], ['class' => 'btn btn-danger', 'name' => 'close']) ?>
+
+        <?php endif; ?>
     </div>
 
     <?php ActiveForm::end(); ?>
-
 </div>
