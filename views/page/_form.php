@@ -3,6 +3,11 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Tabs;
+use yii\helpers\Url;
+
+/* @var $this yii\web\View */
+/* @var $model infoweb\partials\models\PagePartial */
+/* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="page-form">

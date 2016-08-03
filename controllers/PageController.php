@@ -15,6 +15,7 @@ use infoweb\pages\models\Page;
 use infoweb\pages\models\Lang;
 use infoweb\pages\models\PageTemplate;
 use infoweb\pages\models\PageSearch;
+use infoweb\cms\helpers\CMS;
 
 /**
  * PageController implements the CRUD actions for Page model.
@@ -51,7 +52,7 @@ class PageController extends Controller
             'enablePrivatePages' => Yii::$app->getModule('pages')->enablePrivatePages
         ]);
     }
-
+    
     /**
      * Creates a new Page model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -72,21 +73,40 @@ class PageController extends Controller
         $params = $this->getDefaultViewParams($model);
 
         if (Yii::$app->request->getIsPost()) {
-
             $post = Yii::$app->request->post();
 
-            // Ajax request, validate
-            if (Yii::$app->request->isAjax) {
+            // Ajax request
+            if(Yii::$app->request->isAjax) {
+                // saveModel, saveModel is 1
+                if((int) Yii::$app->request->post('saveModel', 0) == 1) {
+                    $response = ['status' => 406, 'message' => 'Not Acceptable'];
 
-                return $this->validateModel($model, $post);
+                    $id = $this->saveModel($model, $post, false);
+                    if($id !== false) {
+                        $response = ['status' => 200, 'message' => 'OK', 'id' => $id];
+                    }
 
+                    // Return response in JSON format
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return $response;
+                }
+                // validateModel, saveModel is not 1
+                else {
+                    return $this->validateModel($model, $post);
+                }
+            }
             // Normal request, save
-            } else {
+            else {
                 return $this->saveModel($model, $post);
             }
         }
 
-        return $this->render('create', $params);
+        if (Yii::$app->request->isAjax) {
+            return $this->renderAjax('create', $params);
+        }
+        else {
+            return $this->render('create', $params);
+        }
     }
 
     /**
@@ -368,7 +388,7 @@ class PageController extends Controller
         return $response;
     }
 
-    protected function saveModel($model, $post)
+    protected function saveModel($model, $post, $redirect = true)
     {
         // Wrap everything in a database transaction
         $transaction = Yii::$app->db->beginTransaction();
@@ -396,6 +416,10 @@ class PageController extends Controller
         $model->uploadImage();
 
         $transaction->commit();
+
+        if($redirect === false) {
+            return $model->id;
+        }
 
         // Set flash message
         if ($this->action->id == 'create') {
