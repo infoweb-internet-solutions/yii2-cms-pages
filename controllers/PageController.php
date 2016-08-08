@@ -78,10 +78,10 @@ class PageController extends Controller
             // Ajax request
             if(Yii::$app->request->isAjax) {
                 // saveModel, saveModel is 1
-                if((int) Yii::$app->request->post('saveModel', 0) == 1) {
+                if((int) Yii::$app->request->get('saveModel', 0) == 1) {
                     $response = ['status' => 406, 'message' => 'Not Acceptable'];
 
-                    $id = $this->saveModel($model, $post, false);
+                    $id = $this->saveModel($model, $post, true);
                     if($id !== false) {
                         $response = ['status' => 200, 'message' => 'OK', 'id' => $id];
                     }
@@ -388,7 +388,7 @@ class PageController extends Controller
         return $response;
     }
 
-    protected function saveModel($model, $post, $redirect = true)
+    protected function saveModel($model, $post, $ajax = false)
     {
         // Wrap everything in a database transaction
         $transaction = Yii::$app->db->beginTransaction();
@@ -410,14 +410,19 @@ class PageController extends Controller
 
         // Save the main model
         if (!$model->save()) {
-            return $this->render($this->action->id, $params);
+            if($ajax === true) {
+                return false;
+            }
+            else {
+                return $this->render($this->action->id, $params);
+            }
         }
 
         $model->uploadImage();
 
         $transaction->commit();
 
-        if($redirect === false) {
+        if($ajax === true) {
             return $model->id;
         }
 
