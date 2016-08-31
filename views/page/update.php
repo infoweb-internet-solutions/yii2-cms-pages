@@ -17,6 +17,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
         'templates'               => $templates,
         'sliders'                 => $sliders,
         'menus'                   => $menus,
+        'forms'                   => $forms,
         'allowContentDuplication' => $allowContentDuplication
     ]) ?>
 

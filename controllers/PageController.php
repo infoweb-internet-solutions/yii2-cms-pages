@@ -327,6 +327,7 @@ class PageController extends Controller
             'model'                   => $model,
             'templates'               => $this->getTemplates(),
             'sliders'                 => ($this->module->enableSliders) ? ArrayHelper::map(\infoweb\sliders\models\Slider::find()->select(['id', 'name'])->orderBy('name')->all(), 'id', 'name') : [],
+            'forms'                   => ($this->module->enableForm) ? ArrayHelper::map(\infoweb\form\models\form\FormLang::find()->select(['form_id', 'name'])->where(['=', 'language', Yii::$app->language])->orderBy('name')->all(), 'form_id', 'name') : [],
             'menus'                   => ($this->module->enableMenu) ? ArrayHelper::map(\infoweb\menu\models\Menu::find()->select(['id', 'name'])->orderBy('name')->all(), 'id', 'name') : [],
             'allowContentDuplication' => $this->module->allowContentDuplication
         ];

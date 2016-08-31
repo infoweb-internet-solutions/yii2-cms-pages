@@ -21,6 +21,12 @@ class Module extends \yii\base\Module
      * @var boolean
      */
     public $enableMenu = false;
+
+    /**
+     * Enable link between a page and a form from the 'form' module
+     * @var boolean
+     */
+    public $enableForm = false;
     
     /**
      * Enable image in a page

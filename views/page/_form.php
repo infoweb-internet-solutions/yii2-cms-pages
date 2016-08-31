@@ -73,6 +73,18 @@ use yii\helpers\Url;
         ];
     endif;
 
+    if (Yii::$app->getModule('pages')->enableForm):
+        $tabs[] = [
+            'label' => Yii::t('app', 'Form'),
+            'content'   => $this->render('_form_tab', [
+                'model'                   => $model,
+                'form'                    => $form,
+                'templates'               => $templates,
+                'forms'                   => $forms
+            ]),
+        ];
+    endif;
+
     if (Yii::$app->getModule('pages')->enableImage):
         $tabs[] = [
             'label' => Yii::t('app', 'Image'),
@@ -90,7 +102,6 @@ use yii\helpers\Url;
     ?>
 
     <div class="form-group buttons">
-
         <?php // No referrer, default buttons ?>
         <?php if (Yii::$app->request->get('referrer') != 'menu-items') : ?>
 

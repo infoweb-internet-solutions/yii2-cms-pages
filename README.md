@@ -63,6 +63,9 @@ ___
 ##### enableMenu (type: `boolean`, default: `false`)
 If this option is set to `true`, it is possible to attach an entity from the `menu` module to a page. 
 ___
+##### enableForm (type: `boolean`, default: `false`)
+If this option is set to `true`, it is possible to attach an entity from the `form` module to a page. 
+___
 ##### enableSliders (type: `boolean`, default: `false`)
 If this option is set to `true`, it is possible to attach an entity from the `sliders` module to a page. 
 ___

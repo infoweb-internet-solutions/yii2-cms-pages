@@ -91,7 +91,7 @@ class Page extends ActiveRecord
             // Default type to 'user-defined'
             ['type', 'default', 'value' => 'user-defined'],
             ['public', 'default', 'value' => Yii::$app->getModule('pages')->defaultPublicVisibility],
-            [['slider_id', 'menu_id', 'homepage'], 'default', 'value' => 0]
+            [['slider_id', 'menu_id', 'form_id', 'homepage'], 'default', 'value' => 0]
         ];
     }
 
@@ -108,7 +108,8 @@ class Page extends ActiveRecord
             'active' => Yii::t('app', 'Active'),
             'public' => Yii::t('infoweb/pages', 'Public'),
             'slider_id' => Yii::t('infoweb/sliders', 'Slider'),
-            'menu_id' => Yii::t('infoweb/menu', 'Menu')
+            'menu_id' => Yii::t('infoweb/menu', 'Menu'),
+            'form_id' => Yii::t('infoweb/menu', 'Form')
         ];
     }
 
@@ -157,6 +158,18 @@ class Page extends ActiveRecord
     {
         if (Yii::$app->getModule('pages')->enableMenu) {
             return $this->hasOne(\infoweb\menu\models\Menu::className(), ['id' => 'menu_id']);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @return null || \infoweb\form\models\form\Form
+     */
+    public function getForm()
+    {
+        if (Yii::$app->getModule('pages')->enableForm && (int) $this->form_id != 0) {
+            return \infoweb\form\models\form\Form::findById( (int) $this->form_id );
         } else {
             return null;
         }
