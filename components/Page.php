@@ -10,9 +10,14 @@ use infoweb\alias\models\Alias;
 class Page extends \yii\base\Component
 {
     /**
-     * @var infoweb\pages\models\Page
+     * @var \infoweb\pages\models\Page
      */
     public $model = null;
+
+    /**
+     * @var \infoweb\form\helpers\FormViewer
+     */
+    public $formViewer = null;
 
     /**
      * The menu items that are (in)directly linked to the page and have to be
@@ -47,6 +52,8 @@ class Page extends \yii\base\Component
             }
         }
 
+        // 
+        
         parent::init();
     }
 
@@ -80,6 +87,16 @@ class Page extends \yii\base\Component
             return false;
         }
 
+        // Load formViewer
+        if(is_object(Yii::$app->getModule('pages')) && Yii::$app->getModule('pages')->enableForm && (int) $page->form_id != 0) {
+            try {
+                $formViewer = new \infoweb\form\helpers\FormViewer((int) $page->form_id);
+                $this->setFormViewer($formViewer);
+            }
+            catch (Exception $e) {
+            }
+        }
+
         return $page;
     }
 
@@ -101,6 +118,17 @@ class Page extends \yii\base\Component
             ];
             $this->loadLinkedMenuItems();
         }
+    }
+
+    /**
+     * Sets the formviewer helper.
+     *
+     * @param   \infoweb\form\helpers\FormViewer | null
+     */
+    public function setFormViewer($value = null)
+    {
+        $this->formViewer = $value;
+        return $this;
     }
 
     /**
